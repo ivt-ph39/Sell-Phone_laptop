@@ -27,6 +27,7 @@ class CreateAddColumnCUpdateByCategoriesTable extends Migration
     public function down()
     {
         Schema::table('categories', function (Blueprint $table) {
+            $table->dropForeign('categories_c_update_by_foreign');
             $table->dropColumn('c_update_by');
         });
     }
