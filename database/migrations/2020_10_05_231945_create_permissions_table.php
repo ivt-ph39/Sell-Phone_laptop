@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAddColumnTotalCateChildTable extends Migration
+class CreatePermissionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,12 @@ class CreateAddColumnTotalCateChildTable extends Migration
      */
     public function up()
     {
-        Schema::table('categories', function (Blueprint $table) {
-            $table->addColumn('integer', 'total_cate_child')->default(0)->nullable();
+        Schema::create('permissions', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->text('description');
+            $table->integer('parent_id')->default(0);
+            $table->timestamps();
         });
     }
 
@@ -25,8 +29,6 @@ class CreateAddColumnTotalCateChildTable extends Migration
      */
     public function down()
     {
-        Schema::table('categories', function (Blueprint $table) {
-            $table->dropColumn('total_cate_child');
-        });
+        Schema::dropIfExists('permissions');
     }
 }

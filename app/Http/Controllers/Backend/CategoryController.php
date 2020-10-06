@@ -11,6 +11,7 @@ use App\Model\Category;
 use App\Components\RecursiveCategory;
 
 use App\Http\Requests\CategoryRequest;
+use App\Http\Requests\CategoryUpdateRequest;
 
 class CategoryController extends Controller
 {
@@ -20,7 +21,7 @@ class CategoryController extends Controller
     }
     public function index()
     {
-        $categories     = Category::orderBy('c_parent')->get();
+        $categories     = Category::orderBy('parent_id')->get();
         $titlePage      = 'Danh sách danh mục';
         $data = [
             'titlePage'   => $titlePage,
@@ -30,9 +31,9 @@ class CategoryController extends Controller
         return view('admin.category.list', $data);
     }
 
-    public function create()
+    public function create(Category $category)
     {
-        $categories     = Category::all();
+        $categories     = $category->all();
 
         $recursive      = new RecursiveCategory($categories);
 
@@ -50,27 +51,20 @@ class CategoryController extends Controller
     public function store(CategoryRequest $request)
     {
         $category = new Category;
-        if ($request->c_image) {
-            $c_image = $this->storeFile($request->c_image);
+        if ($request->image) {
+            $image = $this->storeFile($request->image);
         }
 
         $data = [
-            'c_name'        => ucwords($request->c_name),
-            'c_parent'      => $request->c_parent,
-            'c_icon'        => $request->c_icon,
-            'c_image'       => $c_image,
-            'c_active'      => ($request->c_active) ? 1 : 0,
-            'c_create_by'   => $this->infoUser('id')
+            'name'        => ucwords($request->name),
+            'parent_id'      => $request->parent_id,
+            'icon'        => $request->icon,
+            'image'       => (isset($image)) ? $image : null,
+            'active'      => ($request->active) ? 1 : 0,
+            'create_by'   => $this->infoUser('id')
         ];
-
         $create_cate =  $category->create($data);
 
-        // update total category child.
-        if ($create_cate) {
-            if ($request->c_parent != 0) {
-                $this->plusTotalCateChild($request->c_parent);
-            }
-        }
         if ($create_cate) return redirect()->to(route('admin.category.list'));
     }
 
@@ -82,7 +76,7 @@ class CategoryController extends Controller
         $categories     = Category::all();
         $recursive      = new RecursiveCategory($categories);
 
-        $htmlOption     = $recursive->recursiveCategory($category->c_parent['id']);
+        $htmlOption     = $recursive->recursiveCategory($category->parent_id['id']);
         $data = [
             'titlePage'   => 'Edit Danh Mục',
             'category'    => $category,
@@ -94,68 +88,35 @@ class CategoryController extends Controller
     }
 
 
-    public function update(Request $request, $id)
+    public function update(CategoryUpdateRequest $request, $id)
     {
-        $rules = [
-            'c_name' => "required|unique:categories,c_name,$id",
-        ];
-        $mess  = [
-            'c_name.required' => 'Tên danh mục không được để trống',
-            'c_name.unique' => 'Tên danh mục đã tônf tại',
-        ];
-
-        $this->validate($request, $rules, $mess);
-
-
         $category =   Category::find($id);
 
-        $data = [
-            'c_name'        => ucwords($request->c_name),
-            'c_icon'        => $request->c_icon,
-            'c_active'      => ($request->c_active) ? 1 : 0,
-            'c_update_by'   => $this->infoUser('id')
+        $dataUpdate = [
+            'name'        => ucwords($request->name),
+            'icon'        => $request->icon,
+            'active'      => ($request->active) ? 1 : 0,
+            'update_by'   => $this->infoUser('id')
         ];
 
-        $c_image = '';
+        $image = '';
         // Xử lí file ảnh.
-        if ($request->c_image == null) {
-            $c_image = '';
+        if (!isset($request->image)) {
+            $image = '';
         } else {
-            $c_image   = $this->storeFile($request->c_image); // trả về  tên đường dẫn đến file ảnh.
-            $data      = array_merge($data, ['c_image' => $c_image]);
+            $image   = $this->storeFile($request->image); // trả về  tên đường dẫn đến file ảnh.
+            $dataUpdate['image'] = $image;
         }
-
-        $update_cate = $category->update($data);
-
-        if ($update_cate) {
-            if ($category->c_parent['id'] != $request->c_parent) {
-
-                if ($request->c_parent == 0) {
-                    $this->minusTotalCateChild($category->c_parent['id']);
-                } else if ($category->c_parent['id'] == 0) {
-                    $this->plusTotalCateChild($request->c_parent);
-                } else {
-                    $this->plusTotalCateChild($request->c_parent);
-                    $this->minusTotalCateChild($category->c_parent['id']);
-                }
-            }
-            $category->update(['c_parent' => $request->c_parent]);
-        }
-        return redirect()->to(route('admin.category.list'));
+        $category->update($dataUpdate);
+        return redirect()->route('admin.category.list');
     }
 
 
     public function destroy($id)
     {
         $category = Category::find($id);
-
-        if ($category->c_parent['id'] != 0) {
-            $c_parent = $category->c_parent['id'];
-            $this->minusTotalCateChild($c_parent);
-        }
-
-        $category->delete();
-        return back();
+        $category->forceDelete();
+        return redirect()->route('admin.category.list');
     }
     //
     public function storeFile($file)
@@ -163,25 +124,5 @@ class CategoryController extends Controller
         $namefile = time() . '-' . $file->getClientOriginalName();
         $p_avatar = $file->storeAs('public/category', $namefile);
         return str_replace('public/', 'storage/', $p_avatar);
-    }
-
-    //
-    public function plusTotalCateChild($id)
-    {
-        $cate_parent = Category::find($id);
-
-        $total_child_of_cate_new = $cate_parent->total_cate_child++;
-
-        $cate_parent->update(['total_cate_child', $total_child_of_cate_new]);
-    }
-
-    // 
-    public function minusTotalCateChild($id)
-    {
-        $cate_parent = Category::find($id);
-
-        $total_child_of_cate_new = $cate_parent->total_cate_child--;
-
-        $cate_parent->update(['total_cate_child', $total_child_of_cate_new]);
     }
 }

@@ -11,17 +11,14 @@ class Category extends Model
     protected $table = 'categories';
 
     // protected $primaryKy = 'c_create_by';
-    protected $fillable = ['id', 'c_name', 'c_icon', 'c_image', 'parent_id', 'c_active', 'c_total_product', 'c_create_by', 'c_parent', 'c_update_by,total_cate_child'];
+    protected $fillable = ['id', 'name', 'icon', 'image', 'parent_id', 'active', 'create_by', 'deleted_at'];
 
     public function createBy()
     {
-        return $this->belongsTo('App\Model\ManagerAdmin', 'c_create_by');
+        return $this->belongsTo('App\Model\ManagerAdmin', 'create_by');
     }
-    public function updateBy()
-    {
-        return $this->belongsTo('App\Model\ManagerAdmin', 'c_update_by');
-    }
-    public function getCParentAttribute($value)
+
+    public function getParentIdAttribute($value)
     {
         if ($value == 0) {
             return [
@@ -31,7 +28,7 @@ class Category extends Model
         } else {
 
             return [
-                'name' => $this->find($value)->c_name,
+                'name' => $this->find($value)->name,
                 'id'   => $value
             ];
         }

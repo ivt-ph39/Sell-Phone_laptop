@@ -5,7 +5,7 @@ $(document).ready(function () {
         allowClear: true
     });
 
-    $("#c_icon").change(function () {
+    $("#icon").change(function () {
         value = $(this).val();
         $('#icon_preview').attr('class', 'fas fa-3x ' + value);
     });
