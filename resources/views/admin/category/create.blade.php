@@ -20,38 +20,38 @@ Tạo Danh Mục
                     @csrf
                     <div class="form-group w-100 mb-3 row">
                         <div class="col-4">
-                            <label for="c_name" class="d-flex justify-content-end pr-5">Tên Danh Mục <span
+                            <label for="name" class="d-flex justify-content-end pr-5">Tên Danh Mục <span
                                     class=" text-danger">(<sup>*</sup>)</span> :</label>
                         </div>
                         <div class="col-8">
-                            <input type="text" name="c_name" id="c_name" class="form-control w-100 @error('c_name') is-invalid @enderror"
-                                placeholder="Điện Thoại" value="{{old('c_name')}}">
-                            @error('c_name')
+                            <input type="text" name="name" id="name" class="form-control w-100 @error('name') is-invalid @enderror"
+                                placeholder="Điện Thoại" value="{{old('name')}}">
+                            @error('name')
                             <small id="" class="text-danger mx-auto mt-1">{{$message}}</small>
                             @enderror
                         </div>
                     </div>
                     <div class="form-group w-100 mb-3 row">
                         <div class="col-4 d-flex justify-content-end pr-5">
-                            <label for="c_parent">Danh Mục cha<span class=" text-danger">(<sup>*</sup>)</span>:</label>
+                            <label for="parent_id">Danh Mục cha<span class=" text-danger">(<sup>*</sup>)</span>:</label>
                         </div>
                         <div class="col-8">
-                            <select class="form-control select-parent w-100 " name="c_parent" id="c_parent" >
+                            <select class="form-control select-parent w-100 " name="parent_id" id="parent_id" >
                                 <option></option>
                                 <option value="0">Không có DM cha</option>
                                 {!!$htmlOption!!}
                             </select>
-                            @error('c_parent')
+                            @error('parent')
                             <small id="" class="text-danger mx-auto mt-1">{{$message}}</small>
                             @enderror
                         </div>
                     </div>
                     <div class="form-group w-100 mb-3 row">
-                        <label for="c_icon" class="col-4 d-flex justify-content-end pr-5">Icon:</label>
+                        <label for="icon" class="col-4 d-flex justify-content-end pr-5">Icon:</label>
                         <div class="col-4">
-                            <input type="text" name="c_icon" id="c_icon" class="form-control w-100 @error('c_icon') is-invalid @enderror"
-                            placeholder=" fa-laptop"  value="{{old('c_icon')}}">
-                            @error('c_icon')
+                            <input type="text" name="icon" id="icon" class="form-control w-100 @error('icon') is-invalid @enderror"
+                            placeholder=" fa-laptop"  value="{{old('icon')}}">
+                            @error('icon')
                             <small id="" class="text-danger mx-auto mt-1">{{$message}}</small>
                             @enderror
                         </div>
@@ -64,8 +64,8 @@ Tạo Danh Mục
 
                         <label for="file " class="col-4 d-flex justify-content-end pr-5">Ảnh đại diện:</label>
                         <div class="col-4">
-                            <input type="file" class="form-control-file" name="c_image" id="file">
-                            @error('c_image')
+                            <input type="file" class="form-control-file" name="image" id="file">
+                            @error('image')
                             <small id="" class="text-danger mx-auto mt-1">{{$message}}</small>
                             @enderror
                         </div>
@@ -77,11 +77,11 @@ Tạo Danh Mục
                         </div>
                     </div>
                     <div class="form-group w-100 mb-3 row">
-                        <label for="c_active" class="col-4 d-flex justify-content-end pr-5">Hiển Thị :</label>
+                        <label for="active" class="col-4 d-flex justify-content-end pr-5">Hiển Thị :</label>
                         <div class="col-8 custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" name="c_active" id="c_active" @if (old('c_active'))
+                            <input type="checkbox" class="custom-control-input" name="active" id="active" @if (old('active'))
                                             {{'checked'}} @endif>
-                            <label class="custom-control-label" for="c_active"></label>
+                            <label class="custom-control-label" for="active"></label>
                         </div>
                     </div>
                     <div class="mx-auto">

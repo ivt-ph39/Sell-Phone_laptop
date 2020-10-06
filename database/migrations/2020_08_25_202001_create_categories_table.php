@@ -15,15 +15,14 @@ class CreateCategoriesTable extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('c_name')->unique();
-            $table->string('c_icon', 30)->nullable();
-            $table->string('c_image', 100)->nullable();
-            // $table->tinyInteger('parent_id')->unsigned();
-            $table->tinyInteger('c_active')->unsigned();
-            $table->integer('c_total_product')->nullable();
-            $table->unsignedBigInteger('c_create_by')->nullable();
-            $table->foreign('c_create_by')->references('id')->on('manager_admins');
+            $table->string('name')->unique();
+            $table->string('icon', 30)->nullable();
+            $table->string('image', 100)->nullable();
+            $table->boolean('active')->unsigned();
+            $table->unsignedBigInteger('create_by')->nullable();
+            $table->foreign('create_by')->references('id')->on('manager_admins');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

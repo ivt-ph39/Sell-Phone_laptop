@@ -14,7 +14,7 @@ class CreateAddColumnCParentCategories extends Migration
     public function up()
     {
         Schema::table('categories', function (Blueprint $table) {
-            $table->integer('c_parent')->nullable();
+            $table->integer('parent_id')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class CreateAddColumnCParentCategories extends Migration
     public function down()
     {
         Schema::table('categories', function (Blueprint $table) {
-            $table->dropColumn('c_parent');
+            $table->dropColumn('parent_id');
         });
     }
 }
