@@ -10,12 +10,12 @@ class Product extends Model
     protected $table = 'products';
 
     protected $fillable = [
-        'p_name', 'p_number', 'p_active',
-        'p_price', 'p_sale', 'p_hot', 'p_view',
-        'p_category_id', 'p_avatar', 'p_title',
-        'p_keyword_seo', 'p_promotion',
-        'p_technical', 'p_detail', 'p_brand_id',
-        'p_created_by', 'p_update_by'
+        'name', 'quantity', 'active',
+        'price', 'sale', 'hot',
+        'category_id', 'avatar', 'title',
+        'promotion',
+        'technical', '	description', 'brand_id',
+        'created_by'
     ];
 
     protected $active = [
@@ -39,39 +39,45 @@ class Product extends Model
         ]
     ];
 
-    public function setPActiveAttribute($value)
+    public function setActiveAttribute($value)
     {
-        $this->attributes['p_active'] = ($value != null) ? 1 : 0;
+        $this->attributes['active'] = ($value != null) ? 1 : 0;
     }
-    public function setPHotAttribute($value)
+    public function setHotAttribute($value)
     {
-        $this->attributes['p_hot'] = ($value != null) ? 1 : 0;
+        $this->attributes['hot'] = ($value != null) ? 1 : 0;
     }
-    public function setPSaleAttribute($value)
+    public function setSaleAttribute($value)
     {
-        $this->attributes['p_sale'] = ($value != null) ? $value : 0;
+        $this->attributes['sale'] = ($value != null) ? $value : 0;
     }
 
-    public function getActive($p_active)
+    public function getActiveAttribute($active)
     {
-        return Arr::get($this->active, $p_active);
+        return Arr::get($this->active, $active);
     }
-    public function getHot($p_hot)
+    public function getHotAttribute($value)
     {
-        return Arr::get($this->hot, $p_hot);
+        return Arr::get($this->hot, $value);
     }
-    public function formatPrice($p_price)
+    public function getPriceAttribute($value)
     {
-        return number_format($p_price, 0, '.', ',') . " vnđ";
+        return [
+            "format" => number_format($value, 0, '.', ',') . '<sup class ="text text-danger"> vnđ</sup>',
+            "base" => $value
+        ];
     }
-    public function formatSale($p_sale)
+    public function getSaleAttribute($value)
     {
-        return $p_sale . " %";
+        return [
+            "format" => $value . '%',
+            "base"   => $value
+        ];
     }
 
     public function category()
     {
-        return $this->belongsTo('App\Model\Category', 'p_category_id');
+        return $this->belongsTo('App\Model\Category', 'category_id');
     }
     public function images()
     {

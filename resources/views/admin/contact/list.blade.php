@@ -26,10 +26,10 @@
                     @foreach ($contacts as $key=>$contact) 
                         <tr>
                             <th class=" text-center">{{$key+1}}</th>
-                            <td class=" text-center">{{$contact->ct_name}}</td>
-                            <td class=" text-center">{{$contact->ct_content}}</td>
-                            <td class=" text-center"><i class="fas fa-2x {{$contact->ct_icon}}"></i></td>
-                            <td class=" text-center"><span class="badge {{$contact->ct_active['class']}}">{{$contact->ct_active['name']}}</span></td>
+                            <td class=" text-center">{{$contact->name}}</td>
+                            <td class=" text-center">{{$contact->content}}</td>
+                            <td class=" text-center"><i class="fas fa-2x {{$contact->icon}}"></i></td>
+                            <td class=" text-center"><span class="badge {{$contact->active['class']}}">{{$contact->active['name']}}</span></td>
                             <td class=" text-center" >
                                 <span>
                                     <form action="{{route('admin.contact.delete',['id'=>$contact->id])}}" method="post" class="d-inline" >

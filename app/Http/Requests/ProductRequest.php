@@ -24,42 +24,40 @@ class ProductRequest extends FormRequest
     public function rules()
     {
         return [
-
-            'p_name' => 'required|unique:products|max:255',
-            'p_number' => 'required|numeric|min:0',
-            'p_price' => 'required|numeric',
-            'p_category_id' => 'required',
-            'p_brand_id' => 'required',
-            'p_avatar' => 'required',
-            'p_image_detail' => 'required',
-            'p_title' => 'required',
+            'name' => 'required|unique:products|max:255',
+            'quantity' => 'required|numeric|min:0',
+            'price' => 'required|numeric',
+            'category_id' => 'required',
+            'brand_id' => 'required',
+            'avatar' => 'required',
+            'image_detail' => 'required',
+            'title' => 'required',
+            'tag'   => 'required'
         ];
     }
     public function messages()
     {
         return [
-            'p_name.required' => 'Tên sản phẩm không được để trống',
-            'p_name.unique' => 'Tên sản phẩm đã tồn tại',
-            'p_name.max' => 'Tên sản phẩm không dài quá 255 kí tự',
+            'name.required' => 'Tên sản phẩm không được để trống',
+            'name.unique' => 'Tên sản phẩm đã tồn tại',
+            'name.max' => 'Tên sản phẩm không dài quá 255 kí tự',
 
-            'p_number.required' => 'Sl sản phẩm không được để trống',
-            'p_number.numeric' => 'Sl sản phẩm phải là số',
-            'p_number.min' => 'Sl sản phẩm không được nhỏ hơn 0',
+            'quantity.required' => 'Sl sản phẩm không được để trống',
+            'quantity.numeric' => 'Sl sản phẩm phải là số',
+            'quantity.min' => 'Sl sản phẩm không được nhỏ hơn 0',
 
-            'p_price.required' => 'Giá sản phẩm không được để trống',
-            'p_price.numeric' => 'Giá sản phẩm phải là số',
+            'price.required' => 'Giá sản phẩm không được để trống',
+            'price.numeric' => 'Giá sản phẩm phải là số',
 
+            'category_id.required' => 'Danh mục không được để trống',
+            'brand_id.required'    => 'Thương hiệu không được để trống',
 
+            'avatar.required' => 'Ảnh sản phẩm không được để trống',
 
-            'p_category_id.required' => 'Danh mục không được để trống',
-            'p_brand_id.required'    => 'Thương hiệu không được để trống',
+            'image_detail.required' => 'Ảnh chi tiết không được để trống',
 
-
-            'p_avatar.required' => 'Ảnh sản phẩm không được để trống',
-
-            'p_image_detail.required' => 'Ảnh chi tiết không được để trống',
-
-            'p_title.required' => 'Tiêu đề sản phẩm không được để trống',
+            'title.required' => 'Tiêu đề sản phẩm không được để trống',
+            'tag.required' => 'Từ khóa không được để trống'
 
         ];
     }

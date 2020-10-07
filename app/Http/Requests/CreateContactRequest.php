@@ -24,16 +24,16 @@ class CreateContactRequest extends FormRequest
     public function rules()
     {
         return [
-            'ct_name' => 'required|unique:contacts',
-            'ct_content' => 'required|max:50'
+            'name' => 'required|unique:contacts',
+            'content' => 'required|max:50'
         ];
     }
     public function messages()
     {
         return [
-            'ct_name.required'      => 'Tên không được để trống',
-            'ct_name.unique'        => 'Tên đã tồn tại',
-            'ct_content.required'   => 'Nội dung không được để trống'
+            'name.required'      => 'Tên không được để trống',
+            'name.unique'        => 'Tên đã tồn tại',
+            'content.required'   => 'Nội dung không được để trống'
         ];
     }
 }

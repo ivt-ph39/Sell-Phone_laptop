@@ -26,8 +26,8 @@
                 </select>
             </div>
             <div class="input-group input-group">
-                <input class="form-control form-control-navbar" type="search" name="p_name" placeholder="Tên sản phẩm"
-                    aria-label="Search" value='{{($request->p_name != null)?"$request->p_name":""}}'>
+                <input class="form-control form-control-navbar" type="search" name="name" placeholder="Tên sản phẩm"
+                    aria-label="Search" value='{{($request->name != null)?"$request->name":""}}'>
                 <div class="input-group-append">
                     <button class="btn btn-secondary" type="submit">
                         <i class="fas fa-search"></i>
@@ -56,25 +56,25 @@
                 @foreach ($products as $key => $product)
                 <tr>
                     <th>{{$key+1}}</th>
-                    <td style="width: 25%"><b>{{$product->p_name}}</b></>
+                    <td style="width: 25%"><b>{{$product->name}}</b></>
                         <ul class="mb-0">
                             <li><b>ID: </b>{{$product->id}}</li>
-                            <li><b>Giá: </b>{{$product->formatPrice($product->p_price)}}</li>
-                            <li><b>Sale: </b>{{$product->formatSale($product->p_sale)}}</li>
+                            <li><b>Giá: </b>{!!$product->price['format']!!}</li>
+                            <li><b>Sale: </b>{{$product->sale['format']}}</li>
                         </ul>
                     </td>
                     <td>
-                        {{$product->category->c_name}}
+                        {{$product->category->name}}
                     </td>
                     <td>
-                        <img src="{{$product->p_avatar}}" alt="" style="height: 100px">
+                        <img src="{{$product->avatar}}" alt="" style="height: 100px">
                     </td>
-                    <td>{{$product->p_number}}</td>
+                    <td>{{$product->quantity}}</td>
                     <td><a href=""
-                            class="badge {{$product->getHot($product->p_hot)['class']}}">{{$product->getHot($product->p_hot)['name']}}</a>
+                            class="badge {{$product->hot['class']}}">{{$product->hot['name']}}</a>
                     </td>
                     <td><a href=""
-                            class="badge {{$product->getActive($product->p_active)['class']}}">{{$product->getActive($product->p_active)['name']}}</a>
+                            class="badge {{$product->active['class']}}">{{$product->active['name']}}</a>
                     </td>
                     <td>
                         <a href="{{route('admin.product.edit',['id'=>$product->id])}}"
@@ -88,7 +88,7 @@
         </table>
     </div>
     @endif
-    <div class="d-flex justify-content-center">{!!$products->appends(['category'=>$request->category,'p_name'=>$request->p_name])->links()!!}</div>
+    <div class="d-flex justify-content-center">{!!$products->appends(['category'=>$request->category,'name'=>$request->name])->links()!!}</div>
 </div>
 @endsection
 @section('js')

@@ -14,16 +14,16 @@ class  RecursiveCategory
     {
         $this->data = $data;
     }
-    public function recursiveCategory($c_parent_id, $id = 0, $text = '')
+    public function recursiveCategory($parent, $id = 0, $text = '')
     {
         foreach ($this->data as $value) {
             if ($value->parent_id['id'] == $id) {
-                if (!empty($parent_id) && $c_parent_id == $value->id) {
+                if (!empty($parent) && $parent == $value->id) {
                     $this->htmlSelect .= "<option selected value = \" $value->id \" >" . $text . $value->name . "</option>";
                 } else {
                     $this->htmlSelect .= "<option value = \" $value->id \" >" . $text . $value->name . "</option>";
                 }
-                $this->recursiveCategory($c_parent_id, $value->id, $text . "--- ");
+                $this->recursiveCategory($parent, $value->id, $text . "--- ");
             }
         }
         return $this->htmlSelect;

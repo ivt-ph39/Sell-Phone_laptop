@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class EditContactRequest extends FormRequest
+class SliderCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,10 +23,9 @@ class EditContactRequest extends FormRequest
      */
     public function rules()
     {
-        $id = $this->id;
         return [
-            'name' => "required|unique:contacts,name,$id",
-            'content' => 'required|max:50'
+            'name' => 'required|unique:sliders',
+            'path' => 'required|image'
         ];
     }
     public function messages()
@@ -34,7 +33,8 @@ class EditContactRequest extends FormRequest
         return [
             'name.required'      => 'Tên không được để trống',
             'name.unique'        => 'Tên đã tồn tại',
-            'content.required'   => 'Nội dung không được để trống'
+            'path.required'      => 'Baner không được để trống',
+            'path.image'         => 'Baner phải là ảnh'
         ];
     }
 }

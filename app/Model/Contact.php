@@ -8,7 +8,7 @@ use Illuminate\Support\Arr;
 class Contact extends Model
 {
     protected $table    = 'contacts';
-    protected $fillable = ['ct_name', 'ct_content', 'ct_icon', 'ct_active'];
+    protected $fillable = ['name', 'content', 'icon', 'active'];
     protected $active   = [
         1 => [
             'name'  => 'public',
@@ -20,11 +20,11 @@ class Contact extends Model
         ]
     ];
 
-    public function setCtActiveAttribute($value)
+    public function setActiveAttribute($value)
     {
-        $this->attributes['ct_active'] = ($value == 'on') ? 1 : 0;
+        $this->attributes['active'] = ($value == 'on') ? 1 : 0;
     }
-    public function getCtActiveAttribute($value)
+    public function getActiveAttribute($value)
     {
         return Arr::get($this->active, $value);
     }

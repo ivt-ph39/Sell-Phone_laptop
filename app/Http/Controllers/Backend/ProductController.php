@@ -35,15 +35,15 @@ class ProductController extends Controller
 
         $titlePage      = 'Danh sách sản phẩm';
 
-        if (!empty($request->category) && empty($request->p_name)) {
-            $products = Product::where('p_category_id', $request->category)->orderByDesc('id')->paginate($page);
+        if (!empty($request->category) && empty($request->name)) {
+            $products = Product::where('category_id', $request->category)->orderByDesc('id')->paginate($page);
             $htmlOption = $recursive->recursiveCategory($request->category);
-        } elseif (empty($request->category) && !empty($request->p_name)) {
-            $products = Product::where('p_name', 'like', "%" . trim($request->p_name) . "%")->orderByDesc('id')->paginate($page);
+        } elseif (empty($request->category) && !empty($request->name)) {
+            $products = Product::where('name', 'like', "%" . trim($request->name) . "%")->orderByDesc('id')->paginate($page);
             $htmlOption     = $recursive->recursiveCategory('');
-        } elseif (!empty($request->category) && !empty($request->p_name)) {
-            $products = Product::where('p_category_id', $request->category)
-                ->where('p_name', 'like', "%" . trim($request->p_name) . "%")->orderByDesc('id')->paginate($page);
+        } elseif (!empty($request->category) && !empty($request->name)) {
+            $products = Product::where('category_id', $request->category)
+                ->where('name', 'like', "%" . trim($request->name) . "%")->orderByDesc('id')->paginate($page);
             $htmlOption     = $recursive->recursiveCategory($request->category);
         } else {
             $products     = Product::orderByDesc('id')->paginate($page);
@@ -75,62 +75,65 @@ class ProductController extends Controller
             'htmlOption'  => $recursiveCategory,
             'brands'      => $brands
         ];
+        // dd($recursiveCategory->recursiveCategory(8));
         return view('admin.product.create', $data);
     }
 
     public function store(ProductRequest $request)
     {
+        // dd($request->all());
         try {
             DB::beginTransaction();
 
             //Chuyển các mảng thành các String.
-            $p_promotions = $this->arrayToString($request->p_promotion);
-            $p_technicals = $this->arrayToString($request->name_p_technical, $request->value_p_technical);
+            $promotions = $this->arrayToString($request->promotion);
+            $technicals = $this->arrayToString($request->name_technical, $request->value_technical);
 
             // Xử lí file ảnh.
-            if ($request->p_avatar) {
-                $p_avatar = $this->storeFile($request->p_avatar);
+            if ($request->avatar) {
+                $avatar = $this->storeFile($request->avatar);
             }
 
             // Dữ liệu nhập vào cho product.
             $data = [
-                'p_name'        => $request->p_name,
-                'p_number'      => $request->p_number,
-                'p_active'      => $request->p_active,
-                'p_price'       => $request->p_price,
-                'p_sale'        => $request->p_sale,
-                'p_hot'         => $request->p_hot,
-                'p_category_id' => $request->p_category_id,
-                'p_brand_id'    => $request->p_brand_id,
-                'p_avatar'      => $p_avatar,
-                'p_title'       => $request->p_title,
-                'p_promotion'   => $p_promotions,
-                'p_technical'   => $p_technicals,
-                'p_created_by'  => $this->info('id')
+                'name'        => $request->name,
+                'quantity'    => $request->quantity,
+                'active'      => $request->active,
+                'price'       => $request->price,
+                'sale'        => $request->sale,
+                'hot'         => $request->hot,
+                'category_id' => $request->category_id,
+                'brand_id'    => $request->brand_id,
+                'avatar'      => $avatar,
+                'title'       => $request->title,
+                'promotion'   => $promotions,
+                'technical'   => $technicals,
+                'created_by'  => $this->info('id')
             ];
             $product = Product::create($data);
 
             //insert to table images.
-            if ($request->p_image_detail) {
-                foreach ($request->p_image_detail as $file_image) {
+            if ($request->image_detail) {
+                foreach ($request->image_detail as $file_image) {
                     $path = $this->storeFile($file_image);
                     $product->images()->create([
-                        'path_image' => $path
+                        'path' => $path
                     ]);
                 }
             }
             // insert to table tags.
-            foreach ($request->p_keyword_seo as $tag) {
-                $tagInstance = Tag::firstOrCreate(['tg_name' => $tag]);
+            foreach ($request->tag as $tag) {
+                $tagInstance = Tag::firstOrCreate(['name' => $tag]);
                 $tagInstanceId[] = $tagInstance->id;
             }
             //insert to table product_tag.
             $product->tags()->attach($tagInstanceId);
 
             DB::commit();
-            return redirect()->to(route('admin.product.list'));
+            return redirect()->route('admin.product.list');
         } catch (\Exception $e) {
             DB::rollback();
+            dd($e->getMessage());
             return redirect()->back()->with('error', 'Tạo mới sản phẩm thất bại')->withInput();
         }
     }
@@ -181,14 +184,14 @@ class ProductController extends Controller
         $titlePage      = 'Edit Sản Phẩm';
 
 
-        $p_technicals = json_decode($product->p_technical, true); // return array
-        $p_promotion  = json_decode($product->p_promotion, true); // return array
+        $technicals = json_decode($product->technical, true); // return array
+        $promotion  = json_decode($product->promotion, true); // return array
 
         $data = [
             'titlePage'    => $titlePage,
             'nameAdmin'    => ucwords($nameAdmin),
-            'p_technicals' => $p_technicals,
-            'p_promotion'  => $p_promotion,
+            'technical' => $technicals,
+            'promotion'  => $promotion,
             'product'      => $product,
             'brands'       => $brands,
             'htmlOption'   => $recursiveCategory
@@ -199,34 +202,35 @@ class ProductController extends Controller
 
     public function update(ProductUpdateRequest $request, $id, Image $image)
     {
+        // dd($request->all());
         try {
             DB::beginTransaction();
 
             //Chuyển các mảng thành các String.
-            $p_promotions   = $this->arrayToString($request->p_promotion);
-            $p_technicals   = $this->arrayToString($request->name_p_technical, $request->value_p_technical);
+            $promotions   = $this->arrayToString($request->promotion);
+            $technicals   = $this->arrayToString($request->name_technical, $request->value_technical);
 
             // Dữ liệu nhập vào cho product.
             $data = [
-                'p_name'        => $request->p_name,
-                'p_number'      => $request->p_number,
-                'p_active'      => $request->p_active,
-                'p_price'       => $request->p_price,
-                'p_sale'        => $request->p_sale,
-                'p_hot'         => $request->p_hot,
-                'p_category_id' => $request->p_category_id,
-                'p_brand_id'    => $request->p_brand_id,
-                'p_title'       => $request->p_title,
-                'p_promotion'   => $p_promotions,
-                'p_technical'   => $p_technicals,
-                'p_update_by'   => $this->info('id'),
+                'name'        => $request->name,
+                'quantity'    => $request->quantity,
+                'active'      => $request->active,
+                'price'       => $request->price,
+                'sale'        => $request->sale,
+                'hot'         => $request->hot,
+                'category_id' => $request->category_id,
+                'brand_id'    => $request->brand_id,
+                'title'       => $request->title,
+                'promotion'   => $promotions,
+                'technical'   => $technicals,
+                'update_by'   => $this->info('id'),
                 'updated_at'    => now()
             ];
 
             // Xử lí file ảnh.
-            if ($request->p_avatar_new != null) {
-                $p_avatar_new   = $this->storeFile($request->p_avatar_new); // trả về  tên đường dẫn đến file ảnh.
-                $data           = array_merge($data, ['p_avatar' => $p_avatar_new]);
+            if ($request->avatar_new != null) {
+                $avatar_new   = $this->storeFile($request->avatar_new); // trả về  tên đường dẫn đến file ảnh.
+                $data['avatar'] = $avatar_new;
             }
 
             Product::find($id)->update($data);
@@ -241,20 +245,19 @@ class ProductController extends Controller
                     $image->where('id', $id_image)->delete();
                 }
             }
-            // Add images added.
-            if ($request->p_image_detail_new) {
-                foreach ($request->p_image_detail_new as $p_image) {
-                    $path_image = $this->storeFile($p_image);
-                    $image->create([
-                        'path_image'   => $path_image,
-                        'product_id'   => $id
+            //insert to table images.
+            if ($request->image_detail_new) {
+                foreach ($request->image_detail_new as $file_image) {
+                    $path = $this->storeFile($file_image);
+                    $product->images()->create([
+                        'path' => $path
                     ]);
                 }
             }
 
             // update to table tags.
-            foreach ($request->p_keyword_seo as $tag) {
-                $tagInstance = Tag::firstOrCreate(['tg_name' => $tag]);
+            foreach ($request->tag as $tag) {
+                $tagInstance = Tag::firstOrCreate(['name' => $tag]);
                 $tagInstanceId[] = $tagInstance->id;
             }
 
@@ -265,7 +268,7 @@ class ProductController extends Controller
             return redirect()->to(route('admin.product.list'));
         } catch (Exception $e) {
             DB::rollback();
-            return $e->getMessage();
+            dd($e->getMessage());
             return redirect()->back()->with('error_update', 'Thay đổi nội dung sản phẩm thất bại')->withInput();
         }
     }

@@ -9,27 +9,27 @@ $(document).ready(function () {
         placeholder: "Chọn danh mục",
         allowClear: true
     });
-    $(".select2_p_keyword_seo").select2({
+    $(".select2_tag").select2({
         tags: true,
         placeholder: "Thêm tag",
         tokenSeparators: [","]
     });
-    $("#add_p_technical").click(function () {
+    $("#add_technical").click(function () {
         var content =
             '<tr>' +
             '<td>' +
-            '<input type="text" class="form-control " name="name_p_technical[]" placeholder="Màn hình">' +
+            '<input type="text" class="form-control " name="name_technical[]" placeholder="Màn hình">' +
             '</td>' +
             '<td>' +
-            '<input type="text" class="form-control " name="value_p_technical[]" placeholder="AMOLED, 6.4in, Full HD+" >' +
+            '<input type="text" class="form-control " name="value_technical[]" placeholder="AMOLED, 6.4in, Full HD+" >' +
             '</td >' +
             '</tr > ';
-        $("#main_p_technical").append(content);
+        $("#main_technical").append(content);
     });
 
-    $("#add_p_promotion").click(function () {
-        var content = '<input type="text" class="form-control mb-2" name="p_promotion[]" placeholder="Nộ dung khuyến mãi"> ';
-        $("#main_p_promotion").append(content);
+    $("#add_promotion").click(function () {
+        var content = '<input type="text" class="form-control mb-2" name="promotion[]" placeholder="Nộ dung khuyến mãi"> ';
+        $("#main_promotion").append(content);
     });
     $("#btn-add-images").click(function () {
         $("#add-images").toggle();
@@ -55,12 +55,12 @@ $(document).ready(function () {
     })
 })
 
-$("#p_image_detail").fileinput({
+$("#image_detail_new").fileinput({
     showUpload: false,
     theme: "fas",
     removeTitle: "Xoa tat"
 });
-$("#p_avatar").fileinput({
+$("#avatar_new").fileinput({
     showUpload: false,
     theme: "fas",
     removeTitle: "Xoa tat"
