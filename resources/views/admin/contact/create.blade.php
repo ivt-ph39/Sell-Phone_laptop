@@ -17,36 +17,36 @@
                     @csrf
                     <div class="form-group w-100 mb-3 row">
                         <div class="col-4">
-                            <label for="ct_name" class="d-flex justify-content-end pr-5">Tên <span
+                            <label for="name" class="d-flex justify-content-end pr-5">Tên <span
                                     class=" text-danger">(<sup>*</sup>)</span> :</label>
                         </div>
                         <div class="col-4">
-                            <input type="text" name="ct_name" id="ct_name" class="form-control w-100 @error('ct_name') is-invalid @enderror"
-                                placeholder="Phone" value="{{old('ct_name')}}">
-                            @error('ct_name')
+                            <input type="text" name="name" id="name" class="form-control w-100 @error('name') is-invalid @enderror"
+                                placeholder="Phone" value="{{old('name')}}">
+                            @error('name')
                             <small id="" class="text-danger mx-auto mt-1">{{$message}}</small>
                             @enderror
                         </div>
                     </div>
                     <div class="form-group w-100 mb-3 row">
                         <div class="col-4">
-                            <label for="ct_content" class="d-flex justify-content-end pr-5">Nội dung <span
+                            <label for="content" class="d-flex justify-content-end pr-5">Nội dung <span
                                     class=" text-danger">(<sup>*</sup>)</span> :</label>
                         </div>
                         <div class="col-4">
-                            <input type="text" name="ct_content" id="ct_content" class="form-control w-100 @error('ct_content') is-invalid @enderror"
-                                placeholder="Phone" value="{{old('ct_content')}}">
-                            @error('ct_content')
+                            <input type="text" name="content" id="content" class="form-control w-100 @error('content') is-invalid @enderror"
+                                placeholder="Phone" value="{{old('content')}}">
+                            @error('content')
                             <small id="" class="text-danger mx-auto mt-1">{{$message}}</small>
                             @enderror
                         </div>
                     </div>
                     <div class="form-group w-100 mb-3 row">
-                        <label for="ct_icon" class="col-4 d-flex justify-content-end pr-5">Icon:</label>
+                        <label for="icon" class="col-4 d-flex justify-content-end pr-5">Icon:</label>
                         <div class="col-4">
-                            <input type="text" name="ct_icon" id="ct_icon" class="form-control w-100 @error('ct_icon') is-invalid @enderror"
-                            placeholder=" fa-phone"  value="{{old('ct_icon')}}">
-                            @error('ct_icon')
+                            <input type="text" name="icon" id="icon" class="form-control w-100 @error('icon') is-invalid @enderror"
+                            placeholder=" fa-phone"  value="{{old('icon')}}">
+                            @error('icon')
                             <small id="" class="text-danger mx-auto mt-1">{{$message}}</small>
                             @enderror
                         </div>
@@ -56,11 +56,11 @@
 
                     </div>
                     <div class="form-group w-100 mb-3 row">
-                        <label for="ct_active" class="col-4 d-flex justify-content-end pr-5">Hiển Thị :</label>
+                        <label for="active" class="col-4 d-flex justify-content-end pr-5">Hiển Thị :</label>
                         <div class="col-8 custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" name="ct_active" id="ct_active" @if (old('ct_active'))
+                            <input type="checkbox" class="custom-control-input" name="active" id="active" @if (old('active'))
                                             {{'checked'}} @endif>
-                            <label class="custom-control-label" for="ct_active"></label>
+                            <label class="custom-control-label" for="active"></label>
                         </div>
                     </div>
                     <div class="mx-auto">

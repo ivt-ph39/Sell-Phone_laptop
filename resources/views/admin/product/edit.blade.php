@@ -21,75 +21,75 @@
                 <div class="row">
                     <div class="col-6 border-right border-dark ">
                         <div class="row mt-4">
-                            <div class="col-3 d-flex justify-content-end"><label for="p_name">Tên SP <span class=" text-danger">(<sup>*</sup>)</span>:</label></div>
+                            <div class="col-3 d-flex justify-content-end"><label for="name">Tên SP <span class=" text-danger">(<sup>*</sup>)</span>:</label></div>
                             <div class="col-9">
-                            <input type="text" value="{{ old("p_name") ? old("p_name") : $product->p_name}}" class="form-control w-100 @error('p_name') is-invalid @enderror" id="p_name" name="p_name" placeholder="Iphone X">
-                                @error('p_name')
+                            <input type="text" value="{{ old("name") ? old("name") : $product->name}}" class="form-control w-100 @error('name') is-invalid @enderror" id="name" name="name" placeholder="Iphone X">
+                                @error('name')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
-                            <input type="hidden" value="{{$product->id}}" class="form-control" id="p_id" name="p_id" >
+                            <input type="hidden" value="{{$product->id}}" class="form-control" id="id" name="id" >
                         </div>
                         <div class="row mt-4">
-                            <div class="col-3 d-flex justify-content-end"><label for="p_title">Tiêu đề SP <span class=" text-danger">(<sup>*</sup>)</span>:</label></div>
+                            <div class="col-3 d-flex justify-content-end"><label for="title">Tiêu đề SP <span class=" text-danger">(<sup>*</sup>)</span>:</label></div>
                             <div class="col-9">
-                                <input type="text" value="{{old("p_title") ? old("p_title") : $product->p_title}}" class="form-control w-100 @error('p_title') is-invalid @enderror" name="p_title" id="p_title" placeholder="Iphone X chính hãng | LTShop.com">
-                                @error('p_title')
+                                <input type="text" value="{{old("title") ? old("title") : $product->title}}" class="form-control w-100 @error('title') is-invalid @enderror" name="title" id="title" placeholder="Iphone X chính hãng | LTShop.com">
+                                @error('title')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                         </div>
                         <div class="row mt-4">
-                            <div class="col-3 d-flex justify-content-end"><label for="p_category_id">Thuộc DM <span class=" text-danger">(<sup>*</sup>)</span>:</label></div>
+                            <div class="col-3 d-flex justify-content-end"><label for="category_id">Thuộc DM <span class=" text-danger">(<sup>*</sup>)</span>:</label></div>
                             <div class="col-9">
-                                <select class="form-control select-category w-100 @error('p_category_id') is-invalid @enderror"  name="p_category_id" id="p_category_id">
+                                <select class="form-control select-category w-100 @error('category_id') is-invalid @enderror"  name="category_id" id="category_id">
                                     <option></option>
-                                    @if (old('p_category_id'))
-                                        {!!$htmlOption->recursiveCategory(old('p_category_id'))!!}
+                                    @if (old('category_id'))
+                                        {!!$htmlOption->recursiveCategory(old('category_id'))!!}
                                     @else
-                                        {!!$htmlOption->recursiveCategory($product->p_category_id)!!}
+                                        {!!$htmlOption->recursiveCategory($product->category_id)!!}
                                     @endif
                                 </select>
-                                @error('p_category_id')
+                                @error('category_id')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                         </div>
                         <div class="row mt-4">
-                            <div class="col-3 d-flex justify-content-end"><label for="p_brand_id">Thương Hiệu<span
+                            <div class="col-3 d-flex justify-content-end"><label for="brand_id">Thương Hiệu<span
                                         class=" text-danger">(<sup>*</sup>)</span>:</label></div>
                             <div class="col-9">
                                 <select
-                                    class="form-control w-75 select-brand "  name="p_brand_id" id="p_brand_id">
+                                    class="form-control w-75 select-brand "  name="brand_id" id="brand_id">
                                         <option></option>
                                         @foreach ($brands as $brand)
                                             <option value="{{$brand->id}}" 
-                                                @if (old('p_brand_id') )
-                                                    {{(old('p_brand_id')==$brand->id) ? "selected" : ""}}
+                                                @if (old('brand_id') )
+                                                    {{(old('brand_id')==$brand->id) ? "selected" : ""}}
                                                 @else
-                                                    {{ ($brand->id == $product->p_brand_id) ? "selected" : ""}}
+                                                    {{ ($brand->id == $product->brand_id) ? "selected" : ""}}
                                                 @endif
                                                 >{{$brand->name}}</option>
                                         @endforeach
                                 </select>
                                 <br>
-                                @error('p_brand_id')
+                                @error('brand_id')
                                 <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                         </div>
                         <div class="row mt-4 ">
                             <div class="col-3 d-flex justify-content-end">
-                                <label for="p_price" class="mr-2">Giá <span class=" text-danger">(<sup>*</sup>)</span>:</label>
+                                <label for="price" class="mr-2">Giá <span class=" text-danger">(<sup>*</sup>)</span>:</label>
                             </div>
                             <div class="col-9">
                                 <div class="input-group w-50">
-                                    <input type="text" value="{{old("p_price") ? old("p_price") : $product->p_price}}" class="form-control @error('p_price') is-invalid @enderror" id="p_price" name="p_price" placeholder="29.600.000" aria-label="Username" aria-describedby="basic-addon1">
+                                    <input type="text" value="{{old("price") ? old("price") : $product->price['base']}}" class="form-control @error('price') is-invalid @enderror" id="price" name="price" placeholder="29.600.000" aria-label="Username" aria-describedby="basic-addon1">
                                     <div class="input-group-append">
                                         <span class="input-group-text" id="basic-addon1">vnđ</span>
                                     </div>
                                 </div>
-                                @error('p_price')
+                                @error('price')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
@@ -97,11 +97,11 @@
                         
                         <div class="row mt-4">
                             <div class="col-3 d-flex justify-content-end">
-                                <label for="p_sale">Giảm giá:</label>
+                                <label for="sale">Giảm giá:</label>
                             </div>
                             <div class="col-9">
                                 <div class="input-group w-50">
-                                    <input type="text" value="{{old("p_sale") ? old("p_sale") : $product->p_sale}}" class="form-control" name="p_sale" id="p_sale" placeholder="30" aria-label="Username" aria-describedby="basic-addon1">
+                                    <input type="text" value="{{old("sale") ? old("sale") : $product->sale['base']}}" class="form-control" name="sale" id="sale" placeholder="30" aria-label="Username" aria-describedby="basic-addon1">
                                     <div class="input-group-append">
                                         <span class="input-group-text" id="basic-addon1">%</span>
                                     </div>
@@ -110,30 +110,30 @@
                         </div>
                         <div class="row mt-4">
                             <div class="col-3 d-flex justify-content-end">
-                                <label for="p_number">Số Lượng <span class=" text-danger">(<sup>*</sup>)</span>:</label>
+                                <label for="quantity">Số Lượng <span class=" text-danger">(<sup>*</sup>)</span>:</label>
                             </div>
                             <div class="col-9">
                                 <div class="input-group w-50">
-                                    <input type="number" value="{{old("p_number") ? old("p_number") : $product->p_number}}" class="form-control @error('p_number') is-invalid @enderror" name="p_number" id="p_number" placeholder="300">
+                                    <input type="number" value="{{old("quantity") ? old("quantity") : $product->quantity}}" class="form-control @error('quantity') is-invalid @enderror" name="quantity" id="quantity" placeholder="300">
                                 </div>
-                                @error('p_number')
+                                @error('quantity')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                         </div>
                         <div class="row mt-4">
                             <div class="col-3 d-flex justify-content-end">
-                                <label for="select2_p_keyword_seo">Từ khóa:</label>
+                                <label for="tag">Từ khóa:</label>
                             </div>
                             <div class="col-9">
-                                <select class="form-control select2_p_keyword_seo w-100" multiple="multiple" name="p_keyword_seo[]" id="p_keyword_seo" >
-                                    @if (old('p_keyword_seo'))
-                                        @foreach (old('p_keyword_seo') as $key=>$value)
+                                <select class="form-control select2_tag w-100" multiple="multiple" name="tag[]" id="tag" >
+                                    @if (old('tag'))
+                                        @foreach (old('tag') as $key=>$value)
                                             <option value="{{$value}}" selected>{{$value}}</option>
                                         @endforeach
                                     @else
                                         @foreach ($product->tags as $tag)
-                                            <option value="{{$tag->tg_name}}" selected>{{$tag->tg_name}}</option>  
+                                            <option value="{{$tag->name}}" selected>{{$tag->name}}</option>  
                                         @endforeach 
                                     @endif
                                 </select>
@@ -142,24 +142,24 @@
                         <div class="row mt-4">
                             <div class="col-2"></div>
                             <div class="col-2 d-flex justify-content-center">
-                                <label for="p_hot">Sản phẩm hot:</label>
+                                <label for="hot">Sản phẩm hot:</label>
                             </div>
                             <div class="col-2">
                                 <div class="custom-control custom-switch">
                                     <div class="col-9">
-                                        <input type="checkbox" class="custom-control-input" id="p_hot" name="p_hot"  {{($product->p_hot == 1)? "checked": ""}}>
-                                        <label class="custom-control-label" for="p_hot"></label>
+                                        <input type="checkbox" class="custom-control-input" id="hot" name="hot"{{($product->hot['name'] == "Nổi bật")? "checked": ""}}>
+                                        <label class="custom-control-label" for="hot"></label>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-2 d-flex justify-content-center">
-                                <label for="p_active">Trạng thái hiện:</label>
+                                <label for="active">Trạng thái hiện:</label>
                             </div>
                             <div class="col-2">
                                 <div class="custom-control custom-switch">
                                     <div class="col-9">
-                                        <input type="checkbox" class="custom-control-input" name="p_active" id="p_active" {{($product->p_active == 1)? "checked": ""}}>
-                                        <label class="custom-control-label" for="p_active"></label>
+                                        <input type="checkbox" class="custom-control-input" name="active" id="active" {{($product->active['name'] == "public")? "checked": ""}}>
+                                        <label class="custom-control-label" for="active"></label>
                                     </div>
                                 </div>
                             </div>
@@ -174,20 +174,20 @@
                                 <div class="card m-2 d-flex justify-content-center " >
                                     <div  id="show_avatar_old">
                                         <div class="card-body" >
-                                            <img class="card-img-top img-thumbnail" src="{{$product->p_avatar}}" style="width: 200px">
+                                            <img class="card-img-top img-thumbnail" src="{{$product->avatar}}" style="width: 200px">
                                         </div>
                                         <div class="card-footer d-flex">
                                             <button class="btn btn-secondary ml-auto delete_avatar" data-image-id="" id="delete_avatar" type="button"><i class=" fas fa-trash-alt"></i></button>
                                         </div>
                                     </div>
                                     <div class="form-group w-100 d-none" id="add_avatar_new">
-                                        <label for="p_avatar" class="">Thêm ảnh sp<span class=" text-danger">(<sup>*</sup>)</span>:</label><br>
-                                            @error('p_avatar')
+                                        <label for="avatar" class="">Thêm ảnh sp<span class=" text-danger">(<sup>*</sup>)</span>:</label><br>
+                                            @error('avatar')
                                                 <small class="text text-danger ml-2">{{ $message }}</small>
                                             @enderror
                                         <div class="form-group">
                                             <div class="file-loading">
-                                                <input id="p_avatar_new" type="file" class="file" name="p_avatar_new">
+                                                <input id="avatar_new" type="file" class="file" name="avatar_new">
                                             </div>
                                         </div>
                                     </div>
@@ -208,7 +208,7 @@
                                     @foreach ($product->images as $image)
                                         <div class="card m-2" style="width: 12rem;">
                                             <div class="card-body">
-                                                <img class="card-img-top" src="{{$image->path_image}}" alt="Card image cap" style="width:;">
+                                                <img class="card-img-top" src="{{$image->path}}" alt="Card image cap" style="width:;">
                                             </div>
                                             <div class="card-footer d-flex">
                                                 <button class="btn btn-secondary ml-auto delete_img_detail bg-aqua" data-image-id="{{$image->id}}"  type="button"><i class=" fas fa-trash-alt"></i></button>
@@ -224,14 +224,14 @@
                         </div>
                         <div class="row mt-3 " id="add-images" style="display: none">
                             <div class="form-group w-100">
-                                <label for="p_image_detail_new" class="">Thêm ảnh chi tiết<span class=" text-danger">(<sup>*</sup>)</span>:</label>
+                                <label for="image_detail_new" class="">Thêm ảnh chi tiết<span class=" text-danger">(<sup>*</sup>)</span>:</label>
                                 <br>
-                                @error('p_image_detail_new')
+                                @error('image_detail_new')
                                     <small class="text text-danger ml-2">{{ $message }}</small>
                                 @enderror
                                 <div class="form-group">
                                     <div class="file-loading">
-                                        <input id="p_image_detail_new" type="file" multiple  class="file" name="p_image_detail_new[]">
+                                        <input id="image_detail_new" type="file" multiple  class="file" name="image_detail_new[]">
                                     </div>
                                 </div>
                             </div>
@@ -254,17 +254,17 @@
                                                 <th>Giá trị</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="main_p_technical">
-                                            @if ($p_technicals==null)
+                                        <tbody id="main_technical">
+                                            @if ($technical==null)
                                                 <tr>
-                                                    <td style="width:30%"><input type="text" class="form-control " name="name_p_technical[]"  placeholder="Màn hình"></td>                                           
-                                                    <td style="width:70%"><input type="text" class="form-control " name="value_p_technical[]"  placeholder="AMOLED, 6.4in, Full HD+"></td>
+                                                    <td style="width:30%"><input type="text" class="form-control " name="name_technical[]"  placeholder="Màn hình"></td>                                           
+                                                    <td style="width:70%"><input type="text" class="form-control " name="value_technical[]"  placeholder="AMOLED, 6.4in, Full HD+"></td>
                                                 </tr>
                                             @else
-                                                @for ($i =0 ; $i< count($p_technicals) ;$i++)
+                                                @for ($i =0 ; $i< count($technical) ;$i++)
                                                     <tr>
-                                                    <td style="width:30%"><input type="text" class="form-control " name="name_p_technical[]" value="{{$p_technicals[$i]['name']}}"  placeholder="Màn hình"></td>                                           
-                                                    <td style="width:70%"><input type="text" class="form-control " name="value_p_technical[]" value="{{$p_technicals[$i]['value']}}"  placeholder="AMOLED, 6.4in, Full HD+"></td>
+                                                    <td style="width:30%"><input type="text" class="form-control " name="name_technical[]" value="{{$technical[$i]['name']}}"  placeholder="Màn hình"></td>                                           
+                                                    <td style="width:70%"><input type="text" class="form-control " name="value_technical[]" value="{{$technical[$i]['value']}}"  placeholder="AMOLED, 6.4in, Full HD+"></td>
                                                     </tr>
                                                 @endfor
                                             @endif 
@@ -272,7 +272,7 @@
                                     </table>
                                 </div>
                                 <div class="card-footer">
-                                    <button type="button" class="btn btn-primary" id="add_p_technical"> Thêm Thông Số &nbsp;<i
+                                    <button type="button" class="btn btn-primary" id="add_technical"> Thêm Thông Số &nbsp;<i
                                             class="fas fa-plus-circle"></i></button>
                                 </div>
                             </div>
@@ -281,17 +281,17 @@
                     <div class="col-4">
                         <div class="car card-green  w-100 mt-4">
                             <div class=" card-header">Khuyến mãi</div>
-                            <div class=" card-body" id="main_p_promotion">
-                                @if ($p_promotion==null)
-                                        <input type="text" class="form-control mb-2" name="p_promotion[]" placeholder="Nộ dung khuyến mãi">
+                            <div class=" card-body" id="main_promotion">
+                                @if ($promotion==null)
+                                        <input type="text" class="form-control mb-2" name="promotion[]" placeholder="Nộ dung khuyến mãi">
                                     @else 
-                                        @for ($i =0 ; $i< count($p_promotion) ;$i++)
-                                            <input type="text" class="form-control mb-2" name="p_promotion[]" value="{{$p_promotion[$i]['name']}}" placeholder="Nội dung khuyến mãi">
+                                        @for ($i =0 ; $i< count($promotion) ;$i++)
+                                            <input type="text" class="form-control mb-2" name="promotion[]" value="{{$promotion[$i]['name']}}" placeholder="Nội dung khuyến mãi">
                                         @endfor
                                 @endif 
                             </div>
                             <div class=" card-footer">
-                                <button type="button" class="btn btn-primary" id="add_p_promotion"> Thêm Khuyến mãi&nbsp;<i
+                                <button type="button" class="btn btn-primary" id="add_promotion"> Thêm Khuyến mãi&nbsp;<i
                                             class="fas fa-plus-circle"></i></button>
                             </div>
                         </div>

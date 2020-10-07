@@ -25,40 +25,38 @@ class ProductUpdateRequest extends FormRequest
     {
         $id = $this->id;
         return [
-
-            "p_name"        => "required|max:255|unique:products,p_name,$id",
-            'p_number'      => 'required|numeric|min:0',
-            'p_price'       => 'required|numeric',
-            'p_sale'        => 'numeric|max:100',
-            'p_category_id' => 'required',
-            'p_brand_id' => 'required',
-
-            'p_avatar'      => 'image',
-            'p_title'       => 'required',
+            "name"        => "required|max:255|unique:products,name,$id",
+            'quantity'      => 'required|numeric|min:0',
+            'price'       => 'required|numeric',
+            'sale'        => 'numeric|max:100',
+            'category_id' => 'required',
+            'brand_id' => 'required',
+            'avatar'      => 'image',
+            'title'       => 'required',
         ];
     }
     public function messages()
     {
         return [
-            'p_name.required'        => 'Tên sản phẩm không được để trống',
-            'p_name.unique'          => 'Tên sản phẩm đã tồn tại',
-            'p_name.max'             => 'Tên sản phẩm không dài quá 255 kí tự',
+            'name.required'        => 'Tên sản phẩm không được để trống',
+            'name.unique'          => 'Tên sản phẩm đã tồn tại',
+            'name.max'             => 'Tên sản phẩm không dài quá 255 kí tự',
 
-            'p_number.required'      => 'Sl sản phẩm không được để trống',
-            'p_number.numeric'       => 'Sl sản phẩm phải là số',
-            'p_number.min'           => 'Sl sản phẩm không được nhỏ hơn 0',
+            'quantity.required'      => 'Sl sản phẩm không được để trống',
+            'quantity.numeric'       => 'Sl sản phẩm phải là số',
+            'quantity.min'           => 'Sl sản phẩm không được nhỏ hơn 0',
 
-            'p_price.required'       => 'Giá sản phẩm không được để trống',
-            'p_price.numeric'        => 'Giá sản phẩm phải là số',
+            'price.required'       => 'Giá sản phẩm không được để trống',
+            'price.numeric'        => 'Giá sản phẩm phải là số',
 
-            'p_sale.numeric'         => 'Giảm giá phải là số',
-            'p_sale.max'             => 'Giảm giá phải nhỏ hơn 100',
+            'sale.numeric'         => 'Giảm giá phải là số',
+            'sale.max'             => 'Giảm giá phải nhỏ hơn 100',
 
-            'p_category_id.required' => 'Danh mục không được để trống',
-            'p_brand_id.required'    => 'Thương hiệu không được để trống',
+            'category_id.required' => 'Danh mục không được để trống',
+            'brand_id.required'    => 'Thương hiệu không được để trống',
 
-            'p_avatar.image'         => 'File đươc chọn phải là file ảnh',
-            'p_title.required'       => 'Tiêu đề sản phẩm không được để trống',
+            'avatar.image'         => 'File đươc chọn phải là file ảnh',
+            'title.required'       => 'Tiêu đề sản phẩm không được để trống',
 
         ];
     }

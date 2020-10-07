@@ -67,7 +67,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     //---------sliders----------
     Route::get('slider/list', 'Backend\SliderController@index')->name('admin.slider.list');
     Route::get('slider/create', 'Backend\SliderController@create')->name('admin.slider.create');
-    Route::get('slider/edit', 'Backend\SliderController@edit')->name('admin.slider.edit');
+    Route::get('slider/{id}/edit', 'Backend\SliderController@edit')->name('admin.slider.edit');
+    Route::post('slider/store', 'Backend\SliderController@store')->name('admin.slider.store');
+    Route::put('slider/{id}/update', 'Backend\SliderController@update')->name('admin.slider.update');
+    Route::delete('slider/{id}/delete', 'Backend\SliderController@delete')->name('admin.slider.delete');
 });
 
 

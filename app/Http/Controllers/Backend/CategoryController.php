@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Model\Category;
 
 use App\Components\RecursiveCategory;
-
 use App\Http\Requests\CategoryRequest;
 use App\Http\Requests\CategoryUpdateRequest;
 

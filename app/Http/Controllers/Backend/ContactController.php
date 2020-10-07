@@ -35,11 +35,11 @@ class ContactController extends Controller
     }
     public function store(CreateContactRequest $request, Contact $contact)
     {
-        $data = $request->except('_token', 'ct_active');
-        if ($request->ct_active) {
-            $data['ct_active'] = $request->ct_active;
+        $data = $request->except('_token', 'active');
+        if ($request->active) {
+            $data['active'] = $request->active;
         } else {
-            $data['ct_active'] = '';
+            $data['active'] = '';
         }
         $contact->create($data);
         return Redirect()->route('admin.contact.list');
@@ -55,11 +55,11 @@ class ContactController extends Controller
     }
     public function update(EditContactRequest $request, Contact $contact, $id)
     {
-        $data = $request->except('_token', 'ct_active', '_method', 'id');
-        if ($request->ct_active) {
-            $data['ct_active'] = $request->ct_active;
+        $data = $request->except('_token', 'active', '_method', 'id');
+        if ($request->active) {
+            $data['active'] = $request->active;
         } else {
-            $data['ct_active'] = '';
+            $data['active'] = '';
         }
         $contact->find($id)->update($data);
 
