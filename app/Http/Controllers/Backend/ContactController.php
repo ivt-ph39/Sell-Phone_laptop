@@ -14,14 +14,14 @@ class ContactController extends Controller
 {
     public function infoUser($value)
     {
-        return Auth::guard('manager_admin')->user()->$value;
+        return Auth::user()->$value;
     }
     public function index(Contact $contact)
     {
         $data = [
             'contacts'  => $contact->all(),
             'titlePage' => 'List Contact',
-            'nameAdmin' => ucwords($this->infoUser('adminName'))
+            'nameAdmin' => ucwords($this->infoUser('name'))
         ];
         return view('admin.contact.list', $data);
     }
@@ -29,7 +29,7 @@ class ContactController extends Controller
     {
         $data = [
             'titlePage' => 'Add Contact',
-            'nameAdmin' => ucwords($this->infoUser('adminName'))
+            'nameAdmin' => ucwords($this->infoUser('name'))
         ];
         return view('admin.contact.create', $data);
     }
@@ -49,7 +49,7 @@ class ContactController extends Controller
         $data = [
             'titlePage' => 'Edit Contact',
             'contact'   => $contact->find($id),
-            'nameAdmin' => ucwords($this->infoUser('adminName'))
+            'nameAdmin' => ucwords($this->infoUser('name'))
         ];
         return view('admin.contact.edit', $data);
     }

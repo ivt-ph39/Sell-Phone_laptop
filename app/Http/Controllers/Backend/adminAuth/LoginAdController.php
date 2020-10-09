@@ -15,9 +15,9 @@ class LoginAdController extends Controller
     }
     function store(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        $data = $request->only('email', 'password');
 
-        if (Auth::guard('manager_admin')->attempt($credentials)) {
+        if (Auth::attempt($data)) {
             return redirect('admin/home');
         } else {
             $login_false = 'Email hoặc Password không chính xác';
@@ -26,7 +26,7 @@ class LoginAdController extends Controller
     }
     public function logout()
     {
-        Auth::guard('manager_admin')->logout();
+        Auth::logout();
         return redirect('admin/login');
     }
 }

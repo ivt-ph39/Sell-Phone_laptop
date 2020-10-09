@@ -14,14 +14,14 @@ class SliderController extends Controller
 {
     public function infoUser($value)
     {
-        return Auth::guard('manager_admin')->user()->$value;
+        return Auth::user()->$value;
     }
     public function index(Slider $slider, Category $category)
     {
         $titlePage      = 'Danh sách slider';
         $data = [
             'titlePage'   => $titlePage,
-            'nameAdmin'   => ucwords($this->infoUser('adminName')),
+            'nameAdmin'   => ucwords($this->infoUser('name')),
             'sliders'     => $slider->all()
         ];
         return view('admin.slider.list', $data);
@@ -31,7 +31,7 @@ class SliderController extends Controller
         $titlePage      = 'Thêm slider';
         $data = [
             'titlePage'   => $titlePage,
-            'nameAdmin'   => ucwords($this->infoUser('adminName'))
+            'nameAdmin'   => ucwords($this->infoUser('name'))
         ];
         return view('admin.slider.create', $data);
     }
@@ -51,7 +51,7 @@ class SliderController extends Controller
         $titlePage      = 'Thêm slider';
         $data = [
             'titlePage'   => $titlePage,
-            'nameAdmin'   => ucwords($this->infoUser('adminName')),
+            'nameAdmin'   => ucwords($this->infoUser('name')),
             'slider'      => $slider
         ];
         return view('admin.slider.edit', $data);

@@ -16,7 +16,7 @@ class CategoryController extends Controller
 {
     public function infoUser($value)
     {
-        return Auth::guard('manager_admin')->user()->$value;
+        return Auth::user()->$value;
     }
     public function index()
     {
@@ -24,7 +24,7 @@ class CategoryController extends Controller
         $titlePage      = 'Danh sách danh mục';
         $data = [
             'titlePage'   => $titlePage,
-            'nameAdmin'   => ucwords($this->infoUser('adminName')),
+            'nameAdmin'   => ucwords($this->infoUser('name')),
             'categories'  => $categories
         ];
         return view('admin.category.list', $data);
@@ -39,7 +39,7 @@ class CategoryController extends Controller
         $htmlOption     = $recursive->recursiveCategory($parent_id = null);
 
         $data = [
-            'nameAdmin'   => ucwords($this->infoUser('adminName')),
+            'nameAdmin'   => ucwords($this->infoUser('name')),
             'categories'  => $categories,
             'htmlOption'  => $htmlOption
         ];
@@ -79,7 +79,7 @@ class CategoryController extends Controller
         $data = [
             'titlePage'   => 'Edit Danh Mục',
             'category'    => $category,
-            'nameAdmin'   => ucwords($this->infoUser('adminName')),
+            'nameAdmin'   => ucwords($this->infoUser('name')),
             'htmlOption'  => $htmlOption
         ];
 

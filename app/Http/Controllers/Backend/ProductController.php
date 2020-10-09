@@ -24,7 +24,7 @@ class ProductController extends Controller
     const PAGE = 5;
     public function info($info)
     {
-        return Auth::guard('manager_admin')->user()->$info;
+        return Auth::user()->$info;
     }
     public function index(Request $request)
     {
@@ -51,7 +51,7 @@ class ProductController extends Controller
         }
         $data = [
             'titlePage'   => $titlePage,
-            'nameAdmin'   => ucwords($this->info('adminName')),
+            'nameAdmin'   => ucwords($this->info('name')),
             'products'    => $products,
             'htmlOption'  => $htmlOption,
             'request'     => $request
@@ -61,8 +61,7 @@ class ProductController extends Controller
 
     public function create(Brand $brand)
     {
-        $nameAdmin      = $this->info('adminName');
-        $avatarAdmin    = $this->info('avatar');
+        $nameAdmin      = $this->info('name');
 
         $categories     = Category::all();
         $brands         = $brand->all();
@@ -174,7 +173,7 @@ class ProductController extends Controller
 
     public function edit($id)
     {
-        $nameAdmin      = $this->info('adminName');
+        $nameAdmin      = $this->info('name');
         $avatarAdmin    = $this->info('avatar');
 
         $categories     = Category::all();
