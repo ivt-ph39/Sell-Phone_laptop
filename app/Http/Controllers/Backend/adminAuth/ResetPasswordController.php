@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ResetPasswordAdmin;
+use App\User;
 
 class ResetPasswordController extends Controller
 {
@@ -18,11 +19,11 @@ class ResetPasswordController extends Controller
     {
         return view('admin.authAdmin.password.reset');
     }
-    public function store(Request $request)
+    public function store(Request $request, User $user)
     {
         $email = $request->email;
 
-        $admin = ManagerAdmin::where('email', $email)->first();
+        $admin = $user->where('email', $email)->first();
 
         if ($admin) {
             DB::table('password_resets')->insert([
@@ -34,6 +35,7 @@ class ResetPasswordController extends Controller
             $token = DB::table('password_resets')->where('email', $email)->orderByDesc('created_at')->first()->token;
             $expiration = Carbon::now()->addMinute(15);
             $link = URL::temporarySignedRoute('admin.showFormReset', $expiration, $token);
+            // dd($email, $link);
             if ($this->sendMail($email, $link)) {
                 $mess_succ = 'Chúng tôi đã gửi link reset password đến email của bạn!';
                 return view('admin.authAdmin.password.reset', ['mess_succ' => $mess_succ]);
@@ -70,7 +72,7 @@ class ResetPasswordController extends Controller
         return view('admin.authAdmin.password.confirm', $data);
     }
 
-    public function storeFormReset(Request $request)
+    public function storeFormReset(Request $request, User $user)
     {
         $email = $request->email;
         $token = $request->token;
@@ -79,7 +81,7 @@ class ResetPasswordController extends Controller
             'password_confirm' => 'required|same:password'
         ]);
         $password = $request->password;
-        $admin = ManagerAdmin::where('email', $email)->first();
+        $admin = $user->where('email', $email)->first();
 
         $admin->password = bcrypt($password);
         $admin->save();

@@ -16,7 +16,7 @@ class HomeAdminController extends Controller
      */
     public function index()
     {
-        $nameAdmin = Auth::guard('manager_admin')->user()->adminName;
+        $nameAdmin = Auth::user()->name;
         $data = [
             'nameAdmin' => ucwords($nameAdmin)
         ];

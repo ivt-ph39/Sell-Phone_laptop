@@ -13,7 +13,7 @@ class BrandController extends Controller
 {
     public function infoUser($value)
     {
-        return Auth::guard('manager_admin')->user()->$value;
+        return Auth::user()->$value;
     }
     public function index(Brand $brand)
     {
@@ -21,7 +21,7 @@ class BrandController extends Controller
         $titlePage      = 'Danh Sách Thương Hiệu';
         $data = [
             'titlePage'   => $titlePage,
-            'nameAdmin'   => ucwords($this->infoUser('adminName')),
+            'nameAdmin'   => ucwords($this->infoUser('name')),
             'brands'  => $brands
         ];
         return view('admin.brand.list', $data);
@@ -32,7 +32,7 @@ class BrandController extends Controller
 
         $data = [
             'titlePage'   => $titlePage,
-            'nameAdmin'   => ucwords($this->infoUser('adminName'))
+            'nameAdmin'   => ucwords($this->infoUser('name'))
         ];
         return view('admin.brand.create', $data);
     }
@@ -53,7 +53,7 @@ class BrandController extends Controller
         $titlePage      = 'Thêm Thương Hiệu';
         $data = [
             'titlePage'   => $titlePage,
-            'nameAdmin'   => ucwords($this->infoUser('adminName')),
+            'nameAdmin'   => ucwords($this->infoUser('name')),
             'brand'       => $brand->find($id)
         ];
         return view('admin.brand.edit', $data);

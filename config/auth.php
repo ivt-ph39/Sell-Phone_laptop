@@ -48,15 +48,15 @@ return [
 
         // Login Admin
 
-        'manager_admin' => [
-            'driver' => 'session',
-            'provider' => 'manager_admins',
-        ],
-        'manager_admin-api' => [
-            'driver' => 'token',
-            'provider' => 'manager_admins',
-            'hash' => false,
-        ],
+        // 'manager_admin' => [
+        //     'driver' => 'session',
+        //     'provider' => 'manager_admins',
+        // ],
+        // 'manager_admin-api' => [
+        //     'driver' => 'token',
+        //     'provider' => 'manager_admins',
+        //     'hash' => false,
+        // ],
     ],
 
     /*
@@ -86,10 +86,10 @@ return [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
-        'manager_admins' => [
-            'driver' => 'eloquent',
-            'model' => App\Model\ManagerAdmin::class,
-        ],
+        // 'manager_admins' => [
+        //     'driver' => 'eloquent',
+        //     'model' => App\Model\ManagerAdmin::class,
+        // ],
     ],
 
     /*
