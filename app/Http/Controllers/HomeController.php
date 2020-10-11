@@ -23,7 +23,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        echo 123;
+        echo '21321321321';
         return view('home');
     }
 }
