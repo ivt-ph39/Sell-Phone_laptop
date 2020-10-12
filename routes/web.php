@@ -76,3 +76,5 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
 
 // ------------------------- FrontEnd ----------------------
 Route::get('/', 'Frontend\HomeController@index')->name('home');
+Route::get('/{page}', 'Frontend\StoreController@index')->name('store');
+Route::get('/{page}/{productName}', 'Frontend\ProductDetail@index')->name('product');
