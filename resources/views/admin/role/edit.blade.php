@@ -1,0 +1,84 @@
+@extends('layouts.masterAdmin')
+@section('title')
+    {{ $titlePage }}
+@endsection
+@section('main')
+    <div class="container">
+        <div class="pt-3">
+            <h4 class="float-left">{{ $titlePage }}.</h4>
+        </div>
+        <div class="content mt-5">
+            <form action="{{ route('admin.role.update', $role->id) }}" method="post">
+                @csrf
+                @method('PUT')
+                <div class="form-group">
+                    <label>Tên vai trò</label>
+                    <input type="text" name="name" value="{{ $role->name }}" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Mô tả vai trò</label>
+                    <textarea type="text" name="description" class="form-control">{{ $role->description }}</textarea>
+                </div>
+                <div class="card mb-3 bg-success">
+                    <div class="card-body">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input checkbox_wrapper" id="check_all">
+                            <label class="custom-control-label" for="check_all">Check
+                                All Module</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    {{-- checkbox permission --}}
+                    @foreach ($permissionParents as $perParent)
+                        <div class="col-6">
+                            <div class="card bg-light ">
+                                <div class="card-header bg-primary text-white">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input checkbox_wrapper"
+                                            id="chk_all{{ $perParent->id }}">
+                                        <label class="custom-control-label" for="chk_all{{ $perParent->id }}">Check
+                                            All</label>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Module {{ $perParent->description }}</h5>
+                                    @foreach ($perParent->permissionChildren as $perChildren)
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input checkbox_children"
+                                                id="chk_child{{ $perChildren->id }}" name="permission_id[]"
+                                                value="{{ $perChildren->id }}" 
+                                                {{ $permissionChecked->contains('id', $perChildren->id) ? 'checked' : '' }}>
+                                            <label class="custom-control-label"
+                                                for="chk_child{{ $perChildren->id }}">{{ $perChildren->name }} </label>
+                                        </div>
+                                    @endforeach
+
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                    {{-- end checkbox --}}
+
+                </div>
+                <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+@endsection
+
+@section('js')
+    <script>
+        $(function() {
+            $('#check_all').on('click', function() {
+                $(this).parents().find('.checkbox_wrapper').prop('checked', $(this).prop('checked'));
+                $(this).parents().find('.checkbox_children').prop('checked', $(this).prop('checked'));
+            });
+
+            $('.checkbox_wrapper').on('click', function() {
+                $(this).parents().find('.checkbox_children').prop('checked', $(this).prop('checked'));
+            });
+        });
+
+    </script>
+@endsection

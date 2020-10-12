@@ -148,7 +148,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('admin.brand.list') }}" class="nav-link">
+                                    <a href="{{ route('admin.role.list') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>QL Vai Trò (Roles)</p>
                                     </a>
