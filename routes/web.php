@@ -79,6 +79,13 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::delete('user/{user}/delete', 'Backend\UserController@destroy')->name('admin.user.delete');
     Route::get('user/{id}/restore', 'Backend\UserController@restore')->name('admin.user.restore');
     Route::delete('user/{id}/hardDelete', 'Backend\UserController@hardDelete')->name('admin.user.hardDelete');
+    //-----------roles---------------
+    Route::get('role/list' , 'Backend\RoleController@index')->name('admin.role.list');
+    Route::get('role/create' , 'Backend\RoleController@create')->name('admin.role.create');
+    Route::post('role/store' , 'Backend\RoleController@store')->name('admin.role.store');
+    Route::get('role/{role}/edit' , 'Backend\RoleController@edit')->name('admin.role.edit');
+    Route::put('role/{role}/update', 'Backend\RoleController@update')->name('admin.role.update');
+    Route::delete('role/{role}/delete' , 'Backend\RoleController@destroy')->name('admin.role.delete');
 });
 
 
