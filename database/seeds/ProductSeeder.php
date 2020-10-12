@@ -5,6 +5,7 @@ use App\Model\Category;
 use App\Model\Product;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Arr;
 
 class ProductSeeder extends Seeder
 {
@@ -15,18 +16,18 @@ class ProductSeeder extends Seeder
      */
     public function run(Product $product, Category $category, Brand $brand)
     {
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 151; $i++) {
             $data =
                 [
-                    'name'        => 'Điện thoại OPPO Renoxx  ' . $i,
-                    'quantity'    => 50,
-                    'active'      => 1,
-                    'price'       => 7490000,
-                    'sale'        => 3,
-                    'hot'         => 1,
+                    'name'        => 'Điện thoại OPPO Reno New  ' . $i,
+                    'quantity'    => random_int(0, 20),
+                    'active'      => random_int(0, 1),
+                    'price'       => Arr::random([1000000, 8500000, 2000000, 10500000, 300000, 3500000, 400000, 45000000, 5000000, 6000000, 11000000, 13000000, 17000000, 21000000,]),
+                    'sale'        => Arr::random([0, 5, 10, 15, 20]),
+                    'hot'         => random_int(0, 1),
                     'avatar'      => 'https://didongviet.vn/pub/media/catalog/product/i/p/iphone-11-128gb-chinh-hang_1.jpg',
                     'title'       => 'Điện thoại OPPO Reno3 Chính Hãng',
-                    'promotion'   => '[{"name": "khuyen mai 1"},{"name": "khuyen maix 2"},{"name": "khuyen maix 2"}]',
+                    'promotion'   => '[{"name": "Khuyến mãi 1"},{"name": "Khuyến mãi 1"},{"name": "Khuyến mãi 1"}]',
                     'technical'   =>
                     '[
                         {
@@ -63,7 +64,7 @@ class ProductSeeder extends Seeder
                         }
                     ]',
                     'description' => 'OPPO Reno3 là một sản phẩm ở phân khúc tầm trung nhưng vẫn sở hữu cho mình ngoại hình bắt mắt, cụm camera chất lượng và cùng nhiều đột phá về màn hình cũng như hiệu năng.',
-                    'category_id' => random_int(1, 9),
+                    'category_id' => random_int(1, 3),
                     'brand_id'    => random_int(1, 7),
                     'created_by'  => 1
                 ];

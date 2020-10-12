@@ -63,7 +63,7 @@ class Product extends Model
     public function getPriceAttribute($value)
     {
         return [
-            "format" => number_format($value, 0, '.', ',') . '<sup class ="text text-danger"> vnđ</sup>',
+            "format" => number_format($value, 0, '.', ',') . '<sup class ="text text-danger">đ</sup>',
             "base" => $value
         ];
     }
