@@ -71,6 +71,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::post('slider/store', 'Backend\SliderController@store')->name('admin.slider.store');
     Route::put('slider/{id}/update', 'Backend\SliderController@update')->name('admin.slider.update');
     Route::delete('slider/{id}/delete', 'Backend\SliderController@delete')->name('admin.slider.delete');
+    //-----------users-------------
+    Route::get('user/list' , 'Backend\UserController@index')->name('admin.user.list');
+    Route::get('user/list/onlyTrashed' , 'Backend\UserController@onlyTrashed')->name('admin.user.onlyTrashed');
+    Route::get('user/{user}/edit' , 'Backend\UserController@edit')->name('admin.user.edit');
+    Route::put('user/{user}/update', 'Backend\UserController@update')->name('admin.user.update');
+    Route::delete('user/{user}/delete', 'Backend\UserController@destroy')->name('admin.user.delete');
+    Route::get('user/{id}/restore', 'Backend\UserController@restore')->name('admin.user.restore');
+    Route::delete('user/{id}/hardDelete', 'Backend\UserController@hardDelete')->name('admin.user.hardDelete');
 });
 
 
