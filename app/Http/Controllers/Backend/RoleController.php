@@ -116,18 +116,19 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        try {
-            DB::beginTransaction();
-            $data = $request->except('permission_id');
-            $role->update($data);
-
-            $role->permissions()->sync($request->permission_id);
-            return redirect()->route('admin.role.list');
-            DB::commit();
-        } catch (\Throwable $th) {
-            echo 'Error : '. $th->getMessage();
-            DB::rollback();
-        }
+            try {
+                $data = $request->except('permission_id');
+                $rs = $role->update($data);
+                if($rs){
+                     $role->permissions()->sync($request->permission_id);
+                     return redirect()->route('admin.role.list');
+                }
+            } catch (\Throwable $th) {
+                throw $th;
+                echo $th->getMessage();
+            }
+           
+            
     }
 
     /**
