@@ -19,7 +19,7 @@
             </div>
             <div class="form-group">
                 <label>Role</label>
-                <select name="role_id[]" class="selectpicker form-control"  multiple>
+                <select name="role_id[]" class="selectpicker form-control" multiple>
                     @foreach ($roles as $role)
                         <option value="{{ $role->id }}" {{ $roleChecked->contains('id', $role->id) ? 'selected' : ' ' }}>
                             {{ $role->name }}

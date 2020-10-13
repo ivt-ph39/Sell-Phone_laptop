@@ -142,7 +142,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('admin.product.list') }}" class="nav-link">
+                                    <a href="{{ route('admin.permission.list') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>QL Quyền (Permissions)</p>
                                     </a>
