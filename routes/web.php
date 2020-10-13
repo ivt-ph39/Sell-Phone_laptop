@@ -87,6 +87,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::put('role/{role}/update', 'Backend\RoleController@update')->name('admin.role.update');
     Route::delete('role/{role}/delete' , 'Backend\RoleController@destroy')->name('admin.role.delete');
     //-----------permission-----------
+    Route::get('permission/list' , 'Backend\PermissionController@index')->name('admin.permission.list');
+    Route::get('permission/{parent_id}/listChildren' , 'Backend\PermissionController@indexChildren')->name('admin.permission.listChildren');
+    Route::get('permission/create' , 'Backend\PermissionController@create')->name('admin.permission.create');
+    Route::post('permission/storeParent' , 'Backend\PermissionController@storeParent')->name('admin.permission.storeParent');
+    Route::post('permission/storeChildren' , 'Backend\PermissionController@storeChildren')->name('admin.permission.storeChildren');
+    Route::get('permission/{permission}/edit' , 'Backend\PermissionController@edit')->name('admin.permission.edit');
+    Route::put('permission/{permission}/update', 'Backend\PermissionController@update')->name('admin.permission.update');
+    Route::delete('permission/{permission}/delete', 'Backend\PermissionController@destroy')->name('admin.permission.delete');
 });
 
 

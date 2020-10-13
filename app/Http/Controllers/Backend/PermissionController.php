@@ -4,15 +4,12 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Model\Permission;
-use App\Model\Role;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class RoleController extends Controller
+class PermissionController extends Controller
 {
-
     public function infoUser($value)
     {
         return Auth::user()->$value;
@@ -25,14 +22,30 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::all();
-        $titlePage      = 'Danh sách Vai Trò';
+        $permissionParents = Permission::where('parent_id', 0)->get();
+        $titlePage      = 'Danh Sách Quyền Cha';
         $data = [
             'titlePage'   => $titlePage,
             'nameAdmin'   => ucwords($this->infoUser('name')),
-            'roles' => $roles,
+            'permissionParents' => $permissionParents,
+
         ];
-        return view('admin.role.list', $data);
+        return view('admin.permission.list', $data);
+    }
+
+    public function indexChildren($parent_id)
+    {
+        $permissionParent = Permission::find(1);
+        $permissionChildren = Permission::where('parent_id', $parent_id)->get();
+        $titlePage      = 'Danh Sách Quyền Con -- ';
+        $data = [
+            'titlePage'   => $titlePage,
+            'nameAdmin'   => ucwords($this->infoUser('name')),
+            'permissionChildren' => $permissionChildren,
+            'permissionParent' => $permissionParent
+
+        ];
+        return view('admin.permission.listChildren', $data);
     }
 
     /**
@@ -43,13 +56,13 @@ class RoleController extends Controller
     public function create()
     {
         $permissionParents = Permission::where('parent_id', 0)->get();
-        $titlePage      = 'Thêm Vai Trò';
+        $titlePage      = 'Thêm Quyền';
         $data = [
             'titlePage'   => $titlePage,
             'nameAdmin'   => ucwords($this->infoUser('name')),
-            'permissionParents' => $permissionParents
+            'permissionParents' => $permissionParents,
         ];
-        return view('admin.role.create', $data);
+        return view('admin.permission.create', $data);
     }
 
     /**
@@ -58,21 +71,18 @@ class RoleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function storeParent(Request $request)
     {
-        try {
-            DB::beginTransaction();
-            $data = $request->except('permission_id');
-            $role = Role::create($data);
+        $data = $request->all();
+        Permission::create($data);
+        return redirect()->route('admin.permission.list');
+    }
 
-            $role->permissions()->attach($request->permission_id);
-            DB::commit();
-            return redirect()->route('admin.role.list');
-        } catch (Exception $e) {
-            DB::rollback();
-            echo "Error : ".$e->getMessage();
-            
-        }
+    public function storeChildren(Request $request)
+    {
+        $data = $request->all();
+        Permission::create($data);
+        return redirect()->route('admin.permission.list');
     }
 
     /**
@@ -92,19 +102,18 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Role $role)
+    public function edit(Permission $permission)
     {
         $permissionParents = Permission::where('parent_id', 0)->get();
-        $permissionChecked = $role->permissions()->get();
-        $titlePage      = 'Chỉnh Sửa Vai Trò';
+        $titlePage      = 'Chỉnh sửa Quyền';
         $data = [
             'titlePage'   => $titlePage,
             'nameAdmin'   => ucwords($this->infoUser('name')),
-            'role'        => $role,
-            'permissionParents' => $permissionParents,
-            'permissionChecked' => $permissionChecked,
+            'flagParent'  => ($permission->parent_id == 0) ? true : false,
+            'permission'  => $permission,
+            'permissionParents' => $permissionParents
         ];
-        return view('admin.role.edit', $data);
+        return view('admin.permission.edit', $data);
     }
 
     /**
@@ -114,21 +123,11 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Role $role)
+    public function update(Request $request, Permission $permission)
     {
-            try { 
-                $data = $request->except('permission_id');
-                $rs = $role->update($data);
-                if($rs){
-                     $role->permissions()->sync($request->permission_id);
-                     return redirect()->route('admin.role.list');
-                }
-            } catch (\Throwable $th) {
-                throw $th;
-                echo $th->getMessage();
-            }
-           
-            
+        $data = $request->all();
+        $permission->update($data);
+        return redirect()->route('admin.permission.list');
     }
 
     /**
@@ -137,9 +136,9 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Role $role)
+    public function destroy(Permission $permission)
     {
-        $role->delete();
-        return redirect()->route('admin.role.list');
+        $permission->delete();
+        return redirect()->route('admin.permission.list');
     }
 }
