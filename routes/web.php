@@ -86,6 +86,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::get('role/{role}/edit' , 'Backend\RoleController@edit')->name('admin.role.edit');
     Route::put('role/{role}/update', 'Backend\RoleController@update')->name('admin.role.update');
     Route::delete('role/{role}/delete' , 'Backend\RoleController@destroy')->name('admin.role.delete');
+    //-----------permission-----------
 });
 
 
