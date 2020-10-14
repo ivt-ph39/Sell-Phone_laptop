@@ -57,7 +57,7 @@
 								<!-- product -->
 								@foreach ($category[0] as $product)
 									<div class="owl-item">
-										<div class="product">
+										<div class="product product-store">
 											<div class="product-img">
 												<a href="{{route('product',['page'=>Str::slug($product->category->name),'productName'=>Str::slug($product->name)])}}"><img src="{{$product->avatar}}" ></a>
 												
@@ -195,7 +195,7 @@
 								<!-- product -->
 								@foreach ($category[0] as $product)
 									<div class="owl-item">
-										<div class="product">
+										<div class="product product-store">
 											<div class="product-img">
 												<a href="{{route('product',['page'=>Str::slug($product->category->name),'productName'=>Str::slug($product->name)])}}"><img src="{{$product->avatar}}" ></a>
 												<div class="product-label ">

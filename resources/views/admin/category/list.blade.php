@@ -44,7 +44,7 @@
                                 <span class="badge badge-danger">Hiện</span>
                             @endif
                         </td>
-                        <td>{{$category->createBy->adminName}}</td>
+                        <td>{{$category->createBy->name}}</td>
                         <td>
                             <a href="{{route('admin.category.edit',['id'=>$category->id])}}" class="badge badge-primary mr-1 ml-1">Edit</a>
                             <a href="{{route('admin.category.delete',['id'=>$category->id])}}" class="badge badge-danger mr-1 ml-1">Delete</a>

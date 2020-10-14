@@ -17,10 +17,9 @@ class CreateOrderProductTable extends Migration
             $table->id();
             $table->integer('quantity');
             $table->integer('amount');
-            $table->unsignedBigInteger('order_id');
-            $table->unsignedBigInteger('product_id');
-            $table->foreign('order_id')->references('id')->on('orders');
-            $table->foreign('product_id')->references('id')->on('products');
+            $table->foreignId('order_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('product_id')->nullable()->constrained()->onDelete('set null');
+
             $table->timestamps();
         });
     }

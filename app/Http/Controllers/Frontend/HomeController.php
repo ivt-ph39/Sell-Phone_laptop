@@ -30,7 +30,6 @@ class HomeController extends Controller
             ],
             'sliders'    => $slider->all()
         ];
-
         return view('frontend.home', $data);
     }
 }

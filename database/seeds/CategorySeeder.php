@@ -35,7 +35,7 @@ class CategorySeeder extends Seeder
                 'image'  => null,
                 'parent_id' => '0',
                 'active' => '1',
-                'create_by' => '2',
+                'create_by' => '1',
             ],
             [
                 'name' => 'Phụ kiện',

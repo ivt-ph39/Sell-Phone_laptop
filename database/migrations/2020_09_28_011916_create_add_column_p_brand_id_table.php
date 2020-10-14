@@ -14,8 +14,7 @@ class CreateAddColumnPBrandIdTable extends Migration
     public function up()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->unsignedBigInteger('brand_id')->nullable();
-            $table->foreign('brand_id')->references('id')->on('brands');
+            $table->foreignId('brand_id')->nullable()->constrained()->onDelete('set null');
         });
     }
 
