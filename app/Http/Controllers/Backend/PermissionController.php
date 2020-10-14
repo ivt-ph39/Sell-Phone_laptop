@@ -82,8 +82,8 @@ class PermissionController extends Controller
     public function storeChildren(Request $request)
     {
         $data = $request->all();
-        Permission::create($data);
-        return redirect()->route('admin.permission.listChildren');
+        $permission = Permission::create($data);
+        return redirect()->route('admin.permission.listChildren', ['parent_id' => $permission->parent_id]);
     }
 
     /**
@@ -128,7 +128,7 @@ class PermissionController extends Controller
     {
         $data = $request->all();
         $permission->update($data);
-        return redirect()->route('admin.permission.list');
+        return redirect()->route('admin.permission.listChildren', ['parent_id' => $permission->parent_id]);
     }
 
     /**
@@ -140,6 +140,6 @@ class PermissionController extends Controller
     public function destroy(Permission $permission)
     {
         $permission->delete();
-        return redirect()->route('admin.permission.list');
+        return redirect()->route('admin.permission.listChildren', ['parent_id' => $permission->parent_id]);
     }
 }

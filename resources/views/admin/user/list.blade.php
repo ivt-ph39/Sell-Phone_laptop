@@ -50,7 +50,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($users as $user)
+                        @foreach ($users as $user) 
                             <tr>
                                 <th>{{ $user->id }}</th>
                                 <td>{{ $user->name }}</td>
