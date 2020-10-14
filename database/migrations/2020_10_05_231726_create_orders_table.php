@@ -20,8 +20,7 @@ class CreateOrdersTable extends Migration
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
             $table->string('email')->nullable();
-            $table->unsignedBigInteger("user_id");
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
             $table->timestamps();
         });
     }

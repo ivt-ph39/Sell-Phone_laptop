@@ -22,7 +22,7 @@ $(document).ready(function () {
         owl.trigger('next.owl.carousel');
     })
 
-    $('.slider1 .owl-carousel .owl-nav .owl-prev').click(function () {
+    $('.slider .owl-carousel .owl-nav .owl-prev').click(function () {
         owl.trigger('prev.owl.carousel');
     })
     // PRODUCT NEW

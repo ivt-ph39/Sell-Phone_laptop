@@ -132,7 +132,6 @@ class ProductController extends Controller
             return redirect()->route('admin.product.list');
         } catch (\Exception $e) {
             DB::rollback();
-            dd($e->getMessage());
             return redirect()->back()->with('error', 'Tạo mới sản phẩm thất bại')->withInput();
         }
     }
@@ -201,7 +200,6 @@ class ProductController extends Controller
 
     public function update(ProductUpdateRequest $request, $id, Image $image)
     {
-        // dd($request->all());
         try {
             DB::beginTransaction();
 
@@ -222,7 +220,6 @@ class ProductController extends Controller
                 'title'       => $request->title,
                 'promotion'   => $promotions,
                 'technical'   => $technicals,
-                'update_by'   => $this->info('id'),
                 'updated_at'    => now()
             ];
 

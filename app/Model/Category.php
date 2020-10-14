@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 // use Illuminate\Database\Eloquent\SoftDeletes;
 class Category extends Model
 {
-    use SoftDeletes;
+    // use SoftDeletes;
     protected $table = 'categories';
 
     // protected $primaryKy = 'c_create_by';
@@ -15,7 +15,7 @@ class Category extends Model
 
     public function createBy()
     {
-        return $this->belongsTo('App\Model\ManagerAdmin', 'create_by');
+        return $this->belongsTo('App\User', 'create_by');
     }
 
     public function getParentIdAttribute($value)

@@ -22,15 +22,14 @@ class CreateProductsTable extends Migration
             $table->integer('sale')->nullable();
             $table->boolean('hot');
             $table->integer('view')->nullable();
-            $table->unsignedBigInteger('category_id');
             $table->string("avatar");
             $table->string('title', 100);
             $table->json("promotion")->nullable(); // khuyên mãi
             $table->json("technical")->nullable(); // Thông số kĩ thuật
             $table->longText('description')->nullable();
-            $table->unsignedBigInteger('created_by');
-            $table->foreign('created_by')->references('id')->on('manager_admins');
-            $table->foreign('category_id')->references('id')->on('categories');
+
+            $table->foreignId('create_by')->nullable()->constrained('users')->onDelete('set null');
+            $table->foreignId('category_id')->nullable()->constrained()->OnDelete('set null');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -114,7 +114,7 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         $category = Category::find($id);
-        $category->forceDelete();
+        $category->delete();
         return redirect()->route('admin.category.list');
     }
     //

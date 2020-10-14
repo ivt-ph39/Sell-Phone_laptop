@@ -19,8 +19,7 @@ class CreateCategoriesTable extends Migration
             $table->string('icon', 30)->nullable();
             $table->string('image', 100)->nullable();
             $table->boolean('active')->unsigned();
-            $table->unsignedBigInteger('create_by')->nullable();
-            $table->foreign('create_by')->references('id')->on('manager_admins');
+            $table->foreignId('create_by')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();
             $table->softDeletes();
         });

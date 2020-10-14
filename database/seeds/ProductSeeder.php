@@ -16,7 +16,7 @@ class ProductSeeder extends Seeder
      */
     public function run(Product $product, Category $category, Brand $brand)
     {
-        for ($i = 0; $i < 151; $i++) {
+        for ($i = 0; $i < 251; $i++) {
             $data =
                 [
                     'name'        => 'Điện thoại OPPO Reno New  ' . $i,
@@ -64,9 +64,9 @@ class ProductSeeder extends Seeder
                         }
                     ]',
                     'description' => 'OPPO Reno3 là một sản phẩm ở phân khúc tầm trung nhưng vẫn sở hữu cho mình ngoại hình bắt mắt, cụm camera chất lượng và cùng nhiều đột phá về màn hình cũng như hiệu năng.',
-                    'category_id' => random_int(1, 3),
+                    'category_id' => Arr::random([1, 2, 3, 5, 6, 7, 8, 9]),
                     'brand_id'    => random_int(1, 7),
-                    'created_by'  => 1
+                    'create_by'  => 1
                 ];
             $product->insert($data);
         }
