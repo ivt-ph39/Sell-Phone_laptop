@@ -41,7 +41,7 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <h5 class="card-title">Module {{ $perParent->description }}</h5>
+                                    <h5 class="card-title">Module {{ $perParent->description }}</h5><br>
                                     @foreach ($perParent->permissionChildren as $perChildren)
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input checkbox_children"
@@ -59,7 +59,7 @@
                     {{-- end checkbox --}}
 
                 </div>
-                <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Create Role</button>
             </form>
         </div>
     </div>

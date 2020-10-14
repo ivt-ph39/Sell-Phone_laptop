@@ -53,7 +53,7 @@ class PermissionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($parent)
     {
         $permissionParents = Permission::where('parent_id', 0)->get();
         $titlePage      = 'Thêm Quyền';
@@ -61,6 +61,7 @@ class PermissionController extends Controller
             'titlePage'   => $titlePage,
             'nameAdmin'   => ucwords($this->infoUser('name')),
             'permissionParents' => $permissionParents,
+            'parent' => $parent,
         ];
         return view('admin.permission.create', $data);
     }
@@ -82,7 +83,7 @@ class PermissionController extends Controller
     {
         $data = $request->all();
         Permission::create($data);
-        return redirect()->route('admin.permission.list');
+        return redirect()->route('admin.permission.listChildren');
     }
 
     /**

@@ -9,7 +9,7 @@
         @else
             <div class="pt-3">
                 <h4 class="float-left m-3">{{ $titlePage  }} <strong class="text-purple">{{ $permissionParent->name }}</strong> </h4>
-            <a href="{{ route('admin.permission.create') }}" class="btn btn-outline-success m-3 float-right" ><i class="fas fa-plus-square"></i> Thêm Quyền</a>
+            <a href="{{ route('admin.permission.create', ['parent' => 0]) }}" class="btn btn-outline-success m-3 float-right" ><i class="fas fa-plus-square"></i> Thêm Quyền</a>
             </div>
             <div class="content">
                 <table class="table table-bordered">
