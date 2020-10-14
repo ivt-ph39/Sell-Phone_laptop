@@ -58,7 +58,14 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $roles = Role::all();
+        $titlePage      = 'Thêm người dùng';
+        $data = [
+            'titlePage'   => $titlePage,
+            'nameAdmin'   => ucwords($this->infoUser('name')),
+            'roles' => $roles
+        ];
+        return view('admin.user.create', $data);
     }
 
     /**
@@ -69,7 +76,12 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->except('role_id');
+        $user = User::create($data);
+        if(!empty($user)){
+            $user->roles()->attach($request->role_id);
+        }
+        return redirect()->route('admin.user.list');
     }
 
     /**

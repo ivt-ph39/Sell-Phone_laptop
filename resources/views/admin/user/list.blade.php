@@ -25,6 +25,7 @@
                     @endisset
                 </div>
                 <div class="form-inline col">
+                    <a href="{{ route('admin.user.create') }}" class="btn btn-primary"><i class="fas fa-child"></i> Thêm User</a>
                     @isset($trashed)
                         @if ($trashed)
                             <a href="{{ route('admin.user.list') }}" class="btn btn-primary"><i class="far fa-list-alt"></i>

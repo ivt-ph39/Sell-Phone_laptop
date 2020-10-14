@@ -6,11 +6,11 @@
     <div class="container">
         @if (empty($permissionParents))
             <h4>No Data.</h4>
-            <a href="{{ route('admin.permission.create') }}" class="btn btn-outline-success" ><i class="fas fa-plus-square"></i> Thêm Quyền</a>
+            <a href="{{ route('admin.permission.create', ['parent' => 1]) }}" class="btn btn-outline-success" ><i class="fas fa-plus-square"></i> Thêm Quyền</a>
         @else
             <div class="pt-3">
                 <h4 class="float-left m-3">{{ $titlePage }}.</h4>
-            <a href="{{ route('admin.permission.create') }}" class="btn btn-outline-success m-3 float-right" ><i class="fas fa-plus-square"></i> Thêm Quyền</a>
+            <a href="{{ route('admin.permission.create', ['parent' => 1]) }}" class="btn btn-outline-success m-3 float-right" ><i class="fas fa-plus-square"></i> Thêm Quyền</a>
             </div>
             <div class="content">
                 <table class="table table-bordered">
