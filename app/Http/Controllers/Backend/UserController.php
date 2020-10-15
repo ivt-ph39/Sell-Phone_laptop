@@ -14,19 +14,19 @@ class UserController extends Controller
     {
         return Auth::user()->$value;
     }
-    
-    
-    public function index(Request $request) 
+
+
+    public function index(Request $request)
     {
-        if(isset($request->search)){
+        if (isset($request->search)) {
             $search = $request->search;
-        }else{
+        } else {
             $search = '';
         }
-        
-        if(!empty($search)){
+
+        if (!empty($search)) {
             $users = User::where('name', 'like', "%$search%")->get();;
-        }else{
+        } else {
             $users = User::all();
         }
         $titlePage      = 'Danh sách Người Dùng';
@@ -39,7 +39,8 @@ class UserController extends Controller
         return view('admin.user.list', $data);
     }
 
-    public function onlyTrashed(){
+    public function onlyTrashed()
+    {
         $users = User::onlyTrashed()->get();
         $titlePage      = 'Danh sách Người Dùng Đã Soft Delete';
         $data = [
@@ -79,7 +80,7 @@ class UserController extends Controller
         $data = $request->except('role_id');
         $data['password'] = bcrypt($data['password']);
         $user = User::create($data);
-        if(!empty($user)){
+        if (!empty($user)) {
             $user->roles()->attach($request->role_id);
         }
         return redirect()->route('admin.user.list');

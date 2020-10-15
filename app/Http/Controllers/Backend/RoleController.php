@@ -16,7 +16,6 @@ class RoleController extends Controller
     public function infoUser($value)
     {
         return Auth::user()->$value;
-        
     }
     /**
      * Display a listing of the resource.
@@ -70,8 +69,7 @@ class RoleController extends Controller
             return redirect()->route('admin.role.list');
         } catch (Exception $e) {
             DB::rollback();
-            echo "Error : ".$e->getMessage();
-            
+            echo "Error : " . $e->getMessage();
         }
     }
 
@@ -116,19 +114,17 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-            try { 
-                $data = $request->except('permission_id');
-                $rs = $role->update($data);
-                if($rs){
-                     $role->permissions()->sync($request->permission_id);
-                     return redirect()->route('admin.role.list');
-                }
-            } catch (\Throwable $th) {
-                throw $th;
-                echo $th->getMessage();
+        try {
+            $data = $request->except('permission_id');
+            $rs = $role->update($data);
+            if ($rs) {
+                $role->permissions()->sync($request->permission_id);
+                return redirect()->route('admin.role.list');
             }
-           
-            
+        } catch (\Throwable $th) {
+            throw $th;
+            echo $th->getMessage();
+        }
     }
 
     /**
