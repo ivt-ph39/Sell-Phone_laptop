@@ -72,13 +72,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::put('slider/{id}/update', 'Backend\SliderController@update')->name('admin.slider.update');
     Route::delete('slider/{id}/delete', 'Backend\SliderController@delete')->name('admin.slider.delete');
     //-----------users-------------
-
-    Route::get('user/list', 'Backend\UserController@index')->name('admin.user.list')->middleware('can:user_list');
-    Route::get('user/list/onlyTrashed', 'Backend\UserController@onlyTrashed')->name('admin.user.onlyTrashed');
-    Route::get('user/cre    ate', 'Backend\UserController@create')->name('admin.user.create');
-    Route::post('user/store', 'Backend\UserController@store')->name('admin.user.store');
-    Route::get('user/{user}/edit', 'Backend\UserController@edit')->name('admin.user.edit');
-
+    Route::get('user/list' , 'Backend\UserController@index')->name('admin.user.list')->middleware('can:user_list');
+    Route::get('user/list/onlyTrashed' , 'Backend\UserController@onlyTrashed')->name('admin.user.onlyTrashed');
+    Route::get('user/create' , 'Backend\UserController@create')->name('admin.user.create');
+    Route::post('user/store' , 'Backend\UserController@store')->name('admin.user.store');
+    Route::get('user/{user}/edit' , 'Backend\UserController@edit')->name('admin.user.edit');
     Route::put('user/{user}/update', 'Backend\UserController@update')->name('admin.user.update');
     Route::delete('user/{user}/delete', 'Backend\UserController@destroy')->name('admin.user.delete');
 
@@ -101,8 +99,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::put('permission/{permission}/update', 'Backend\PermissionController@update')->name('admin.permission.update');
     Route::delete('permission/{permission}/delete', 'Backend\PermissionController@destroy')->name('admin.permission.delete');
 });
-
-
 // ------------------------- FrontEnd ----------------------
 
 // ---------Register-User--------
