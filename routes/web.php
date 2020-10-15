@@ -72,35 +72,38 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::put('slider/{id}/update', 'Backend\SliderController@update')->name('admin.slider.update');
     Route::delete('slider/{id}/delete', 'Backend\SliderController@delete')->name('admin.slider.delete');
     //-----------users-------------
-    Route::get('user/list' , 'Backend\UserController@index')->name('admin.user.list');
-    Route::get('user/list/onlyTrashed' , 'Backend\UserController@onlyTrashed')->name('admin.user.onlyTrashed');
-    Route::get('user/create' , 'Backend\UserController@create')->name('admin.user.create');
-    Route::post('user/store' , 'Backend\UserController@store')->name('admin.user.store');
-    Route::get('user/{user}/edit' , 'Backend\UserController@edit')->name('admin.user.edit');
+    Route::get('user/list', 'Backend\UserController@index')->name('admin.user.list');
+    Route::get('user/list/onlyTrashed', 'Backend\UserController@onlyTrashed')->name('admin.user.onlyTrashed');
+    Route::get('user/create', 'Backend\UserController@create')->name('admin.user.create');
+    Route::post('user/store', 'Backend\UserController@store')->name('admin.user.store');
+    Route::get('user/{user}/edit', 'Backend\UserController@edit')->name('admin.user.edit');
     Route::put('user/{user}/update', 'Backend\UserController@update')->name('admin.user.update');
     Route::delete('user/{user}/delete', 'Backend\UserController@destroy')->name('admin.user.delete');
     Route::get('user/{id}/restore', 'Backend\UserController@restore')->name('admin.user.restore');
     Route::delete('user/{id}/hardDelete', 'Backend\UserController@hardDelete')->name('admin.user.hardDelete');
     //-----------roles---------------
-    Route::get('role/list' , 'Backend\RoleController@index')->name('admin.role.list');
-    Route::get('role/create' , 'Backend\RoleController@create')->name('admin.role.create');
-    Route::post('role/store' , 'Backend\RoleController@store')->name('admin.role.store');
-    Route::get('role/{role}/edit' , 'Backend\RoleController@edit')->name('admin.role.edit');
+    Route::get('role/list', 'Backend\RoleController@index')->name('admin.role.list');
+    Route::get('role/create', 'Backend\RoleController@create')->name('admin.role.create');
+    Route::post('role/store', 'Backend\RoleController@store')->name('admin.role.store');
+    Route::get('role/{role}/edit', 'Backend\RoleController@edit')->name('admin.role.edit');
     Route::put('role/{role}/update', 'Backend\RoleController@update')->name('admin.role.update');
-    Route::delete('role/{role}/delete' , 'Backend\RoleController@destroy')->name('admin.role.delete');
+    Route::delete('role/{role}/delete', 'Backend\RoleController@destroy')->name('admin.role.delete');
     //-----------permission-----------
-    Route::get('permission/list' , 'Backend\PermissionController@index')->name('admin.permission.list');
-    Route::get('permission/{parent_id}/listChildren' , 'Backend\PermissionController@indexChildren')->name('admin.permission.listChildren');
-    Route::get('permission/{parent}/create' , 'Backend\PermissionController@create')->name('admin.permission.create');
-    Route::post('permission/storeParent' , 'Backend\PermissionController@storeParent')->name('admin.permission.storeParent');
-    Route::post('permission/storeChildren' , 'Backend\PermissionController@storeChildren')->name('admin.permission.storeChildren');
-    Route::get('permission/{permission}/edit' , 'Backend\PermissionController@edit')->name('admin.permission.edit');
+    Route::get('permission/list', 'Backend\PermissionController@index')->name('admin.permission.list');
+    Route::get('permission/{parent_id}/listChildren', 'Backend\PermissionController@indexChildren')->name('admin.permission.listChildren');
+    Route::get('permission/{parent}/create', 'Backend\PermissionController@create')->name('admin.permission.create');
+    Route::post('permission/storeParent', 'Backend\PermissionController@storeParent')->name('admin.permission.storeParent');
+    Route::post('permission/storeChildren', 'Backend\PermissionController@storeChildren')->name('admin.permission.storeChildren');
+    Route::get('permission/{permission}/edit', 'Backend\PermissionController@edit')->name('admin.permission.edit');
     Route::put('permission/{permission}/update', 'Backend\PermissionController@update')->name('admin.permission.update');
     Route::delete('permission/{permission}/delete', 'Backend\PermissionController@destroy')->name('admin.permission.delete');
 });
 
 
 // ------------------------- FrontEnd ----------------------
+
+// ---Register-User--------
+Route::post('dang-ky', 'Frontend\UserController@register')->name('user_login');
 Route::get('/', 'Frontend\HomeController@index')->name('home');
 Route::get('/{page}', 'Frontend\StoreController@index')->name('store');
 Route::get('/{page}/{productName}', 'Frontend\ProductDetail@index')->name('product');
