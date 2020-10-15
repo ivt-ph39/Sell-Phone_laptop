@@ -66,7 +66,7 @@ class ProductSeeder extends Seeder
                     'description' => 'OPPO Reno3 là một sản phẩm ở phân khúc tầm trung nhưng vẫn sở hữu cho mình ngoại hình bắt mắt, cụm camera chất lượng và cùng nhiều đột phá về màn hình cũng như hiệu năng.',
                     'category_id' => Arr::random([1, 2, 3, 5, 6, 7, 8, 9]),
                     'brand_id'    => random_int(1, 7),
-                    'create_by'  => 1
+                    'created_by'  => 1
                 ];
             $product->insert($data);
         }

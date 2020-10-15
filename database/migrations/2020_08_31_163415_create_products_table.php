@@ -28,7 +28,7 @@ class CreateProductsTable extends Migration
             $table->json("technical")->nullable(); // Thông số kĩ thuật
             $table->longText('description')->nullable();
 
-            $table->foreignId('create_by')->nullable()->constrained('users')->onDelete('set null');
+            $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('set null');
             $table->foreignId('category_id')->nullable()->constrained()->OnDelete('set null');
             $table->timestamps();
             $table->softDeletes();

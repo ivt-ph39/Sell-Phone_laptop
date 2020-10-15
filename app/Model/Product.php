@@ -14,7 +14,7 @@ class Product extends Model
         'price', 'sale', 'hot',
         'category_id', 'avatar', 'title',
         'promotion',
-        'technical', '	description', 'brand_id',
+        'technical', 'description', 'brand_id',
         'created_by'
     ];
 

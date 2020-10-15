@@ -94,7 +94,7 @@
                                 @enderror
                             </div>
                         </div>
-                        
+                         
                         <div class="row mt-4">
                             <div class="col-3 d-flex justify-content-end">
                                 <label for="sale">Giảm giá:</label>
@@ -297,6 +297,9 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group">
+                    <textarea name="description" id="editor1" cols="30" rows="10" value="{{ $product->description }}">{{ $product->description }}</textarea>
+                </div>
             </div>
             <!-- /.card-body -->
 
@@ -325,4 +328,19 @@
 
     <script src="adminlte/plugins/select2/js/select2.min.js"></script>
     <script src="admins/product/edit/js/app.js"></script>
+
+    <script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
+    <script src="{{ asset('/editors/ckeditor/ckeditor.js') }}"></script>
+    <script>
+        ClassicEditor
+        .create( document.querySelector( '#editor1' ), {
+            ckfinder: {
+                uploadUrl: '/editors/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files&responseType=json'
+            },
+        } )
+        .catch( function( error ) {
+            console.error( error );
+        } );
+        
+    </script>
 @endsection

@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Model\Role;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 use Closure;
 
@@ -17,7 +19,13 @@ class CheckLoginAdmin
     public function handle($request, Closure $next)
     {
         if (!Auth::check()) {
-            return redirect('admin/login');
+            $roles = User::find(Auth::user()->id)->roles()->get();
+            foreach ($roles as $role) {
+                $permissionUser = $role->permissions()->get();
+                if ($permissionUser->contains('keycode', 'login_admin')) {
+                    return redirect('admin/login');
+                }
+            }
         }
         return $next($request);
     }

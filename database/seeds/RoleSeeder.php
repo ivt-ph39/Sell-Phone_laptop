@@ -10,18 +10,26 @@ class RoleSeeder extends Seeder
      *
      * @return void
      */
-    public function run(Role $role)
+    public function run()
     {
         $data = [
             [
-                'name' => 'guest',
-                'description' => 'Nguoi dung'
+                'name' => 'admin',
+                'description' => 'Quản trị hệ thống',
             ],
             [
-                'name' => 'admin',
-                'description' => 'Quan li'
-            ]
+                'name' => 'guest',
+                'description' => 'Khách Hàng',
+            ],
+            [
+                'name' => 'dev',
+                'description' => 'Phát triển hệ Thống',
+            ],
+            [
+                'name' => 'content',
+                'description' => 'Quản lý nội dung',
+            ],
         ];
-        $role->insert($data);
+        Role::insert($data);
     }
 }
