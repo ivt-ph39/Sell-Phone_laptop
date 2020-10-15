@@ -77,6 +77,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $data = $request->except('role_id');
+        $data['password'] = bcrypt($data['password']);
         $user = User::create($data);
         if(!empty($user)){
             $user->roles()->attach($request->role_id);

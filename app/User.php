@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -18,7 +19,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
+
         'name', 'email', 'password', 'phone', 'address'
+
     ];
 
     /**
@@ -42,5 +45,19 @@ class User extends Authenticatable
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'user_role', 'user_id', 'role_id');
+    }
+
+
+    public function checkPermissionAccess($permissionCheck){
+        //take all vai tro cua 1 user
+        //check tat ca quyen cua vai tro Neu nhu ton tai permission thi return true
+        $roles = User::find(Auth::user()->id)->roles()->get();
+        foreach($roles as $role){
+            $permissionUser = $role->permissions()->get();
+            if($permissionUser->contains('keycode', $permissionCheck)){
+                return true;
+            }
+        }
+        return false;
     }
 }
