@@ -80,7 +80,7 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request)
     {
-        // dd($request->all());
+        dd($request->all());
         try {
             DB::beginTransaction();
 
@@ -90,7 +90,7 @@ class ProductController extends Controller
 
             // Xử lí file ảnh.
             if ($request->avatar) {
-                $avatar = $this->storeFile($request->avatar);
+                $avatar = $this->storeFile($request->avatar); 
             }
 
             // Dữ liệu nhập vào cho product.

@@ -31,7 +31,7 @@ class AuthServiceProvider extends ServiceProvider
     // create function define gate model 
     public function gateDefineUser(){
         Gate::define('user_list', function($user){ return $user->checkPermissionAccess('user_list'); });
-       
+        Gate::define('user_add', function($user){ return $user->checkPermissionAccess('user_add'); });
     }
 
     public function gateDefineRole(){
