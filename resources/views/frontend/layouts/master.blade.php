@@ -4,6 +4,7 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="csrf-token" content="{{ csrf_token() }}">
 		 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
 		<title>Electro - HTML Ecommerce Template</title>
@@ -43,12 +44,18 @@
 						<li><a href="#"><i class="fa fa-map-marker"></i> 1734 Stonecoal Road</a></li>
 					</ul>
 					<ul class="header-links pull-right">
-						<li><a href="#"><i class="fa fa-user-o"></i> My Account</a></li>
+						<li><a href="#" data-toggle="modal" data-target="#registerAccount"><i class="fa fa-user-o"></i> Đăng kí</a></li>
+						<li><a href="#" data-toggle="modal" data-target="#loginAccount"><i class="fas fa-sign-in-alt"></i> Đăng nhập</a></li>
+						<li class="account"><a href="#" ><i class="fas fa-user-cog"></i> Tài Khoản</a>
+								<ul id="account-info" >
+									<li><i class="fas fa-sign-out-alt"></i><a href="">Đăng xuất</a></li>
+									<li><i class="fas fa-user-cog"></i><a href="">Quản lí tài khoản</a></li>	
+								</ul>
+						</li>
 					</ul>
 				</div>
 			</div>
 			<!-- /TOP HEADER -->
-
 			<!-- MAIN HEADER -->
 			<div id="header">
 				<!-- container -->
@@ -69,13 +76,7 @@
 						<div class="col-md-6">
 							<div class="header-search">
 								<form>
-									<select class="input-select">
-										<option value="0">All Categories</option>
-										<option value="1">Category 01</option>
-										<option value="1">Category 02</option>
-									</select>
-									<input class="input" placeholder="Search here">
-									<button class="search-btn">Search</button>
+									<input class="form-control" placeholder="Tìm kiếm sản phẩm theo tên...">
 								</form>
 							</div>
 						</div>
@@ -84,21 +85,11 @@
 						<!-- ACCOUNT -->
 						<div class="col-md-3 clearfix">
 							<div class="header-ctn">
-								<!-- Wishlist -->
-								<div>
-									<a href="#">
-										<i class="fa fa-heart-o"></i>
-										<span>Your Wishlist</span>
-										<div class="qty">2</div>
-									</a>
-								</div>
-								<!-- /Wishlist -->
-
 								<!-- Cart -->
 								<div class="dropdown">
-									<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+									<a href="" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
 										<i class="fa fa-shopping-cart"></i>
-										<span>Your Cart</span>
+										<span>Giỏ hàng</span>
 										<div class="qty">3</div>
 									</a>
 									<div class="cart-dropdown">
@@ -111,7 +102,6 @@
 													<h3 class="product-name"><a href="#">product name goes here</a></h3>
 													<h4 class="product-price"><span class="qty">1x</span>$980.00</h4>
 												</div>
-												<button class="delete"><i class="fa fa-close"></i></button>
 											</div>
 
 											<div class="product-widget">
@@ -122,16 +112,14 @@
 													<h3 class="product-name"><a href="#">product name goes here</a></h3>
 													<h4 class="product-price"><span class="qty">3x</span>$980.00</h4>
 												</div>
-												<button class="delete"><i class="fa fa-close"></i></button>
 											</div>
 										</div>
 										<div class="cart-summary">
-											<small>3 Item(s) selected</small>
-											<h5>SUBTOTAL: $2940.00</h5>
+											<p>Đã mua (4) sản phẩm</p>
+											<h5>Tổng Tiền: $2940.00</h5>
 										</div>
 										<div class="cart-btns">
-											<a href="#">View Cart</a>
-											<a href="#">Checkout  <i class="fa fa-arrow-circle-right"></i></a>
+											<a href="#">Xem chi tiết  <i class="fa fa-arrow-circle-right"></i></a>
 										</div>
 									</div>
 								</div>
@@ -187,6 +175,89 @@
 			<!-- /container -->
 		</nav>
 		<!-- /NAVIGATION -->
+		<!-- Modal Register-->
+		<div class="modal fade" id="registerAccount" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+					<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLongTitle">Đăng Kí Tài khoản</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form >
+							<div class="form-group">
+							  <input type="text"
+								class="form-control" name="u-name" id="u-name" aria-describedby="helpId" placeholder="Họ và tên">
+								<small class="error" id="err_name"></small>
+							</div>
+							<div class="form-group">
+							  <input type="email"
+								class="form-control" name="u-email" id="u-email" aria-describedby="helpId" placeholder="Email : abc@gmail.com">
+								<small class="error" id="err_email"></small>
+
+							</div>
+							<div class="row">
+								<div class="col-md-6 form-group">
+									<input type="password" class="form-control" name="u-password" id="u-password" placeholder="Mật Khẩu">
+									<small class="error" id="err_password"></small>
+								</div>
+								<div class="col-md-6 form-group">
+									<input type="password" class="form-control" name="u-password-confirm" id="u-password-confirm" placeholder="Nhập lại mật khẩu">
+									<small class="error" id="err_password_confirm"></small>
+								</div>
+							</div>
+							<div class="form-group">
+							  <input type="text"
+								class="form-control" name="u-address" id="u-address" aria-describedby="helpId" placeholder="Địa chỉ">
+								<small class="error" id="err_address"></small>
+
+							</div>
+							<div class="form-group">
+							  <input type="text"
+								class="form-control" name="u-phone" id="u-phone" aria-describedby="helpId" placeholder="Số điện thoại">
+								<small class="error" id="err_phone"></small>
+
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer ">
+						<button type="button" class="btn btn-primary" id="submit-register">Đăng kí</button>
+					</div>
+					</div>
+			</div>
+		</div>
+		<!-- end Modal Register-->
+		<!-- Modal Login-->
+		<div class="modal fade" id="loginAccount" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered" role="document">
+					<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLongTitle">Đăng Nhập</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form action="" method="post">
+							<div class="form-group">
+							  <input type="email"
+								class="form-control" name="u-email" id="" aria-describedby="helpId" placeholder="Email">
+							</div>
+							<div class="form-group">
+							  <input type="password"
+								class="form-control" name="u-password" id="" aria-describedby="helpId" placeholder="Mật khẩu">
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer ">
+						<button type="button" class="btn btn-primary">Đăng nhập</button>
+					</div>
+					</div>
+				</div>
+			</div>
+			<!-- end Modal Login-->
     @yield('main')
     </body>
 	<!-- FOOTER -->
@@ -291,6 +362,104 @@
 		<script src="{{asset("frontend/js/slick.min.js")}}"></script>
 		<script src="{{asset("frontend/js/nouislider.min.js")}}"></script>
 		<script src="{{asset("frontend/js/jquery.zoom.min.js")}}"></script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
         <script src="{{asset("frontend/js/main.js")}}"></script>
-        @yield('js')
+		@yield('js')
+		<script>
+			$(document).ready(function(){
+				$('#submit-register').on('click',function(e){
+					e.preventDefault();
+					u_name = $('input#u-name').val();
+					u_email = $('input#u-email').val();
+					u_password = $('input#u-password').val();
+					u_password_confirm = $('input#u-password-confirm').val();
+					u_address = $('input#u-address').val();
+					u_phone = $('input#u-phone').val();
+					console.log(u_password, u_password_confirm);
+					// validateErr = isRequired('input#u-name','Họ và tên') + isRequired('input#u-email','Email') + isEmail('input#u-email') + isRequired('input#u-password','Mật khẩu') + isRequired('input#u-address','Địa chỉ') +isRequired('input#u-phone','Số điện thoại');
+
+					// if(validateErr == 0){
+						$.ajaxSetup({
+							headers: {
+								'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+							}
+						});
+						$.ajax({
+							url  : "{{ route('user_login') }}",
+							data : {
+								'name'		: u_name,
+								'email'		: u_email,
+								'password'	: u_password,
+								'password_confirm' : u_password_confirm,
+								'address'	: u_address,
+								'phone'		: u_phone
+							},
+							type: 'post',
+							success: function(data){
+								if(data.success == true){
+									Swal.fire(
+									'Xin chúc mừng!',
+									'Bạn đã tạo tài khoảng thành công!'
+									);
+								}
+								if(data.error == true){
+									if(data.message.name){
+										$('#err_name').text(data.message.name[0])
+									}else{
+										$('#err_name').text('')
+									}
+									if(data.message.email){
+										$('#err_email').text(data.message.email[0])
+									}else{
+										$('#err_email').text('')
+									}
+									if(data.message.password){
+										$('#err_password').text(data.message.password[0])
+									}else{
+										$('#err_password').text('')
+									}
+									if(data.message.password_confirm){
+										$('#err_password_confirm').text(data.message.password_confirm[0])
+									}else{
+										$('#err_password_confirm').text('')
+									}
+									if(data.message.address){
+										$('#err_address').text(data.message.address[0])
+									}else{
+										$('#err_address').text('')
+									}
+									if(data.message.phone){
+										$('#err_phone').text(data.message.phone[0])
+									}else{
+										$('#err_phone').text('')
+									}
+								}
+							}
+						})
+					// }
+				})
+				function isRequired(value,nameField){
+					if($(value).val() == ''){
+						$(value).siblings().text(nameField +' không được để trống');
+						return 1;
+					}else{
+						$(value).siblings().text('');
+						return 0;
+					}
+				}
+				function isEmail(value) {
+					if(isRequired(value,'Email') == 0){
+						email = $(value).val();
+						var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+						if(!regex.test(email)) {
+							$(value).siblings().text('Email không hợp lệ');
+							return 1;
+						}else{
+							$(value).siblings().text('');
+							return 0;
+						}
+					}return 0;
+				}
+			})
+		</script>
 </html>

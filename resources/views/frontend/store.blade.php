@@ -5,7 +5,7 @@
     <!-- container -->
     <div class="container">
         <!-- row -->
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-md-12">
                 <ul class="breadcrumb-tree">
                     <li><a href="#">Home</a></li>
@@ -14,7 +14,7 @@
                     <li class="active">Headphones (227,490 Results)</li>
                 </ul>
             </div>
-        </div>
+        </div> --}}
         <!-- /row -->
     </div>
     <!-- /container -->
@@ -114,7 +114,9 @@
                                 </div>
                             </div>
                             <div class="add-to-cart">
-                                <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                                
+                                <a href="{{route('product',['page'=>$page, 'productName'=> Str::slug($product->name) ])}}">
+                                <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Mua Ngay</button></a>
                             </div>
                             <div class="promotion">
                                 @if ($product->promotion)
@@ -148,41 +150,6 @@
 </div>
 <!-- /SECTION -->
 
-<!-- NEWSLETTER -->
-<div id="newsletter" class="section">
-    <!-- container -->
-    <div class="container">
-        <!-- row -->
-        <div class="row">
-            <div class="col-md-12">
-                <div class="newsletter">
-                    <p>Sign Up for the <strong>NEWSLETTER</strong></p>
-                    <form>
-                        <input class="input" type="email" placeholder="Enter Your Email">
-                        <button class="newsletter-btn"><i class="fa fa-envelope"></i> Subscribe</button>
-                    </form>
-                    <ul class="newsletter-follow">
-                        <li>
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-pinterest"></i></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <!-- /row -->
-    </div>
-    <!-- /container -->
-</div>
-<!-- /NEWSLETTER -->
 @endsection
 @section('js')
 <script>

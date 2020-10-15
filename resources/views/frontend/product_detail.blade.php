@@ -78,7 +78,7 @@
 										<span class="qty-down">-</span>
 									</div>
 								</div>
-								<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+								<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>Mua Ngay</button>
 							</div>
 
 							<ul class="product-btns">
@@ -397,23 +397,74 @@
 					
 				</div>
 				<hr>
-				<div class="row">
-					<div class="col-md-12"></div>
+				<div class="row comment">
+					<div class="col-md-12">
+						<div>
+							<form action="" method="post">
+								<div class="row">
+									<div class="col-md-8">
+										<h4>Thêm bình luận:</h4>
+										<textarea class="user-comment" name="" id=""  rows="5" placeholder="Hãy nhập bình luận của bạn"></textarea>
+									</div>
+									<div class="col-md-4 info-user ">
+										<h4>Thông tin người gửi:</h4>
+										<input type="text"  class="form-control" 	name="user_name" 	id="name"  placeholder="Họ và tên (bắt buộc)">
+										<input type="email" class="form-control" 	name="user_email" 	id="email"  placeholder="Email">
+										<input type="text"  class="form-control" 	name="user_phone" 	id="phone"  placeholder="Số điện thoại">
+										<input type="submit" class="btn btn-primary btn-submit " value="Gửi">
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<span class="total-comment">Có 6.255 bình luận </span>
+						<ul class="list-comment">
+						<li class="comment_ask" id="">
+							<div class="row_user">
+								<span>A</span>
+								<strong>Lê Hải Anh</strong>
+							</div>
+							<div class="question">
+								Giữa s20+ với note 10+ thì nên chọn sản phẩm nào ạ
+							</div>
+						</li>
+						<li class="comment_ask" id="">
+							<div class="row_user">
+								<span>A</span>
+								<strong>Lê Hải Anh</strong>
+							</div>
+							<div class="question">
+								Giữa s20+ với note 10+ thì nên chọn sản phẩm nào ạ
+							</div>
+						</li><li class="comment_ask" id="">
+							<div class="row_user">
+								<span>A</span>
+								<strong>Lê Hải Anh</strong>
+							</div>
+							<div class="question">
+								Giữa s20+ với note 10+ thì nên chọn sản phẩm nào ạ
+							</div>
+						</li>
+					</ul>
+					</div>
+					
 				</div>
 			</div>
 			<!-- /container -->
 		</div>
     <!-- /SECTION -->
-    <!-- Section -->
+	<!-- Section -->
 		<div class="section">
 			<!-- container -->
 			<div class="container">
 				<!-- row -->
+				<hr>
 				<div class="row">
 
 					<div class="col-md-12">
 						<div class="section-title text-center">
-							<h3 class="title"></h3>
+							<h3 class="title">Sản Phẩm Liên Quan</h3>
 						</div>
 					</div>
 
@@ -441,7 +492,7 @@
 								</div>
 							</div>
 							<div class="add-to-cart">
-								<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+								<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>Mua Ngay</button>
 							</div>
 						</div>
 					</div>
@@ -477,7 +528,7 @@
 								</div>
 							</div>
 							<div class="add-to-cart">
-								<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+								<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>Mua Ngay</button>
 							</div>
 						</div>
 					</div>
@@ -512,7 +563,7 @@
 								</div>
 							</div>
 							<div class="add-to-cart">
-								<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+								<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>Mua Ngay</button>
 							</div>
 						</div>
 					</div>
@@ -539,7 +590,7 @@
 								</div>
 							</div>
 							<div class="add-to-cart">
-								<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+								<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>Mua Ngay</button>
 							</div>
 						</div>
 					</div>
