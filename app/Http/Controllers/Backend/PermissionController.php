@@ -34,7 +34,7 @@ class PermissionController extends Controller
 
     public function indexChildren($parent_id)
     {
-        $permissionParent = Permission::find(1);
+        $permissionParent = Permission::find($parent_id);
         $permissionChildren = Permission::where('parent_id', $parent_id)->get();
         $titlePage      = 'Danh Sách Quyền Con -- ';
         $data = [

@@ -25,6 +25,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
         $this->gateDefineUser();
+        $this->gateDefineLogin();
         //callback
     }
 
@@ -39,4 +40,8 @@ class AuthServiceProvider extends ServiceProvider
     }
 
     // function ...
+    public function gateDefineLogin(){
+        Gate::define('login_admin', function($user){ return $user->checkPermissionAccess('login_admin'); });
+        Gate::define('login_user', function($user){ return $user->checkPermissionAccess('login_user'); });
+    }
 }

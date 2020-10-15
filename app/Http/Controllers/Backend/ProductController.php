@@ -80,7 +80,6 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request)
     {
-        dd($request->all());
         try {
             DB::beginTransaction();
 
@@ -107,6 +106,7 @@ class ProductController extends Controller
                 'title'       => $request->title,
                 'promotion'   => $promotions,
                 'technical'   => $technicals,
+                'description' => $request->description,
                 'created_by'  => $this->info('id')
             ];
             $product = Product::create($data);
@@ -132,6 +132,7 @@ class ProductController extends Controller
             return redirect()->route('admin.product.list');
         } catch (\Exception $e) {
             DB::rollback();
+            dd($e->getMessage());
             return redirect()->back()->with('error', 'Tạo mới sản phẩm thất bại')->withInput();
         }
     }
@@ -194,7 +195,6 @@ class ProductController extends Controller
             'brands'       => $brands,
             'htmlOption'   => $recursiveCategory
         ];
-
         return view('admin.product.edit', $data);
     }
 
@@ -220,6 +220,7 @@ class ProductController extends Controller
                 'title'       => $request->title,
                 'promotion'   => $promotions,
                 'technical'   => $technicals,
+                'description' => $request->description,
                 'updated_at'    => now()
             ];
 
