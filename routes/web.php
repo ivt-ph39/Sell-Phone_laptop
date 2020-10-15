@@ -73,14 +73,15 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::delete('slider/{id}/delete', 'Backend\SliderController@delete')->name('admin.slider.delete');
     //-----------users-------------
 
-    Route::get('user/list' , 'Backend\UserController@index')->name('admin.user.list')->middleware('can:user_list');
-    Route::get('user/list/onlyTrashed' , 'Backend\UserController@onlyTrashed')->name('admin.user.onlyTrashed');
-    Route::get('user/create' , 'Backend\UserController@create')->name('admin.user.create');
-    Route::post('user/store' , 'Backend\UserController@store')->name('admin.user.store');
-    Route::get('user/{user}/edit' , 'Backend\UserController@edit')->name('admin.user.edit');
+    Route::get('user/list', 'Backend\UserController@index')->name('admin.user.list')->middleware('can:user_list');
+    Route::get('user/list/onlyTrashed', 'Backend\UserController@onlyTrashed')->name('admin.user.onlyTrashed');
+    Route::get('user/cre    ate', 'Backend\UserController@create')->name('admin.user.create');
+    Route::post('user/store', 'Backend\UserController@store')->name('admin.user.store');
+    Route::get('user/{user}/edit', 'Backend\UserController@edit')->name('admin.user.edit');
 
     Route::put('user/{user}/update', 'Backend\UserController@update')->name('admin.user.update');
     Route::delete('user/{user}/delete', 'Backend\UserController@destroy')->name('admin.user.delete');
+
     Route::get('user/{id}/restore', 'Backend\UserController@restore')->name('admin.user.restore');
     Route::delete('user/{id}/hardDelete', 'Backend\UserController@hardDelete')->name('admin.user.hardDelete');
     //-----------roles---------------
@@ -104,7 +105,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
 
 // ------------------------- FrontEnd ----------------------
 
-// ---Register-User--------
+// ---------Register-User--------
 Route::post('dang-ky', 'Frontend\UserController@register')->name('user_login');
 Route::get('/', 'Frontend\HomeController@index')->name('home');
 Route::get('/{page}', 'Frontend\StoreController@index')->name('store');
