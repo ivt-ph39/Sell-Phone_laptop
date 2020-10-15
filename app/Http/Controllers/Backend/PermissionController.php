@@ -13,7 +13,6 @@ class PermissionController extends Controller
     public function infoUser($value)
     {
         return Auth::user()->$value;
-        
     }
     /**
      * Display a listing of the resource.
@@ -74,6 +73,7 @@ class PermissionController extends Controller
      */
     public function storeParent(Request $request)
     {
+        dd($request->all());
         $data = $request->all();
         Permission::create($data);
         return redirect()->route('admin.permission.list');

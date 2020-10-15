@@ -79,6 +79,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::get('user/{user}/edit' , 'Backend\UserController@edit')->name('admin.user.edit');
     Route::put('user/{user}/update', 'Backend\UserController@update')->name('admin.user.update');
     Route::delete('user/{user}/delete', 'Backend\UserController@destroy')->name('admin.user.delete');
+
     Route::get('user/{id}/restore', 'Backend\UserController@restore')->name('admin.user.restore');
     Route::delete('user/{id}/hardDelete', 'Backend\UserController@hardDelete')->name('admin.user.hardDelete');
     //-----------roles---------------
@@ -100,7 +101,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
 });
 // ------------------------- FrontEnd ----------------------
 
-// ---Register-User--------
+// ---------Register-User--------
 Route::post('dang-ky', 'Frontend\UserController@register')->name('user_login');
 Route::get('/', 'Frontend\HomeController@index')->name('home');
 Route::get('/{page}', 'Frontend\StoreController@index')->name('store');
