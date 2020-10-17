@@ -13,11 +13,11 @@
                 @method('PUT')
                 <div class="form-group">
                     <label>Tên vai trò</label>
-                    <input type="text" name="name" value="{{ $role->name }}" class="form-control">
+                    <input type="text" name="name" value="{{ $role->name }}" class="form-control" placeholder="(*) admin " required>
                 </div>
                 <div class="form-group">
                     <label>Mô tả vai trò</label>
-                    <textarea type="text" name="description" class="form-control">{{ $role->description }}</textarea>
+                    <textarea type="text" name="description" class="form-control" placeholder="(*) Quan tri vien" required>{{ $role->description }}</textarea>
                 </div>
                 <div class="card mb-3 bg-success">
                     <div class="card-body">

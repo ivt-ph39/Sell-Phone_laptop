@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreatePermissionChildrenRequest;
+use App\Http\Requests\CreatePermissionRequest;
 use App\Model\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -71,15 +73,14 @@ class PermissionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function storeParent(Request $request)
+    public function storeParent(CreatePermissionRequest $request)
     {
-        dd($request->all());
         $data = $request->all();
         Permission::create($data);
         return redirect()->route('admin.permission.list');
     }
 
-    public function storeChildren(Request $request)
+    public function storeChildren(CreatePermissionChildrenRequest $request)
     {
         $data = $request->all();
         $permission = Permission::create($data);
@@ -124,11 +125,18 @@ class PermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Permission $permission)
+    public function updateChildren(CreatePermissionChildrenRequest $request, Permission $permission)
     {
         $data = $request->all();
         $permission->update($data);
         return redirect()->route('admin.permission.listChildren', ['parent_id' => $permission->parent_id]);
+    }
+
+    public function updateParent(CreatePermissionRequest $request, Permission $permission)
+    {
+        $data = $request->all();
+        $permission->update($data);
+        return redirect()->route('admin.permission.list');
     }
 
     /**
