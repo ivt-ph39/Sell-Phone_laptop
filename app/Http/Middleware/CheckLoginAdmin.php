@@ -18,15 +18,15 @@ class CheckLoginAdmin
      */
     public function handle($request, Closure $next)
     {
-        if (!Auth::check()) {
+        if (Auth::check()) {
             $roles = User::find(Auth::user()->id)->roles()->get();
             foreach ($roles as $role) {
                 $permissionUser = $role->permissions()->get();
                 if ($permissionUser->contains('keycode', 'login_admin')) {
-                    return redirect('admin/login');
+                    return $next($request);
                 }
             }
         }
-        return $next($request);
+        return redirect('admin/login');
     }
 }
