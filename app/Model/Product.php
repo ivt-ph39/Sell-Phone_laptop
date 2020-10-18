@@ -87,7 +87,13 @@ class Product extends Model
     {
         return $this->belongsToMany('App\Model\Tag', 'product_tag', 'product_id', 'tag_id')->withTimestamps();
     }
-    public function comments(){
-        return $this->hasMany('App\Model\Comment', 'product_id');
+
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class, 'product_id');
+    }
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'product_id');
     }
 }

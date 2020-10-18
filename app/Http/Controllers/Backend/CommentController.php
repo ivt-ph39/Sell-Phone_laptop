@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Model\Comment;
+
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
 class CommentController extends Controller
 {
     public function infoUser($value)
@@ -29,69 +30,40 @@ class CommentController extends Controller
         return view('admin.comment.list', $data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function store(Request $request, Comment $comment, User $user)
     {
-        //
-    }
+        if ($request->id) {
+            $user = $user->find($request->id);
+            $data = [
+                'name'          => $user->name,
+                'email'         => $user->email,
+                'phone'         => $user->phone,
+                'content'       => $request->content,
+                'product_id'    => $request->product_id,
+                'user_id'       => $request->id
+            ];
+            $comment = $comment->create($data);
+        } else {
+            $data = $request->all();
+            $comment = $comment->create($data);
+        }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        if ($comment) {
+            return response()->json([
+                'success' => true,
+                'dataComment' => [
+                    'name'    => $comment->name,
+                    'content' => $comment->content,
+                    'id'      => $comment->id
+                ]
+            ], 200);
+        } else {
+            return response()->json([
+                'error' => true,
+            ], 200);
+        }
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+  
+  
 }
+
