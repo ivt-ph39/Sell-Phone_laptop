@@ -1,4 +1,11 @@
 @extends('frontend.layouts.master')
+@section('css')
+	<style>
+		.sub_comment{
+			margin-left: 7%;
+		}
+	</style>
+@endsection
 @section('main')
     <!-- SECTION -->
 		<div class="section">
@@ -13,7 +20,7 @@
 								<img src="{{asset("frontend/img/product01.png")}}" alt="">
 							</div>
 
-							<div class="product-preview">
+			 				<div class="product-preview">
 								<img src="{{asset("frontend/img/product03.png")}}" alt="">
 							</div>
 
@@ -400,17 +407,31 @@
 				<div class="row comment">
 					<div class="col-md-12">
 						<div>
-							<form action="" method="post">
+							<form action="" id="form_comment" method="post">
+								@csrf
 								<div class="row">
 									<div class="col-md-8">
 										<h4>Thêm bình luận:</h4>
-										<textarea class="user-comment" name="" id=""  rows="5" placeholder="Hãy nhập bình luận của bạn"></textarea>
+										<textarea class="user-comment" name="content" rows="5" placeholder="Hãy nhập bình luận của bạn" required>{{ old('content') }}</textarea>
+											@if ($errors->has('content'))
+												<span style="color: rgb(238, 94, 94)">{{ $errors->first('content') }}</span>
+											@endif
 									</div>
 									<div class="col-md-4 info-user ">
 										<h4>Thông tin người gửi:</h4>
-										<input type="text"  class="form-control" 	name="user_name" 	id="name"  placeholder="Họ và tên (bắt buộc)">
-										<input type="email" class="form-control" 	name="user_email" 	id="email"  placeholder="Email">
-										<input type="text"  class="form-control" 	name="user_phone" 	id="phone"  placeholder="Số điện thoại">
+										<input type="hidden" name="product_id" value="1">
+										<input type="text"  class="form-control" 	name="name" value="{{ old('name') }}"	id="name"  placeholder="Họ và tên (bắt buộc)" required>
+											@if ($errors->has('name'))
+												<span style="color: rgb(238, 94, 94)">{{ $errors->first('name') }}</span>
+											@endif
+										<input type="email" class="form-control" 	name="email" value="{{ old('email') }}"	id="email"  placeholder="Email" required>
+											@if ($errors->has('email'))
+												<span style="color: rgb(238, 94, 94)">{{ $errors->first('email') }}</span>
+											@endif
+										<input type="text"  class="form-control" 	name="phone" value="{{ old('phone') }}"	id="phone"  placeholder="Số điện thoại" required>
+											@if ($errors->has('phone'))
+												<span style="color: rgb(238, 94, 94)">{{ $errors->first('phone') }}</span>
+											@endif
 										<input type="submit" class="btn btn-primary btn-submit " value="Gửi">
 									</div>
 								</div>
@@ -428,6 +449,17 @@
 							<div class="question">
 								Giữa s20+ với note 10+ thì nên chọn sản phẩm nào ạ
 							</div>
+								<ul>
+									<li class="sub_comment" id="">
+										<div class="row_user">
+											<span>A</span>
+											<strong>QTV</strong>
+										</div>
+										<div class="question">
+											Giữa s20+ với note 10+ thì nên chọn sản phẩm nào ạ
+										</div>
+									</li>
+								</ul>
 						</li>
 						<li class="comment_ask" id="">
 							<div class="row_user">
@@ -604,5 +636,5 @@
 	<!-- /Section -->
 @endsection
 @section('js')
-    
+	
 @endsection
