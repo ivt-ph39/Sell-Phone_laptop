@@ -48,16 +48,26 @@ class User extends Authenticatable
     }
 
 
-    public function checkPermissionAccess($permissionCheck){
+    public function checkPermissionAccess($permissionCheck)
+    {
         //take all vai tro cua 1 user
         //check tat ca quyen cua vai tro Neu nhu ton tai permission thi return true
         $roles = User::find(Auth::user()->id)->roles()->get();
-        foreach($roles as $role){
+        foreach ($roles as $role) {
             $permissionUser = $role->permissions()->get();
-            if($permissionUser->contains('keycode', $permissionCheck)){
+            if ($permissionUser->contains('keycode', $permissionCheck)) {
                 return true;
             }
         }
         return false;
+    }
+    public function getLastName()
+    {
+
+        $nameArr = explode(" ", $this->name);
+
+        $lastName = array_pop($nameArr);
+
+        return ucfirst($lastName);
     }
 }

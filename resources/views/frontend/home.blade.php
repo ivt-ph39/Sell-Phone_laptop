@@ -73,7 +73,7 @@
 											<div class="product-body">
 												<h3 class="product-name"><a href="{{route('product',['page'=>Str::slug($product->category->name),'productName'=>Str::slug($product->name)])}}">{{$product->name}}</a></h3>
 												@if ($product->sale['base'] != 0)
-													<h4 class="product-price">{!!$product->price['format']!!}<del class="product-old-price">{{number_format($product->price['base']*(100-$product->sale['base'])/100, 0, '.', ',')}}</del></h4>
+													<h4 class="product-price">{{number_format($product->price['base']*(100-$product->sale['base'])/100, 0, '.', ',')}}<del class="product-old-price">{!!$product->price['format']!!}</del></h4>
 												@else
 													<h4 class="product-price">{!!$product->price['format']!!}</h4>
 												@endif
@@ -88,7 +88,8 @@
 												</div>
 											</div>
 											<div class="add-to-cart">
-												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>Mua Ngay</button>
+												<a href="{{route('product',['page'=>Str::slug($product->category->name),'productName'=>Str::slug($product->name)])}}"><button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>Mua Ngay</button></a>
+												
 											</div>
 											<div class="promotion">
 												@if ($product->promotion)
@@ -225,7 +226,8 @@
 												</div>
 											</div>
 											<div class="add-to-cart">
-												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Mua Ngay</button>
+												<a href="{{route('product',['page'=>Str::slug($product->category->name),'productName'=>Str::slug($product->name)])}}"><button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Mua Ngay</button></a>
+												
 											</div>
 											<div class="promotion">
 												@if ($product->promotion)
@@ -548,42 +550,6 @@
 			<!-- /container -->
 		</div>
 		<!-- /SECTION -->
-
-		<!-- NEWSLETTER -->
-		{{-- <div id="newsletter" class="section">
-			<!-- container -->
-			<div class="container">
-				<!-- row -->
-				<div class="row">
-					<div class="col-md-12">
-						<div class="newsletter">
-							<p>Sign Up for the <strong>NEWSLETTER</strong></p>
-							<form>
-								<input class="input" type="email" placeholder="Enter Your Email">
-								<button class="newsletter-btn"><i class="fa fa-envelope"></i> Subscribe</button>
-							</form>
-							<ul class="newsletter-follow">
-								<li>
-									<a href="#"><i class="fa fa-facebook"></i></a>
-								</li>
-								<li>
-									<a href="#"><i class="fa fa-twitter"></i></a>
-								</li>
-								<li>
-									<a href="#"><i class="fa fa-instagram"></i></a>
-								</li>
-								<li>
-									<a href="#"><i class="fa fa-pinterest"></i></a>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-				<!-- /row -->
-			</div>
-			<!-- /container -->
-		</div> --}}
-		<!-- /NEWSLETTER -->
 @endsection
 @section('js')
 	<script src="frontend/home/home.js"></script>

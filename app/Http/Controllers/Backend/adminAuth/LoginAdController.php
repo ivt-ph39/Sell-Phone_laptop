@@ -21,7 +21,7 @@ class LoginAdController extends Controller
             return redirect('admin/home');
         } else {
             $login_false = 'Email hoặc Password không chính xác';
-            return redirect('admin/login')->with('login_false', $login_false);
+            return redirect('admin/login')->with('login_false', $login_false)->withInput();
         }
     }
     public function logout()

@@ -30,7 +30,7 @@
     <form action="{{route('admin.store')}}" method="post">
       @csrf
         <div class="input-group mb-3">
-          <input type="text" class="form-control" name="email" placeholder="Email">
+          <input type="text" class="form-control" name="email" placeholder="Email" value="{{old('email')}}">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
@@ -62,7 +62,7 @@
         </div>
       </form>
       @if (session('login_false'))
-          <div class=" mt-2 mt-2 text-danger"><i class="fas fa-times fa-2x mr-3"></i>{{session('login_false')}}</div>
+          <div class=" mt-2 mt-2 text-danger">{{session('login_false')}}</div>
       @endif 
       <a href="{{route('admin.password.reset')}}">Quên mật khẩu?&nbsp;</a>
       <a href="{{route('admin.register')}}" class="text-center">Đăng kí mới ?</a>

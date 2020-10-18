@@ -44,13 +44,17 @@
 						<li><a href="#"><i class="fa fa-map-marker"></i> 1734 Stonecoal Road</a></li>
 					</ul>
 					<ul class="header-links pull-right">
-						<li><a href="#" data-toggle="modal" data-target="#registerAccount"><i class="fa fa-user-o"></i> Đăng kí</a></li>
-						<li><a href="#" data-toggle="modal" data-target="#loginAccount"><i class="fas fa-sign-in-alt"></i> Đăng nhập</a></li>
+						@if (Auth::check())
+							<li><a href="#" data-toggle="modal" data-target="#loginAccount"><b>Hi</b> {{  Auth::user()->getLastName()}}</a></li>
+						@else
+							<li><a href="#" data-toggle="modal" data-target="#registerAccount"><i class="fa fa-user-o"></i> Đăng kí</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#loginAccount"><i class="fas fa-sign-in-alt"></i> Đăng nhập</a></li>
+						@endif
 						<li class="account"><a href="#" ><i class="fas fa-user-cog"></i> Tài Khoản</a>
-								<ul id="account-info" >
-									<li><i class="fas fa-sign-out-alt"></i><a href="">Đăng xuất</a></li>
-									<li><i class="fas fa-user-cog"></i><a href="">Quản lí tài khoản</a></li>	
-								</ul>
+							<ul id="account-info" >
+								<li><i class="fas fa-sign-out-alt"></i><a href="" id="logoutAccount">Đăng xuất</a></li>
+								<li><i class="fas fa-user-cog"></i><a href="">Quản lí tài khoản</a></li>	
+							</ul>
 						</li>
 					</ul>
 				</div>
@@ -90,10 +94,10 @@
 									<a href="" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
 										<i class="fa fa-shopping-cart"></i>
 										<span>Giỏ hàng</span>
-										<div class="qty">3</div>
+										{{-- <div class="qty"></div> --}}
 									</a>
 									<div class="cart-dropdown">
-										<div class="cart-list">
+										{{-- <div class="cart-list">
 											<div class="product-widget">
 												<div class="product-img">
 													<img src="{{asset("frontend/img/product01.png")}}" alt="">
@@ -120,7 +124,8 @@
 										</div>
 										<div class="cart-btns">
 											<a href="#">Xem chi tiết  <i class="fa fa-arrow-circle-right"></i></a>
-										</div>
+										</div> --}}
+										<img src="{{asset('frontend/img/117-1170538_404-your-cart-is-empty.png')}}" width="100%" alt="">
 									</div>
 								</div>
 								<!-- /Cart -->
@@ -186,7 +191,7 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						<form >
+						<form id="form-register">
 							<div class="form-group">
 							  <input type="text"
 								class="form-control" name="u-name" id="u-name" aria-describedby="helpId" placeholder="Họ và tên">
@@ -240,19 +245,19 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						<form action="" method="post">
+						<form action="" method="post" id="form-login">
 							<div class="form-group">
 							  <input type="email"
-								class="form-control" name="u-email" id="" aria-describedby="helpId" placeholder="Email">
+								class="form-control" name="u-email" id="u-email" aria-describedby="helpId" placeholder="Email">
 							</div>
 							<div class="form-group">
 							  <input type="password"
-								class="form-control" name="u-password" id="" aria-describedby="helpId" placeholder="Mật khẩu">
+								class="form-control" name="u-password" id="u-password" aria-describedby="helpId" placeholder="Mật khẩu">
 							</div>
 						</form>
 					</div>
 					<div class="modal-footer ">
-						<button type="button" class="btn btn-primary">Đăng nhập</button>
+						<button type="button" id="submit-login" class="btn btn-primary">Đăng nhập</button>
 					</div>
 					</div>
 				</div>
@@ -364,9 +369,114 @@
 		<script src="{{asset("frontend/js/jquery.zoom.min.js")}}"></script>
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
         <script src="{{asset("frontend/js/main.js")}}"></script>
-		@yield('js')
+		
 		<script>
 			$(document).ready(function(){
+				showCart();
+				$(document).on('click','.add',function(e){
+					e.preventDefault();
+					var quantityCurrent = $(this).prev().val();
+
+					$(this).prev().val( ++quantityCurrent) ;
+
+					var quantity = $(this).prev().val();
+					var product_id = $(this).prev().attr('data-id');
+
+					cart = JSON.parse(localStorage.getItem('cart'));
+
+					cartNew = updateProductQuantity(cart,product_id, quantity);
+
+					localStorage.setItem('cart', JSON.stringify(cartNew));
+					showCart();
+					showCartMini();
+
+				})
+				$(document).on('click','.minus',function(e){
+					e.preventDefault();
+					var quantityCurrent = $(this).next().val();
+					if(quantityCurrent <= 1){
+						Swal.fire(
+						'Sorry !',
+						'Số lượng sản phẩm không nhỏ hơn 1?',
+						'warning'
+						)
+					}else{
+						$(this).next().val( --quantityCurrent) ;
+
+						var quantity = $(this).next().val()
+
+						var product_id = $(this).next().attr('data-id');
+
+						cart = JSON.parse(localStorage.getItem('cart'));
+
+						cartNew = updateProductQuantity(cart,product_id, quantity);
+
+						localStorage.setItem('cart', JSON.stringify(cartNew));
+						showCartMini();
+						showCart();
+					}
+				
+				})
+				$(document).on('change','#quantity',function(e){
+					product_id = $(this).attr('data-id');
+					cart = JSON.parse(localStorage.getItem('cart'));
+
+					quantity_old = getQuantityOld(product_id,cart);
+
+					quantity = $(this).val();
+					console.log("type"+ typeof(quantity));
+					if(quantity < 1){
+						Swal.fire(
+						'Sorry !',
+						'Số lượng sản phẩm không nhỏ hơn 1 !',
+						'warning'
+						);
+						quantity = quantity_old;
+					}else if(typeof(quantity) != 'number'){
+						Swal.fire(
+						'Sorry !',
+						'Số lượng sản phẩm phải là 1 số  nguyên!',
+						'warning'
+						);
+						quantity = quantity_old;
+					}
+
+					cartNew = updateProductQuantity(cart,product_id,quantity);
+					localStorage.setItem('cart', JSON.stringify(cartNew));
+					showCart();
+					showCartMini();
+
+				})
+				$(document).on('click','#delete-item',function(e){
+					e.preventDefault();
+					Swal.fire({
+						title: 'Xóa ?',
+						text: "Bạn muốn xóa sản phẩm khỏi giỏ hàng ?",
+						icon: 'warning',
+						showCancelButton: true,
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						confirmButtonText: 'Xóa',
+						cancelButtonText: 'Không',
+						}).then((result) => {
+						if (result.isConfirmed) {
+							Swal.fire(
+							'Đã xóa!',
+							'Sản phẩm đã được xóa khỏi giỏ hàng.',
+							'success'
+							)
+						}
+					})
+					product_id = $(this).attr('data-id');
+					cart = JSON.parse(localStorage.getItem('cart'));
+					cartNew = deleteItem(cart, product_id);
+					localStorage.setItem('cart', JSON.stringify(cartNew));
+					showCart();
+					showCartMini();
+				})
+			})
+			$(document).ready(function(){
+				showCartMini();
 				$('#submit-register').on('click',function(e){
 					e.preventDefault();
 					u_name = $('input#u-name').val();
@@ -375,17 +485,13 @@
 					u_password_confirm = $('input#u-password-confirm').val();
 					u_address = $('input#u-address').val();
 					u_phone = $('input#u-phone').val();
-					console.log(u_password, u_password_confirm);
-					// validateErr = isRequired('input#u-name','Họ và tên') + isRequired('input#u-email','Email') + isEmail('input#u-email') + isRequired('input#u-password','Mật khẩu') + isRequired('input#u-address','Địa chỉ') +isRequired('input#u-phone','Số điện thoại');
-
-					// if(validateErr == 0){
 						$.ajaxSetup({
 							headers: {
 								'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 							}
 						});
 						$.ajax({
-							url  : "{{ route('user_login') }}",
+							url  : "{{ route('user_register') }}",
 							data : {
 								'name'		: u_name,
 								'email'		: u_email,
@@ -401,6 +507,8 @@
 									'Xin chúc mừng!',
 									'Bạn đã tạo tài khoảng thành công!'
 									);
+									$("#form-register").trigger("reset");
+									$('#registerAccount').modal('hide');
 								}
 								if(data.error == true){
 									if(data.message.name){
@@ -436,30 +544,219 @@
 								}
 							}
 						})
-					// }
 				})
-				function isRequired(value,nameField){
-					if($(value).val() == ''){
-						$(value).siblings().text(nameField +' không được để trống');
-						return 1;
-					}else{
-						$(value).siblings().text('');
-						return 0;
+				$("#submit-login").on('click',function(e){
+					e.preventDefault();
+					u_email = $('#loginAccount input#u-email').val();
+					u_password = $('#loginAccount input#u-password').val();
+					$.ajaxSetup({
+						headers: {
+							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+						}
+					});
+					// console.log(u_email, u_password)
+					$.ajax({
+						url: "{{route('user_login')}}",
+						data : {
+							'email'		: u_email,
+							'password'	: u_password,
+						},
+						type: 'post',
+						success: function(data) {
+							if(data.success == true){
+								Swal.fire(
+								'Xin chúc mừng!',
+								'Bạn đã đăng nhập thành công!'
+								);
+								$("#form-login").trigger("reset");
+								$('#loginAccount').modal('hide');
+								location.reload();
+							};
+							if(data.error == true){
+								Swal.fire({
+								icon: 'error',
+								title: 'Đăng nhập thất bại',
+								text: 'Email hoặc Password không chính xác !',
+								})
+							}
+							if(data.success){
+								console.log(data.user);
+							}
+						}
+					})
+				})
+				$("#logoutAccount").on('click',function(e){
+					e.preventDefault();
+					Swal.fire({
+					title: 'Bạn muốn đăng xuất ?',
+					// text: "You won't be able to revert this!",
+					icon: 'question',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'Đăng xuất!'
+					}).then((result) => {
+					if (result.isConfirmed) {
+
+						$.ajax({
+							url : "{{route('user_logout')}}",
+							type:'get',
+							success :function(data){
+								console.log(data.success);
+							}
+						})
+						Swal.fire(
+						'Thành công',
+						'Tài khoảng của bạn đã được đăng xuất.',
+						'success'
+						)
+						location.reload();
+					}
+					})
+				})
+			})
+				//show sabr phẩm đã chọn trên head
+				function showCartMini(){
+					dataCart = JSON.parse(localStorage.getItem('cart'));
+					htmlCartList = '<div class="cart-list">';
+					// if(dataCart == null){
+					// 	return null;
+					// }
+					if(dataCart.length != 0){
+						total_amount = 0;
+						total_item   = 0;
+						$.each(dataCart,function(key,item){
+							total_amount += item.price_old*item.quantity ;
+							total_item   += parseInt(item.quantity);
+							
+
+							htmlCartList += '<div class="product-widget">'
+												+'<div class="product-img">'
+													+'<img src="'+item.image+'" alt="">'
+												+'</div>'
+												+'<div class="product-body">'
+													+'<h3 class="product-name"><a href="#">'+item.name+'</a></h3>'
+													+'<h4 class="product-price"><span class="qty">'+item.quantity+' x</span>'+ formatCurrency(item.price_old*item.quantity) +'</h4>'
+												+'</div>'
+											+'</div>';
+						});
+						htmlCartList += '</div>';
+						
+						htmlCart = htmlCartList
+								+'<div class="cart-summary">'
+									+'<p>Đã mua ('+total_item+') sản phẩm</p>'
+									+'<h5>Tổng Tiền: '+formatCurrency(total_amount)+'</h5>'
+								+'</div>'
+								+'<div class="cart-btns">'
+									+'<a href="{{route("cart")}}"> Xem chi tiết  <i class="fa fa-arrow-circle-right"></i></a>'
+								+'</div>';
+						$('.cart-dropdown').html('');
+						$('.cart-dropdown').html(htmlCart);
+						$('.dropdown a').append('<div class="qty">'+total_item+'</div>');
 					}
 				}
-				function isEmail(value) {
-					if(isRequired(value,'Email') == 0){
-						email = $(value).val();
-						var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-						if(!regex.test(email)) {
-							$(value).siblings().text('Email không hợp lệ');
-							return 1;
-						}else{
-							$(value).siblings().text('');
-							return 0;
-						}
-					}return 0;
+				// show sản phẩm ở trang Cart
+				function showCart(){
+					dataCart = JSON.parse(localStorage.getItem('cart'));
+
+					htmlCart = '';
+					
+					if(dataCart.length != 0){
+						total_amount = 0;
+						$.each(dataCart,function(key,item){
+							total_amount += item.price_old*item.quantity ;
+							htmlCart +=
+								'<tr>'
+									+'<th scope="row">'+ ++key +'</th>'
+									+'<td><strong>'+ item.name +'</strong></td>'
+									+'<td><img class="img-thumbnail" src="'+ item.image +'" style="width: 100px" ></td>'
+									+'<td class="price">'+ formatCurrency(item.price_old) +'<sup>đ</sup></td>'
+									+'<td>'
+										+'<div class="quantity">'
+										+'<button class="btn minus"><i class="fas fa-minus"></i></button>'
+										+'<input id="quantity"  min="0" value="'+ item.quantity+'" data-id="'+item.id+'" type="number">'
+										+'<button class="btn add"><i class="fas fa-plus"></i></button>'
+										+'</div>'
+									+'</td>'
+									+'<td class="price">'+ formatCurrency(item.price_old*item.quantity) +'<sup>đ</sup></td>'
+									+'<td class="delete-item" id ="delete-item" data-id="'+item.id+'"><i class="fas fa-trash-alt"></i></td>'
+								+'</tr>';
+						})
+					}else{
+						htmlCart = '<tr>'
+									+'<td colspan="6" ><h4 class="text text-danger"> Giỏ hàng của bạn đang rỗng</h4>'
+										+'<a href = "{{route("home")}}"  class="btn btn-primary">'
+											+'Quay về trang chủ'
+										+'</a>';
+									+'</td></tr>'
+						total_amount = 0;
+					} 
+
+					$(".total .price").html('');
+					$(".total .price").prepend(formatCurrency(total_amount)+'<sup>đ</sup>');
+
+					$('.items_cart').html('');
+					$('tbody').prepend(htmlCart);
 				}
-			})
+				//kiểm tra spham đã được add vào giỏ hàng chưa
+				
+				// format tiền tệ
+				function formatCurrency(number){
+							number = number.toString();
+							var n   = number.split('').reverse().join("");
+							var n2  = n.replace(/\d\d\d(?!$)/g, "$&.");    
+							var n3  = n2.split('').reverse().join('');
+							return  n3;
+				}
+				// update số lượng sản phẩm
+				function updateProductQuantity(cart,product_id,quantity){
+					quantity = parseInt(quantity);
+					
+					var index = checkProductExist(cart,product_id);
+					console.log(index,cart,product_id);
+					cart[index]['quantity'] = quantity;
+					return cart;
+				}
+				function checkProductExist(cart,product_id){
+					console.log(cart,product_id);
+					
+					for (var i = 0; i < cart.length; i++) {
+						if (cart[i]['id'] == product_id){
+							return i;
+						} else {
+							continue;
+						}
+					};
+					return false;
+				}
+				// xóa sản phẩm ra khỏi giỏ hàng
+				function deleteItem(cart, product_id){
+					var index = checkProductExist(cart,product_id);
+					cart.splice(index,1)
+					return cart;
+				}
+				// lấy số lương sản phẩm trước khi thay đổi
+				function getQuantityOld(product_id,cart){
+					for (var i = 0; i < cart.length; i++) {
+						if (cart[i]['id'] == product_id){
+							return cart[i]['quantity'];
+						} else {
+							continue;
+						}
+					};
+					return false;
+				}
+				// add spham vào giỏ hàng
+				function addToCart(cart,product){
+					var index = checkProductExist(cart,product);
+					if (index === false){
+						cart.push(product);
+					} else {
+						cart[index]['quantity']++;
+					}
+					return cart;
+				}
 		</script>
+		@yield('js')
+
 </html>

@@ -81,7 +81,7 @@
         centerMode: true,
         focusOnSelect: true,
         centerPadding: 0,
-        vertical: true,
+        vertical: false,
         asNavFor: '#product-main-img',
         responsive: [{
             breakpoint: 991,
@@ -94,10 +94,10 @@
     });
 
     // Product img zoom
-    var zoomMainProduct = document.getElementById('product-main-img');
-    if (zoomMainProduct) {
-        $('#product-main-img .product-preview').zoom();
-    }
+    // var zoomMainProduct = document.getElementById('product-main-img');
+    // if (zoomMainProduct) {
+    //     $('#product-main-img .product-preview').zoom();
+    // }
 
     /////////////////////////////////////////
 
