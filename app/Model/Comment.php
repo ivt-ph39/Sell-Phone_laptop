@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
+
     protected $table = 'comments';
     protected $fillable = ['name', 'email', 'phone', 'content', 'user_id', 'product_id'];
 
@@ -15,4 +16,8 @@ class Comment extends Model
         $lastName = array_pop($nameArr);
         return ucwords($lastName[0]);
     }
+    public function products(){
+        return $this->belongsTo('App\Model\Product', 'product_id');
+    }
 }
+

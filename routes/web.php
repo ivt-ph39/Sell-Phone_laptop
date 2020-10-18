@@ -95,8 +95,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::post('permission/storeParent', 'Backend\PermissionController@storeParent')->name('admin.permission.storeParent');
     Route::post('permission/storeChildren', 'Backend\PermissionController@storeChildren')->name('admin.permission.storeChildren');
     Route::get('permission/{permission}/edit', 'Backend\PermissionController@edit')->name('admin.permission.edit');
-    Route::put('permission/{permission}/update', 'Backend\PermissionController@update')->name('admin.permission.update');
+    Route::put('permission/{permission}/updateChildren', 'Backend\PermissionController@updateChildren')->name('admin.permission.updateChildren');
+    Route::put('permission/{permission}/updateParent', 'Backend\PermissionController@updateParent')->name('admin.permission.updateParent');
     Route::delete('permission/{permission}/delete', 'Backend\PermissionController@destroy')->name('admin.permission.delete');
+    //------------comment----------------
+    Route::get('comment/list' , 'Backend\CommentController@index')->name('admin.comment.list');
 });
 // ------------------------- FrontEnd ----------------------
 
@@ -113,6 +116,7 @@ Route::post('create-comment', 'Backend\CommentController@store')->name('comment_
 Route::post('create-rating', 'Backend\RatingControllser@store')->name('rating_store');
 
 // ---------End--Comment-User--------
+
 Route::get('/', 'Frontend\HomeController@index')->name('home');
 Route::get('/gio-hang', 'Frontend\CartController@index')->name('cart');
 

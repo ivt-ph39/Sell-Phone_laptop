@@ -87,6 +87,7 @@ class Product extends Model
     {
         return $this->belongsToMany('App\Model\Tag', 'product_tag', 'product_id', 'tag_id')->withTimestamps();
     }
+
     public function ratings()
     {
         return $this->hasMany(Rating::class, 'product_id');

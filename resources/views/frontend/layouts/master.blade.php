@@ -9,6 +9,8 @@
 
 		<title>Electro - HTML Ecommerce Template</title>
 
+		
+
 		<!-- Google font -->
 		<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
 
@@ -31,6 +33,7 @@
 
 		<!-- Custom stlylesheet -->
 		<link type="text/css" rel="stylesheet" href="{{asset("frontend/css/style.css")}}"/>
+		@yield('css')
     </head>
     <body>
     	<!-- HEADER -->
@@ -361,6 +364,7 @@
 		</footer>
 		<!-- /FOOTER -->
 	<!-- jQuery Plugins -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script src="{{asset("frontend/js/jquery.min.js")}}"></script>
         <script src="{{asset("frontend/js/bootstrap.min.js")}}"></script>
         <script src="{{asset("owlcarousel/owl.carousel.min.js")}}"></script>

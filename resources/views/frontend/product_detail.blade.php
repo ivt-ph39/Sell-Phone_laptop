@@ -1,4 +1,11 @@
 @extends('frontend.layouts.master')
+@section('css')
+	<style>
+		.sub_comment{
+			margin-left: 7%;
+		}
+	</style>
+@endsection
 @section('main')
 	@if (isset($product))
     <!-- SECTION -->
@@ -724,4 +731,5 @@
 			});
 		})
 	</script>
+
 @endsection

@@ -18,16 +18,16 @@ class RoleSeeder extends Seeder
                 'description' => 'Quản trị hệ thống',
             ],
             [
-                'name' => 'guest',
-                'description' => 'Khách Hàng',
-            ],
-            [
                 'name' => 'dev',
                 'description' => 'Phát triển hệ Thống',
             ],
             [
                 'name' => 'content',
                 'description' => 'Quản lý nội dung',
+            ],
+            [
+                'name' => 'editor',
+                'description' => 'Chỉnh sửa nội dung',
             ],
         ];
         Role::insert($data);
