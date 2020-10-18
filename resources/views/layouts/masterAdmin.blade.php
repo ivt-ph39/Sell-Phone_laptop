@@ -156,6 +156,14 @@
                             </ul>
                         </li>
                         <li class="nav-item ">
+                            <a href="{{ route('admin.comment.list') }}" class="nav-link ">
+                                <i class="fas fa-comments mr-2"></i>
+                                <p>
+                                    QL Comments
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
                             <a href="{{ route('admin.contact.list') }}" class="nav-link ">
                                 <i class="fas fa-file-contract mr-2"></i>
                                 <p>

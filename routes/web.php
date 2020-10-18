@@ -98,9 +98,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::put('permission/{permission}/updateChildren', 'Backend\PermissionController@updateChildren')->name('admin.permission.updateChildren');
     Route::put('permission/{permission}/updateParent', 'Backend\PermissionController@updateParent')->name('admin.permission.updateParent');
     Route::delete('permission/{permission}/delete', 'Backend\PermissionController@destroy')->name('admin.permission.delete');
+    //------------comment----------------
+    Route::get('comment/list' , 'Backend\CommentController@index')->name('admin.comment.list');
 });
 // ------------------------- FrontEnd ----------------------
-
+Route::post('comment/store' , 'Frontend\CommentController@store')->name('comment.store');
 // ---------Register-User--------
 Route::post('dang-ky', 'Frontend\UserController@register')->name('user_login');
 Route::get('/', 'Frontend\HomeController@index')->name('home');
