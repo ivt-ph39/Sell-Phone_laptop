@@ -623,9 +623,9 @@
 				function showCartMini(){
 					dataCart = JSON.parse(localStorage.getItem('cart'));
 					htmlCartList = '<div class="cart-list">';
-					// if(dataCart == null){
-					// 	return null;
-					// }
+					 if(dataCart == null){
+					 	return null;
+					 }
 					if(dataCart.length != 0){
 						total_amount = 0;
 						total_item   = 0;
@@ -664,8 +664,8 @@
 					dataCart = JSON.parse(localStorage.getItem('cart'));
 
 					htmlCart = '';
-					
-					if(dataCart.length != 0){
+					console.log(dataCart);
+					if(dataCart!= null){
 						total_amount = 0;
 						$.each(dataCart,function(key,item){
 							total_amount += item.price_old*item.quantity ;
