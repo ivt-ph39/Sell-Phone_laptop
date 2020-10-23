@@ -337,7 +337,6 @@
 
 						localStorage.setItem('cart', JSON.stringify(cartNew));
 					}
-					
 					showCart();
 					showCartMini();
 
@@ -570,14 +569,12 @@
 				function showCartMini(){
 					dataCart = JSON.parse(localStorage.getItem('cart'));
 					htmlCartList = '<div class="cart-list">';
-					if(dataCart.length != 0){
+					if(dataCart[0] != null){
 						total_amount = 0;
 						total_item   = 0;
 						$.each(dataCart,function(key,item){
 							total_amount += item.price_old*item.quantity ;
 							total_item   += parseInt(item.quantity);
-							
-
 							htmlCartList += '<div class="product-widget">'
 												+'<div class="product-img">'
 													+'<img src="'+item.image+'" alt="">'
@@ -602,6 +599,11 @@
 						$('.cart-dropdown').html(htmlCart);
 						$('.dropdown a').append('<div class="qty">'+total_item+'</div>');
 					}
+					// else{
+					// 	htmlCartList += '</>';
+					// 	$('.cart-dropdown').html('');
+					// 	$('.cart-dropdown').html(htmlCart);
+					// }
 				}
 				// show sản phẩm ở trang Cart
 				function showCart(){
@@ -609,7 +611,7 @@
 
 					htmlCart = '';
 					console.log(dataCart);
-					if(dataCart!= null){
+					if(dataCart[0]!= null){
 						total_amount = 0;
 						$.each(dataCart,function(key,item){
 							total_amount += item.price_old*item.quantity ;
