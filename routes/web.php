@@ -98,8 +98,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::put('permission/{permission}/updateChildren', 'Backend\PermissionController@updateChildren')->name('admin.permission.updateChildren');
     Route::put('permission/{permission}/updateParent', 'Backend\PermissionController@updateParent')->name('admin.permission.updateParent');
     Route::delete('permission/{permission}/delete', 'Backend\PermissionController@destroy')->name('admin.permission.delete');
+
     //------------comment----------------
     Route::get('comment/list', 'Backend\CommentController@index')->name('admin.comment.list');
+
 });
 // ------------------------- FrontEnd ----------------------
 
@@ -123,6 +125,7 @@ Route::post('create-rating', 'Backend\RatingControllser@store')->name('rating_st
 // ---------Create Order----------
 Route::post('create-order', 'Backend\OrderController@store')->name('order_store');
 Route::post('get-quantity-product', 'Backend\OrderController@getQuantityProduct')->name('order_getQuantityProduct');
+
 
 
 Route::get('/', 'Frontend\HomeController@index')->name('home');
