@@ -96,4 +96,8 @@ class Product extends Model
     {
         return $this->hasMany(Comment::class, 'product_id');
     }
+    public function orders()
+    {
+        return $this->belongsTo(Order::class, 'order_product', 'order_id', 'product_id');
+    }
 }

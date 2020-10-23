@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Model\Category;
 use App\User;
 // use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Request;
@@ -80,5 +81,14 @@ class UserController extends Controller
         return response()->json([
             'success' => true
         ], 200);
+    }
+
+    public function getAccount(Category $category)
+    {
+        $data = [
+            'categories' => $category->where('parent_id', 0)->get(),
+            'info_user'  => Auth::user()
+        ];
+        return view('frontend.account', $data);
     }
 }

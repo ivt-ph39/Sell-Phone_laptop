@@ -98,7 +98,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::put('permission/{permission}/updateChildren', 'Backend\PermissionController@updateChildren')->name('admin.permission.updateChildren');
     Route::put('permission/{permission}/updateParent', 'Backend\PermissionController@updateParent')->name('admin.permission.updateParent');
     Route::delete('permission/{permission}/delete', 'Backend\PermissionController@destroy')->name('admin.permission.delete');
-    
+
+    //------------comment----------------
+    Route::get('comment/list', 'Backend\CommentController@index')->name('admin.comment.list');
+
 });
 // ------------------------- FrontEnd ----------------------
 
@@ -108,14 +111,21 @@ Route::post('dang-nhap', 'Frontend\UserController@login')->name('user_login');
 Route::get('dang-xuat', 'Frontend\UserController@logout')->name('user_logout');
 // ---------End--Register-login-User--------
 
+// ---------Account-User--------
+Route::get('tai-khoang', 'Frontend\UserController@getAccount')->name('user_account');
+
+// ---------End-Account-User--------
+
 // ---------Comment-User--------
 Route::post('create-comment', 'Backend\CommentController@store')->name('comment_store');
 
 // ---------Rating-Product--------
 Route::post('create-rating', 'Backend\RatingControllser@store')->name('rating_store');
 
-// ---------End--Comment-User--------
-Route::get('comment/list' , 'Backend\CommentController@index')->name('admin.comment.list');
+// ---------Create Order----------
+Route::post('create-order', 'Backend\OrderController@store')->name('order_store');
+Route::post('get-quantity-product', 'Backend\OrderController@getQuantityProduct')->name('order_getQuantityProduct');
+
 
 
 Route::get('/', 'Frontend\HomeController@index')->name('home');
