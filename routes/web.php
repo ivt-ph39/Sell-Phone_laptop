@@ -72,7 +72,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::put('slider/{id}/update', 'Backend\SliderController@update')->name('admin.slider.update');
     Route::delete('slider/{id}/delete', 'Backend\SliderController@delete')->name('admin.slider.delete');
     //-----------users-------------
-    Route::get('user/list', 'Backend\UserController@index')->name('admin.user.list');
+    Route::get('user/list', 'Backend\UserController@index')->name('admin.user.list')->middleware('can:list_user');
     Route::get('user/list/onlyTrashed', 'Backend\UserController@onlyTrashed')->name('admin.user.onlyTrashed');
     Route::get('user/create', 'Backend\UserController@create')->name('admin.user.create');
     Route::post('user/store', 'Backend\UserController@store')->name('admin.user.store');
@@ -98,10 +98,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::put('permission/{permission}/updateChildren', 'Backend\PermissionController@updateChildren')->name('admin.permission.updateChildren');
     Route::put('permission/{permission}/updateParent', 'Backend\PermissionController@updateParent')->name('admin.permission.updateParent');
     Route::delete('permission/{permission}/delete', 'Backend\PermissionController@destroy')->name('admin.permission.delete');
-
-    //------------comment----------------
-    Route::get('comment/list', 'Backend\CommentController@index')->name('admin.comment.list');
-
+    //------------comment----
+    Route::get('comment/list' , 'Backend\CommentController@index')->name('admin.comment.list');
+    Route::put('comment/{comment}/active' , 'Backend\CommentController@active')->name('admin.comment.active');
+    Route::get('comment/{id}/showReply' , 'Backend\CommentController@showReply')->name('admin.comment.showReply');
+    Route::post('comment/{id}/reply' , 'Backend\CommentController@reply')->name('admin.comment.reply');
 });
 // ------------------------- FrontEnd ----------------------
 
@@ -125,6 +126,7 @@ Route::post('create-rating', 'Backend\RatingControllser@store')->name('rating_st
 // ---------Create Order----------
 Route::post('create-order', 'Backend\OrderController@store')->name('order_store');
 Route::post('get-quantity-product', 'Backend\OrderController@getQuantityProduct')->name('order_getQuantityProduct');
+
 
 
 

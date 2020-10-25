@@ -19,7 +19,7 @@ class CreateCommentsTable extends Migration
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->text('content');
-            $table->boolean('active')->default(1);
+            $table->boolean('active')->default(1); // trang thai 1 hien 0 an
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('product_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();

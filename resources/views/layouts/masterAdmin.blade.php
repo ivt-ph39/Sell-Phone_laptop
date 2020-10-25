@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="adminlte/dist/css/adminlte.min.css">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
     @yield('css')
 </head>
 
@@ -249,6 +250,11 @@
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+
+    <!-- ckeditor5 -->
+    <script src="{{ asset('editors/ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('editors/ckfinder/ckfinder.js') }}"></script>
+    
     @yield('js')
 </body>
 
