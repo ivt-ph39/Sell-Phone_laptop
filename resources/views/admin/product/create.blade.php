@@ -3,13 +3,14 @@
     {{ $titlePage }}
 @endsection
 @section('css')
+
+
     <!-- select2 -->
     <link rel="stylesheet" href="adminlte/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="admins/product/create/css/app.css">
     <link href="{{ asset('bootstrap-fileinput/css/fileinput.css') }}" media="all" rel="stylesheet" type="text/css" />
     <link href="{{ asset('bootstrap-fileinput/themes/explorer-fas/theme.css') }}" media="all" rel="stylesheet"
         type="text/css" />
-    
 
 @endsection
 @section('main')
@@ -170,7 +171,7 @@
                                         <div class="col-9">
                                             <input type="checkbox" class="custom-control-input" id="hot" name="hot"
                                                 @if (old('hot')) {{ 'checked' }} </beautify
-                                                end="@endif">>
+                                                end="   @endif">>
                                             <label class="custom-control-label" for="hot"></label>
                                         </div>
                                     </div>
@@ -185,7 +186,7 @@
                                         <div class="col-9">
                                             <input type="checkbox" class="custom-control-input" name="active" id="active"
                                                 @if (old('active')) {{ 'checked' }} </beautify
-                                                end="@endif">>
+                                                end="   @endif">>
                                             <label class="custom-control-label" for="active"></label>
                                         </div>
                                     </div>
@@ -329,18 +330,17 @@
     <script src="admins/product/create/js/app.js"></script>
 
     <script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
-    <script src="{{ asset('/editors/ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('editors/ckeditor/ckeditor.js') }}"></script>
     <script>
         ClassicEditor
-        .create( document.querySelector( '#editor1' ), {
-            ckfinder: {
-                uploadUrl: '/editors/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files&responseType=json'
-            },
-        } )
-        .catch( function( error ) {
-            console.error( error );
-        } );
-        
+            .create(document.querySelector('#editor1'), {
+                ckfinder: {
+                    uploadUrl: '/editors/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files&responseType=json'
+                }
+            })
+            .catch(function(error) {
+                console.error(error);
+            });
     </script>
 
 

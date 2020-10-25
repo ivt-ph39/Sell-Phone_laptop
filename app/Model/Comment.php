@@ -8,7 +8,7 @@ class Comment extends Model
 {
 
     protected $table = 'comments';
-    protected $fillable = ['name', 'email', 'phone', 'content', 'user_id', 'product_id'];
+    protected $fillable = ['name', 'email', 'phone', 'content', 'user_id', 'product_id', 'active', 'status', 'parent_id'];
 
     public function getCharFirstLastName($fullName)
     {
