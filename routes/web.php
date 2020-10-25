@@ -112,13 +112,21 @@ Route::post('dang-nhap', 'Frontend\UserController@login')->name('user_login');
 Route::get('dang-xuat', 'Frontend\UserController@logout')->name('user_logout');
 // ---------End--Register-login-User--------
 
+// ---------Account-User--------
+Route::get('tai-khoang', 'Frontend\UserController@getAccount')->name('user_account');
+
+// ---------End-Account-User--------
+
 // ---------Comment-User--------
 Route::post('create-comment', 'Backend\CommentController@store')->name('comment_store');
 
 // ---------Rating-Product--------
 Route::post('create-rating', 'Backend\RatingControllser@store')->name('rating_store');
 
-// ---------End--Comment-User--------
+// ---------Create Order----------
+Route::post('create-order', 'Backend\OrderController@store')->name('order_store');
+Route::post('get-quantity-product', 'Backend\OrderController@getQuantityProduct')->name('order_getQuantityProduct');
+
 
 
 

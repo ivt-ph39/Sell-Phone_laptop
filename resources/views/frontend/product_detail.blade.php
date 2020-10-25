@@ -6,6 +6,38 @@
 		}
 	</style>
 @endsection
+@section('menu')
+    <!-- NAVIGATION -->
+		<nav id="navigation">
+			<!-- container -->
+			<div class="container">
+				<!-- responsive-nav -->
+				<div id="responsive-nav">
+					<!-- NAV -->
+					<ul class="main-nav nav navbar-nav">
+					<li class="{{(!isset($page)? "active" : "")}}"><a href="{{route('home')}}">Trang chủ</a></li>
+						<ul class="cate-nav main-nav nav navbar-nav">
+							@foreach ($categories as $category)
+							<li class="{{($category->hasChild($category->id) != false ) ? "hassub" : ""}} {{( isset($page) && Str::slug($category->name)== $page) ? "active" :""}}" ><a href="{{route('store',['page'=>Str::slug($category->name)])}}">{{$category->name}}</a>
+									@if ($category->hasChild($category->id))
+										<ul class="cate-child nav navbar-nav">
+											@foreach ($category->hasChild($category->id) as $category)
+												<li><a href="{{route('store',['page'=>Str::slug($category->name)])}}">{{$category->name}}</a></li>
+											@endforeach
+										</ul>
+									@endif
+								</li>
+							@endforeach
+						</ul>
+					</ul>
+					<!-- /NAV -->
+				</div>
+				<!-- /responsive-nav -->
+			</div>
+			<!-- /container -->
+		</nav>
+	<!-- /NAVIGATION -->
+@endsection
 @section('main')
 	@if (isset($product))
     <!-- SECTION -->
@@ -92,7 +124,7 @@
 								</div>
 							</div>
 							<div class="product-buy">
-								<a href="" id="addToCart" data-id="{{$product->id}}" data-name="{{$product->name}}"  data-price-old="{{$product->price['base']}}" data-sale="{{$product->sale['base']}}"  data-price-new="{{$product->price['base']*(100-$product->sale['base'])/100}}" data-image="{{$product->avatar}}" > Mua Ngay</a>
+								<a href="" id="addToCart" data-id="{{$product->id}}" data-name="{{$product->name}}"  data-price-old="{{$product->price['base']}}" data-sale="{{$product->sale['base']}}"  data-price-new="{{$product->price['base']*(100-$product->sale['base'])/100}}" data-image="{{$product->avatar}}" data-quantity={{$product->quantity}}> Mua Ngay</a>
 							</div>
 						</div>
 					</div>
@@ -700,7 +732,6 @@
 				$('.product-image .owl-carousel .owl-dots .owl-dot').removeClass('active')
 				$(this).addClass('active')
 			})
-
 			// ADD TO CART
 			if(JSON.parse(localStorage.getItem('cart'))) {
 				cart= JSON.parse(localStorage.getItem('cart'));
@@ -716,11 +747,12 @@
 							price_new: $(this).attr('data-price-new'),
 							sale: $(this).attr('data-sale'),
 							image:$(this).attr('data-image'), 
+							remain_quantity : $(this).attr('data-quantity'), 
 							quantity: 1};
 
 				if(cart.length){ // giỏ hàng có spham
 					//add sp vào giỏ hàng
-					cart = addToCart(cart,product);
+					cart = addToCart(cart,product['id']);
 					localStorage.setItem('cart', JSON.stringify(cart));
 				} else { // giỏ hàng chưa có spham
 					cart.push(product) ; // add spham vào giỏ hàng
@@ -730,6 +762,7 @@
 				window.location="{{route('cart')}}";
 			});
 		})
+				
 	</script>
 
 @endsection
