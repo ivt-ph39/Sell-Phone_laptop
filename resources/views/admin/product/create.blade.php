@@ -328,17 +328,4 @@
     <script src="admins/product/create/js/app.js"></script>
 
     <script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
-    <script src="{{ asset('editors/ckeditor/ckeditor.js') }}"></script>
-    <script>
-        ClassicEditor
-            .create(document.querySelector('#editor1'), {
-                ckfinder: {
-                    uploadUrl: '/editors/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files&responseType=json'
-                }
-            })
-            .catch(function(error) {
-                console.error(error);
-            });
-    </script>
-
 @endsection
