@@ -13,9 +13,9 @@ use Illuminate\Support\Str;
 
 class ProductDetail extends Controller
 {
-    public function index($page, $productName, Category $category, Product $product, Rating $rating, Comment $comment)
+    public function index($productName, Category $category, Product $product, Rating $rating, Comment $comment)
     {
-        $product_id = $this->getProductId($this->getCategoryId($page), $productName);
+        $product_id = $this->getProductId($productName);
         $product    = $product->with(['images', 'category', 'tags', 'ratings', 'comments'])->find($product_id);
         $total_star = $rating->where('product_id', $product_id)->count();
         $star_1 = $rating->where('product_id', $product_id)->where('star', 1)->count();
@@ -23,12 +23,8 @@ class ProductDetail extends Controller
         $star_3 = $rating->where('product_id', $product_id)->where('star', 3)->count();
         $star_4 = $rating->where('product_id', $product_id)->where('star', 4)->count();
         $star_5 = $rating->where('product_id', $product_id)->where('star', 5)->count();
-
-
-
         $data = [
             'categories'      => $category->where('parent_id', 0)->get(),
-            'page'            => $page,
             'product'         => $product,
             'ratings'         => $rating->where('product_id', $product_id)->orderBy('id')->paginate(4),
             'total_rating'    => $rating->where('product_id', $product_id)->count(),
@@ -57,11 +53,9 @@ class ProductDetail extends Controller
         }
         return view('frontend.product_detail', $data);
     }
-
-
-    public function getProductId($category_id, $productName)
+    public function getProductId($productName)
     {
-        $products = Product::where('category_id', $category_id)->get();
+        $products = Product::all();
         foreach ($products as $product) {
             if (Str::slug($product->name) == $productName) {
                 return $product->id;
