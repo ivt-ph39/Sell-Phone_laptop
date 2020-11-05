@@ -53,11 +53,11 @@
 								<div class="owl-stage-outer">
 									<div class="owl-stage">
 											<div class="owl-item item-image">
-												<img   src="{{asset("$product->avatar")}}" alt=""  >
+												<img src="{{asset("$product->avatar")}}" alt=""  >
 											</div>
 										@foreach ($product->images as $image)
 											<div class="owl-item item-image">
-												<img   src="{{asset("$image->path")}}" alt=""  >
+												<img src="{{asset("$image->path")}}" alt=""  >
 											</div>
 										@endforeach
 									</div>
@@ -83,23 +83,20 @@
 							<h4 class="">{{$product->name}}</h4>
 							<div class="review">
 								<div class="product-rating ">
-									@if ($star_product['average'] !=0 )
-										@for ($i = 1; $i < $star_product['average']; $i++)
-											<i class="fas fa-star"></i>
-										@endfor
-										@if ((5 - $star_product['average']) > 0)
-											<i class="fas fa-star-half-alt"></i>
-										@else
-											<i class="far fa-star"></i>
-										@endif
-									@else
-										<i class="far fa-star"></i>
-										<i class="far fa-star"></i>
-										<i class="far fa-star"></i>
-										<i class="far fa-star"></i>
-										<i class="far fa-star"></i>
-									@endif
-									
+									@php
+										$star_full = floor($star_product['average']);
+										$star_none = floor(5 - $star_product['average']);
+										$star_half = 5 - $star_full - $star_none;
+										for ($i=1; $i <= $star_full ; $i++) { 
+											echo('<i class="fas fa-star"></i>');
+										}
+										for ($i=1; $i <= $star_half ; $i++) { 
+											echo('<i class="fas fa-star-half-alt"></i>');
+										}
+										for ($i=1; $i <= $star_none ; $i++) { 
+											echo('<i class="far fa-star"></i>');
+										}
+									@endphp
 								</div>
 								<a class="review-link" href="#"> {{$total_rating}} (Đánh giá)</a>
 								<div class="clearfix"></div>
@@ -198,15 +195,22 @@
 														@if ($star_product['average'] != 0 )
 															<span>{{$star_product['average']}}</span>
 															<div class="rating-stars">
-																@for ($i = 1; $i < $star_product['average']; $i++)
-																	<i class="fas fa-star"></i>
-																@endfor
-																@if ((5 - $star_product['average']) > 0)
-																	<i class="fas fa-star-half-alt"></i>
-																@else
-																	<i class="far fa-star"></i>
-																@endif
-															</div>
+																@php
+																$star_full = floor($star_product['average']);
+																$star_none = floor(5 - $star_product['average']);
+																$star_half = 5 - $star_full - $star_none;
+																for ($i=1; $i <= $star_full ; $i++) { 
+																	echo('<i class="fas fa-star"></i>');
+																}
+																for ($i=1; $i <= $star_half ; $i++) { 
+																	echo('<i class="fas fa-star-half-alt"></i>');
+																}
+																for ($i=1; $i <= $star_none ; $i++) { 
+																	echo('<i class="far fa-star"></i>');
+																}
+																@endphp
+															</div> 
+
 														@else
 															<span>0</span>
 															<div class="rating-stars">
@@ -315,7 +319,9 @@
 															@endforeach
 														</ul>
 													@else
-														<p> Sản phẩm chưa có đánh giá nào.</p>
+														<p class="show_no_prod"> Sản phẩm chưa có đánh giá nào.</p>
+														<ul class="reviews">
+														</ul>
 													@endif
 													
 												</div>
@@ -352,15 +358,15 @@
 										<div class="modal-body">
 											<form id="form-info-comment">
 												<div class="form-group">
-													<input type="text"  class="form-control" 	name="user_name" 	id="user_name"   placeholder="Họ và tên (bắt buộc)">
+													<input type="text"  class="form-control" 		id="user_name"   placeholder="Họ và tên (bắt buộc)">
 													<small class="error" id="error_name"></small>
 												</div>
 												<div class="form-group">
-													<input type="email" class="form-control" 	name="user_email" 	id="user_email"  placeholder="Email">
+													<input type="email" class="form-control" 		id="user_email"  placeholder="Email">
 													<small class="error" id="error_email"></small>
 												</div>
 												<div class="form-group">
-													<input type="text"  class="form-control" 	name="user_phone" 	id="user_phone"  placeholder="Số điện thoại">
+													<input type="text"  class="form-control" 		id="user_phone"  placeholder="Số điện thoại">
 													<small class="error" id="error_phone"></small>
 												</div>
 											</form>
@@ -605,6 +611,7 @@
 								let	user_name  = $('#user_name').val();
 								let	user_email = $('#user_email').val();
 								let	user_phone = $('#user_phone').val();
+								console.log('email'+user_email,'user_name'+user_name,'user_phone'+user_phone);
 								if(user_name == "" || user_email == "" || user_phone == ""){
 									$("#vaildate_form").text('Các trường phía trên cần được nhập đầy đủ') 
 								}else if(!isEmail(user_email)){
@@ -675,7 +682,12 @@
 						},
 						type: 'post',
 						success : function(data){
-
+							if(data.success == true){
+								Swal.fire(
+									'Chân thành cám ơn!',
+									'Bạn đã tạo thêm bình luận thành công!'
+									);
+							}
 							htmlStar = '' ;
 							for(i=0;i<data.rating['star']; i++){
 								htmlStar += '<i class="fa fa-star"></i>'
@@ -697,15 +709,18 @@
 									+'<p>'+data.rating['content']+'</p>'
 								+'</div>'
 							+'</li>';
+							$(".show_no_prod").remove();
 							$(".reviews").prepend(htmlContentRating);
+							$(" form.rating").hide();
+							console.log(data);
 						}
 					}
 					});
 				}
 			})	
 			function isEmail(email) {
-				var regex = '/^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/';
-				return regex.test(email);
+			var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+			return regex.test(email);
 			}
 			// show avatar and images product
 			$('.product-image .owl-carousel').owlCarousel({
@@ -752,7 +767,8 @@
 
 				if(cart.length){ // giỏ hàng có spham
 					//add sp vào giỏ hàng
-					cart = addToCart(cart,product['id']);
+					cart = addToCart(cart,product);
+
 					localStorage.setItem('cart', JSON.stringify(cart));
 				} else { // giỏ hàng chưa có spham
 					cart.push(product) ; // add spham vào giỏ hàng

@@ -12,14 +12,13 @@ use Illuminate\Support\Facades\DB;
 
 class StoreController extends Controller
 {
-    public function index($page, Category $category, Product $product, Brand $brand, Request $request)
+    public function index($page, Request $request)
     {
         $id = $this->getIdCategory($page);
 
-        $products = $product->where('category_id', $id);
+        $products = Product::where('category_id', $id);
         if (isset($request->brand)) {
             $brand_id = $this->getIdBrand($request->brand);
-
             $products = $products->where('brand_id', $brand_id);
         }
         if (isset($request->price)) {
@@ -43,7 +42,7 @@ class StoreController extends Controller
         }
         if (isset($request->orderBy)) {
             switch ($request->orderBy) {
-                case 'defaul':
+                case 'price_min':
                     $products = $products->orderByRaw('price*(100 - sale)/100');
                     break;
                 case 'price_max':
@@ -61,10 +60,9 @@ class StoreController extends Controller
         }
         $products = $products->where('quantity', '>', 0);
         $data = [
-            'categories' => $category->where('parent_id', 0)->get(),
-            'count'      => $products->count(),
+            'categories' => Category::where('parent_id', 0)->get(),
             'products'   => $products->paginate(12),
-            'brands'     => $brand->where('category_id', $id)->get(),
+            'brands'     => Brand::where('category_id', $id)->get(),
             'page'       => $page
         ];
         return view('frontend.store', $data);

@@ -8,6 +8,7 @@
 		 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
 		<title>Electro</title>
+		<base href="{{asset('')}}">
 
 		<!-- Google font -->
 		<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
@@ -70,7 +71,7 @@
 						<!-- LOGO -->
 						<div class="col-md-3">
 							<div class="header-logo">
-								<a href="#" class="logo">
+								<a href="{{route('home')}}" class="logo">
 									<img src="{{asset("frontend/img/logo.png")}}" alt="">
 								</a>
 							</div>
@@ -79,9 +80,12 @@
 
 						<!-- SEARCH BAR -->
 						<div class="col-md-6">
-							<div class="header-search">
-								<form>
-									<input class="form-control" placeholder="Tìm kiếm sản phẩm theo tên...">
+ 							<div class="header-search">
+							 	<form method="get" action="{{route('search_product_list')}}" id="formSearch">
+									<div class="input-group form-search">
+									<input class="typeahead form-control search-input" name="search" placeholder="Tìm kiếm sản phẩm theo tên..." value="{{ app('request')->input('search') }}">
+										<div class="input-group-addon" id="submit_search"><i class="fas fa-search"></i></div>
+									</div>
 								</form>
 							</div>
 						</div>
@@ -312,10 +316,12 @@
 		<script src="{{asset("frontend/js/nouislider.min.js")}}"></script>
 		<script src="{{asset("frontend/js/jquery.zoom.min.js")}}"></script>
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
 		<script src="{{asset("frontend/js/main.js")}}"></script>
 		@yield('js')
 		<script>
 			$(document).ready(function(){
+				
 				showCart();
 				$(document).on('click','.add',function(e){
 					e.preventDefault();
@@ -560,16 +566,60 @@
 						'Tài khoảng của bạn đã được đăng xuất.',
 						'success'
 						)
-						location.reload();
+						window.location="{{route('home')}}";
 					}
 					})
 				})
 			})
+			$(document).ready(function(){
+				$('#submit_search').click(function(e){
+					e.preventDefault();
+					if($('form#formSearch .tt-input').val()!= ''){
+						$('form#formSearch').submit();	
+					}else{
+						 window.location="http://127.0.0.1:8000/";
+					}
+				})
+				var engine = new Bloodhound({
+					remote: {
+						url: 'http://127.0.0.1:8000/search/name?q=%QUERY%',
+						wildcard: '%QUERY%'
+					},
+					datumTokenizer: Bloodhound.tokenizers.whitespace('q'),
+					queryTokenizer: Bloodhound.tokenizers.whitespace
+				});
+
+				$(".search-input").typeahead({
+					hint: true,
+					highlight: true,
+					minLength: 1
+				}, {
+					source: engine.ttAdapter(),
+					name: 'usersList',
+					limit: 5,
+					display: 'q',
+					templates: {
+						empty: [
+							'<div class="list-group search-results-dropdown"><div class="list-group-item">Không có kết quả phù hợp.</div></div>'
+						],
+						header: [
+							'<div class="list-group search-results-dropdown">'
+						],
+						suggestion: function (data) {
+							return '<a href="product/' + convertToSlug(data.name) + '" class="list-group-item"><img src="'+data.avatar+'" style=" height: 50px;margin-right: 20px;"> ' + data.name + '</a>';
+				}
+					}
+				});
+			})
 				//show sabr phẩm đã chọn trên head
 				function showCartMini(){
-					dataCart = JSON.parse(localStorage.getItem('cart'));
+					if(JSON.parse(localStorage.getItem('cart'))) {
+						dataCart= JSON.parse(localStorage.getItem('cart'));
+					} else {
+						var dataCart=[];
+					};
 					htmlCartList = '<div class="cart-list">';
-					if(dataCart[0] != null){
+					if(dataCart.length != 0){
 						total_amount = 0;
 						total_item   = 0;
 						$.each(dataCart,function(key,item){
@@ -597,21 +647,26 @@
 								+'</div>';
 						$('.cart-dropdown').html('');
 						$('.cart-dropdown').html(htmlCart);
-						$('.dropdown a').append('<div class="qty">'+total_item+'</div>');
+						if(total_item != 0){
+							$('.dropdown a').append('<div class="qty">'+total_item+'</div>');
+						}
 					}
-					// else{
-					// 	htmlCartList += '</>';
-					// 	$('.cart-dropdown').html('');
-					// 	$('.cart-dropdown').html(htmlCart);
-					// }
+					else{
+						$('.cart-dropdown').html('');
+						htmlImage = "<img src='{{asset('frontend/img/117-1170538_404-your-cart-is-empty.png')}}'' width='100%'>";
+						$('.qty').remove();
+						$('.cart-dropdown').html(htmlImage);
+					}
 				}
 				// show sản phẩm ở trang Cart
 				function showCart(){
-					dataCart = JSON.parse(localStorage.getItem('cart'));
-
+					if(JSON.parse(localStorage.getItem('cart'))) {
+						dataCart= JSON.parse(localStorage.getItem('cart'));
+					} else {
+						var dataCart=[];
+					};
 					htmlCart = '';
-					console.log(dataCart);
-					if(dataCart[0]!= null){
+					if(dataCart.length != 0){
 						total_amount = 0;
 						$.each(dataCart,function(key,item){
 							total_amount += item.price_old*item.quantity ;
@@ -640,18 +695,21 @@
 										+'</a>';
 									+'</td></tr>'
 						total_amount = 0;
+						$('#create_order').addClass('none');
+						$('#total_amount').addClass('none')
 					} 
-
+					console.log(dataCart);
 					$(".total .price").html('');
 					$(".total .price").prepend(formatCurrency(total_amount)+'<sup>đ</sup>');
 
 					$('.items_cart').html('');
-					$('tbody').prepend(htmlCart);
+					$('.items_cart').prepend(htmlCart);
 				}
 				//kiểm tra spham đã được add vào giỏ hàng chưa
 				
 				// format tiền tệ
 				function formatCurrency(number){
+					// console.log(typeof(number));
 							number = number.toString();
 							var n   = number.split('').reverse().join("");
 							var n2  = n.replace(/\d\d\d(?!$)/g, "$&.");    
@@ -676,7 +734,6 @@
 				function getQuantityOld(product_id,cart){
 					for (var i = 0; i < cart.length; i++) {
 						if (cart[i]['id'] == product_id){
-							console.log(product_id);
 							return cart[i]['quantity'];
 						} else {
 							continue;
@@ -703,6 +760,30 @@
 						}
 					};
 					return false;
+				}
+				function convertToSlug(str)
+				{
+					str = str.replace(/^\s+|\s+$/g, ''); // trim
+					str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+					str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+					str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+					str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+					str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+					str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+					str = str.replace(/đ/g, "d");
+					str = str.replace(/À|Á|Ạ|Ả|Ã|Â|Ầ|Ấ|Ậ|Ẩ|Ẫ|Ă|Ằ|Ắ|Ặ|Ẳ|Ẵ/g, "A");
+					str = str.replace(/È|É|Ẹ|Ẻ|Ẽ|Ê|Ề|Ế|Ệ|Ể|Ễ/g, "E");
+					str = str.replace(/Ì|Í|Ị|Ỉ|Ĩ/g, "I");
+					str = str.replace(/Ò|Ó|Ọ|Ỏ|Õ|Ô|Ồ|Ố|Ộ|Ổ|Ỗ|Ơ|Ờ|Ớ|Ợ|Ở|Ỡ/g, "O");
+					str = str.replace(/Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ/g, "U");
+					str = str.replace(/Ỳ|Ý|Ỵ|Ỷ|Ỹ/g, "Y");
+					str = str.replace(/Đ/g, "D");
+
+					str = str.toLowerCase();
+					str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+						.replace(/\s+/g, '-') // collapse whitespace and replace by -
+						.replace(/-+/g, '-'); // collapse dashes
+					return str;
 				}
 		</script>
 

@@ -62,6 +62,7 @@ $(document).ready(function () {
 
     function openPrdNew(cateId) {
         tabProductNew = $('.product-new');
+        // console.log(tabProductNew);
         $.each(tabProductNew, function () {
             $(this).removeClass('none');
             if (this.id != cateId) {

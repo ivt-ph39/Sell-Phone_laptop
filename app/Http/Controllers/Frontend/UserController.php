@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Model\Category;
+use App\Model\Order;
 use App\User;
 // use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Request;
@@ -87,7 +88,8 @@ class UserController extends Controller
     {
         $data = [
             'categories' => $category->where('parent_id', 0)->get(),
-            'info_user'  => Auth::user()
+            'info_user'  => Auth::user(),
+            'list_order' => Order::where('user_id', Auth::user()->id)->get(),
         ];
         return view('frontend.account', $data);
     }

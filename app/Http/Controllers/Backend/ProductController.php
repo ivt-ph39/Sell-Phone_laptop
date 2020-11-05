@@ -34,21 +34,17 @@ class ProductController extends Controller
         $recursive      = new RecursiveCategory($categories);
 
         $titlePage      = 'Danh sách sản phẩm';
+        $query = Product::orderByDesc('id');
+        $htmlOption     = $recursive->recursiveCategory('');
 
-        if (!empty($request->category) && empty($request->name)) {
-            $products = Product::where('category_id', $request->category)->orderByDesc('id')->paginate($page);
+        if (!empty($request->category)) {
+            $query = $query->where('category_id', $request->category);
             $htmlOption = $recursive->recursiveCategory($request->category);
-        } elseif (empty($request->category) && !empty($request->name)) {
-            $products = Product::where('name', 'like', "%" . trim($request->name) . "%")->orderByDesc('id')->paginate($page);
-            $htmlOption     = $recursive->recursiveCategory('');
-        } elseif (!empty($request->category) && !empty($request->name)) {
-            $products = Product::where('category_id', $request->category)
-                ->where('name', 'like', "%" . trim($request->name) . "%")->orderByDesc('id')->paginate($page);
-            $htmlOption     = $recursive->recursiveCategory($request->category);
-        } else {
-            $products     = Product::orderByDesc('id')->paginate($page);
-            $htmlOption     = $recursive->recursiveCategory('');
         }
+        if (!empty($request->name)) {
+            $products = $query->where('name', 'like', "%" . trim($request->name) . "%");
+        }
+        $products     = $query->paginate($page);
         $data = [
             'titlePage'   => $titlePage,
             'nameAdmin'   => ucwords($this->info('name')),
@@ -74,7 +70,6 @@ class ProductController extends Controller
             'htmlOption'  => $recursiveCategory,
             'brands'      => $brands
         ];
-        // dd($recursiveCategory->recursiveCategory(8));
         return view('admin.product.create', $data);
     }
 
@@ -89,7 +84,7 @@ class ProductController extends Controller
 
             // Xử lí file ảnh.
             if ($request->avatar) {
-                $avatar = $this->storeFile($request->avatar); 
+                $avatar = $this->storeFile($request->avatar);
             }
 
             // Dữ liệu nhập vào cho product.

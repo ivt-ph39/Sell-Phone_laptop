@@ -3,8 +3,6 @@
     {{ $titlePage }}
 @endsection
 @section('css')
-
-
     <!-- select2 -->
     <link rel="stylesheet" href="adminlte/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="admins/product/create/css/app.css">
@@ -342,6 +340,5 @@
                 console.error(error);
             });
     </script>
-
 
 @endsection
