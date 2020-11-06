@@ -332,6 +332,7 @@
     <script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
     <script src="{{ asset('editors/ckeditor/ckeditor.js') }}"></script>
     <script>
+        
         ClassicEditor
             .create(document.querySelector('#editor1'), {
                 ckfinder: {

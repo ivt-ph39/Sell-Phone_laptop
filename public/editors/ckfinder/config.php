@@ -10,6 +10,9 @@
 // https://ckeditor.com/docs/ckfinder/ckfinder3-php/debugging.html
 
 // Production
+
+use Illuminate\Support\Facades\Auth;
+
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
 ini_set('display_errors', 0);
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Model\Blog;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -103,6 +104,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::put('comment/{comment}/active' , 'Backend\CommentController@active')->name('admin.comment.active');
     Route::get('comment/{id}/showReply' , 'Backend\CommentController@showReply')->name('admin.comment.showReply');
     Route::post('comment/{id}/reply' , 'Backend\CommentController@reply')->name('admin.comment.reply');
+    //-------------Blog------
+    Route::get('blog/list' , 'Backend\BlogController@index')->name('admin.blog.list');
+    Route::get('blog/create' , 'Backend\BlogController@create')->name('admin.blog.create');
+    Route::post('blog/store' , 'Backend\BlogController@store')->name('admin.blog.store');
 });
 // ------------------------- FrontEnd ----------------------
 
@@ -112,13 +117,20 @@ Route::post('dang-nhap', 'Frontend\UserController@login')->name('user_login');
 Route::get('dang-xuat', 'Frontend\UserController@logout')->name('user_logout');
 // ---------End--Register-login-User--------
 
+// ---------Account-User--------
+Route::get('tai-khoang', 'Frontend\UserController@getAccount')->name('user_account');
+
+// ---------End-Account-User--------
+
 // ---------Comment-User--------
 Route::post('create-comment', 'Backend\CommentController@store')->name('comment_store');
 
 // ---------Rating-Product--------
-Route::post('create-rating', 'Backend\RatingControllser@store')->name('rating_store');
+Route::post('create-rating', 'Backend\RatingController@store')->name('rating_store');
 
-// ---------End--Comment-User--------
+// ---------Create Order----------
+Route::post('create-order', 'Backend\OrderController@store')->name('order_store');
+Route::post('get-quantity-product', 'Backend\OrderController@getQuantityProduct')->name('order_getQuantityProduct');
 
 
 
@@ -127,3 +139,5 @@ Route::get('/gio-hang', 'Frontend\CartController@index')->name('cart');
 
 Route::get('/{page}', 'Frontend\StoreController@index')->name('store');
 Route::get('/{page}/{productName}', 'Frontend\ProductDetail@index')->name('product');
+
+//-------------blog---------------

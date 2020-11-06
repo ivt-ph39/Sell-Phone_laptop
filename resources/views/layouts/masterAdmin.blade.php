@@ -180,6 +180,14 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item ">
+                            <a href="{{ route('admin.blog.list') }}" class="nav-link ">
+                                <i class="fab fa-blogger mr-2"></i>
+                                <p>
+                                    QL Blog 
+                                </p>
+                            </a>
+                        </li>
                         <li class="nav-item has-treeview">
                             <a href="#" class="nav-link ">
                                 <i class="fas fa-users-cog mr-2"></i>
