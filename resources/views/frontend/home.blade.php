@@ -1,36 +1,5 @@
 @extends('frontend.layouts.master')
-@section('menu')
-    <!-- NAVIGATION -->
-		<nav id="navigation">
-			<!-- container -->
-			<div class="container">
-				<!-- responsive-nav -->
-				<div id="responsive-nav">
-					<!-- NAV -->
-					<ul class="main-nav nav navbar-nav">
-					<li class="{{(!isset($page)? "active" : "")}}"><a href="{{route('home')}}">Trang chủ</a></li>
-						<ul class="cate-nav main-nav nav navbar-nav">
-							@foreach ($categories as $category)
-							<li class="{{($category->hasChild($category->id) != false ) ? "hassub" : ""}} {{( isset($page) && Str::slug($category->name)== $page) ? "active" :""}}" ><a href="{{route('store',['page'=>Str::slug($category->name)])}}">{{$category->name}}</a>
-									@if ($category->hasChild($category->id))
-										<ul class="cate-child nav navbar-nav">
-											@foreach ($category->hasChild($category->id) as $category)
-												<li><a href="{{route('store',['page'=>Str::slug($category->name)])}}">{{$category->name}}</a></li>
-											@endforeach
-										</ul>
-									@endif
-								</li>
-							@endforeach
-						</ul>
-					</ul>
-					<!-- /NAV -->
-				</div>
-				<!-- /responsive-nav -->
-			</div>
-			<!-- /container -->
-		</nav>
-	<!-- /NAVIGATION -->
-@endsection
+@extends('frontend.layouts.menu')
 @section('main')
 		<!-- SECTION SLIDER  and Bender-->
 		<div class="section">
@@ -80,14 +49,17 @@
 					<!-- /section title -->
 				</div>
 				<!-- /row -->
-				@foreach ($productNews as $key => $category)
+				@foreach ($categories as $key => $category)
 				<!-- row -->
-				<div class="row product-new {{($key !='phones')? "none" : ""}}"  id={{$category[1]}}>
+				<div class="row product-new {{($category->id !=1)? "none" : ""}}"  id={{$category->id}}>
 					<div class="owl-carousel owl-theme owl-loaded">
 						<div class="owl-stage-outer">
 							<div class="owl-stage">
 								<!-- product -->
-								@foreach ($category[0] as $product)
+								@php
+									$a = $key
+								@endphp
+								@foreach ($productNews->where('category_id', 1)->get() as $product)
 									<div class="owl-item">
 										<div class="product product-store">
 											<div class="product-img">
@@ -219,18 +191,22 @@
 					<!-- /section title -->
 				</div>
 				<!-- /row -->
-				@foreach ($productTopSell as $key => $category)
+				@foreach ($categories as $key => $category)
 				<!-- row -->
-				<div class="row pro-top-sell {{($key !='phones')? "none" : ""}}"  id={{$category[1]}}>
+				<div class="row pro-top-sell {{($category->id !=1)? "none" : ""}}"  id={{$category->id}}>
 					<div class="owl-carousel owl-theme owl-loaded">
 						<div class="owl-stage-outer">
 							<div class="owl-stage">
 								<!-- product -->
-								@foreach ($category[0] as $product)
+								@php
+									$a = $key
+								@endphp
+								@foreach ($productNews->where('category_id', 1)->get() as $product)
 									<div class="owl-item">
 										<div class="product product-store">
 											<div class="product-img">
 												<a href="{{route('product',['page'=>Str::slug($product->category->name),'productName'=>Str::slug($product->name)])}}"><img src="{{$product->avatar}}" ></a>
+												
 												<div class="product-label ">
 													@if ($product->sale['base'] != 0)
 														<span class="sale">{{$product->sale['format']}}</span>
@@ -243,7 +219,7 @@
 											<div class="product-body">
 												<h3 class="product-name"><a href="{{route('product',['page'=>Str::slug($product->category->name),'productName'=>Str::slug($product->name)])}}">{{$product->name}}</a></h3>
 												@if ($product->sale['base'] != 0)
-													<h4 class="product-price">{!!$product->price['format']!!}<del class="product-old-price">{{number_format($product->price['base']*(100-$product->sale['base'])/100, 0, '.', ',')}}</del></h4>
+													<h4 class="product-price">{{number_format($product->price['base']*(100-$product->sale['base'])/100, 0, '.', ',')}}<del class="product-old-price">{!!$product->price['format']!!}</del></h4>
 												@else
 													<h4 class="product-price">{!!$product->price['format']!!}</h4>
 												@endif
@@ -258,7 +234,7 @@
 												</div>
 											</div>
 											<div class="add-to-cart">
-												<a href="{{route('product',['page'=>Str::slug($product->category->name),'productName'=>Str::slug($product->name)])}}"><button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Mua Ngay</button></a>
+												<a href="{{route('product',['page'=>Str::slug($product->category->name),'productName'=>Str::slug($product->name)])}}"><button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>Mua Ngay</button></a>
 												
 											</div>
 											<div class="promotion">
@@ -289,295 +265,97 @@
 		</div>
 		<!-- /SECTION -->
 
-		<!-- SECTION -->
+		<!-- SECTION TOP RATING-->
 		<div class="section">
 			<!-- container -->
 			<div class="container">
 				<!-- row -->
 				<div class="row">
-					<div class="col-md-4 col-xs-6">
+					<!-- section title -->
+					<div class="col-md-12">
 						<div class="section-title">
-							<h4 class="title">Top selling</h4>
-							<div class="section-nav">
-								<div id="slick-nav-3" class="products-slick-nav"></div>
-							</div>
-						</div>
-
-						<div class="products-widget-slick" data-nav="#slick-nav-3">
-							<div>
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="frontend//img/product07.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-									</div>
-								</div>
-								<!-- /product widget -->
-
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="frontend//img/product08.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-									</div>
-								</div>
-								<!-- /product widget -->
-
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="frontend//img/product09.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-									</div>
-								</div>
-								<!-- product widget -->
-							</div>
-
-							<div>
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="frontend//img/product01.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-									</div>
-								</div>
-								<!-- /product widget -->
-
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="frontend//img/product02.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-									</div>
-								</div>
-								<!-- /product widget -->
-
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="frontend//img/product03.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-									</div>
-								</div>
-								<!-- product widget -->
+							<h3 class="title">Sản Phẩm Được Đánh Giá Cao Nhât</h3>
+							<div class="section-nav top-rating">
+								<ul class="section-tab-nav tab-nav tab-link">
+									@foreach ($categories as $category)
+									<li class="{{($category->id == 1 ? "active" : "")}}" data-cate="{{$category->id}}"><a href="">{{$category->name}}</a></li>
+									@endforeach
+								</ul>
 							</div>
 						</div>
 					</div>
-
-					<div class="col-md-4 col-xs-6">
-						<div class="section-title">
-							<h4 class="title">Top selling</h4>
-							<div class="section-nav">
-								<div id="slick-nav-4" class="products-slick-nav"></div>
-							</div>
-						</div>
-
-						<div class="products-widget-slick" data-nav="#slick-nav-4">
-							<div>
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="frontend//img/product04.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-									</div>
-								</div>
-								<!-- /product widget -->
-
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="frontend//img/product05.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-									</div>
-								</div>
-								<!-- /product widget -->
-
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="frontend//img/product06.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-									</div>
-								</div>
-								<!-- product widget -->
-							</div>
-
-							<div>
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="frontend//img/product07.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-									</div>
-								</div>
-								<!-- /product widget -->
-
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="frontend//img/product08.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-									</div>
-								</div>
-								<!-- /product widget -->
-
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="frontend//img/product09.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-									</div>
-								</div>
-								<!-- product widget -->
-							</div>
-						</div>
-					</div>
-
-					<div class="clearfix visible-sm visible-xs"></div>
-
-					<div class="col-md-4 col-xs-6">
-						<div class="section-title">
-							<h4 class="title">Top selling</h4>
-							<div class="section-nav">
-								<div id="slick-nav-5" class="products-slick-nav"></div>
-							</div>
-						</div>
-
-						<div class="products-widget-slick" data-nav="#slick-nav-5">
-							<div>
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="frontend//img/product01.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-									</div>
-								</div>
-								<!-- /product widget -->
-
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="frontend//img/product02.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-									</div>
-								</div>
-								<!-- /product widget -->
-
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="frontend//img/product03.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-									</div>
-								</div>
-								<!-- product widget -->
-							</div>
-
-							<div>
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="frontend//img/product04.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-									</div>
-								</div>
-								<!-- /product widget -->
-
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="frontend//img/product05.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-									</div>
-								</div>
-								<!-- /product widget -->
-
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="frontend//img/product06.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-									</div>
-								</div>
-								<!-- product widget -->
-							</div>
-						</div>
-					</div>
-
+					<!-- /section title -->
 				</div>
 				<!-- /row -->
+				@foreach ($categories as $key => $category)
+				<!-- row -->
+				<div class="row pro-top-rating {{($category->id !=1)? "none" : ""}}"  id={{$category->id}}>
+					<div class="owl-carousel owl-theme owl-loaded">
+						<div class="owl-stage-outer">
+							<div class="owl-stage">
+								<!-- product -->
+								@php
+									$a = $key
+								@endphp
+								@foreach ($productTopRating->where('category_id', 1)->get() as $product)
+									<div class="owl-item">
+										<div class="product product-store">
+											<div class="product-img">
+												<a href="{{route('product',['page'=>Str::slug($product->category->name),'productName'=>Str::slug($product->name)])}}"><img src="{{$product->avatar}}" ></a>
+												
+												<div class="product-label ">
+													@if ($product->sale['base'] != 0)
+														<span class="sale">{{$product->sale['format']}}</span>
+													@endif
+													@if ($product->hot['name']=='Nổi bật')
+														<span class="new">HOT</span>
+													@endif
+												</div>
+											</div>
+											<div class="product-body">
+												<h3 class="product-name"><a href="{{route('product',['page'=>Str::slug($product->category->name),'productName'=>Str::slug($product->name)])}}">{{$product->name}}</a></h3>
+												@if ($product->sale['base'] != 0)
+													<h4 class="product-price">{{number_format($product->price['base']*(100-$product->sale['base'])/100, 0, '.', ',')}}<del class="product-old-price">{!!$product->price['format']!!}</del></h4>
+												@else
+													<h4 class="product-price">{!!$product->price['format']!!}</h4>
+												@endif
+												<div class="product-rating">
+													<i class="fas fa-star"></i>
+													<i class="fas fa-star"></i>
+													<i class="fas fa-star"></i>
+													<i class="fas fa-star"></i>
+													<i class="fas fa-star-half-alt"></i>
+												</div>
+												<div class="product-promotion">
+												</div>
+											</div>
+											<div class="add-to-cart">
+												<a href="{{route('product',['page'=>Str::slug($product->category->name),'productName'=>Str::slug($product->name)])}}"><button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>Mua Ngay</button></a>
+												
+											</div>
+											<div class="promotion">
+												@if ($product->promotion)
+													<p><b>Quà: </b>
+													@foreach (json_decode($product->promotion, true) as $content)
+													{{ucfirst($content['name']) }},
+													@endforeach
+													</p>
+												@endif
+											</div>
+										</div>
+									</div>
+								@endforeach
+								<!-- /product -->
+							</div>
+						</div>
+						<div class="owl-nav">
+							<div class="owl-prev"><i class="fas fa-chevron-left "></i></div>
+							<div class="owl-next"><i class="fas fa-chevron-right"></i></div>
+						</div>
+					</div>
+				</div>
+				<!-- /row -->
+				@endforeach
 			</div>
 			<!-- /container -->
 		</div>

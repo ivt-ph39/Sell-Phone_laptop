@@ -67,6 +67,7 @@ class SearchProduct extends Controller
                 ->groupBy('category_id')->get(),
             'products'     => $products->where('quantity', '>', 0)->paginate(12)
         ];
+
         return view('frontend.store', $data);
     }
     public function getIdCategory($slug)

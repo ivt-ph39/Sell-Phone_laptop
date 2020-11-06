@@ -130,4 +130,55 @@ $(document).ready(function () {
             }
         })
     }
+    /// PRODUCT TOP RAting
+
+    $('.pro-top-rating .owl-carousel').owlCarousel({
+        margin: 10,
+        autoplay: true,
+        autoplayTimeout: 3000,
+        autoplayHoverPause: true,
+        dots: false,
+        responsive: {
+            0: {
+                items: 1
+            },
+            600: {
+                items: 1
+            },
+            1000: {
+                items: 4
+            }
+        }
+    })
+    owlTopSell = $('.pro-top-rating .owl-carousel')
+    $('.pro-top-rating .owl-carousel .owl-nav .owl-next').click(function () {
+        owlTopSell.trigger('next.owl.carousel');
+    })
+
+    $('.pro-top-rating .owl-carousel .owl-nav .owl-prev').click(function () {
+        owlTopSell.trigger('prev.owl.carousel');
+    })
+
+    $('.top-rating .tab-nav li').click(function (event) {
+        event.preventDefault()
+        cateId = $(this).attr('data-cate');
+        openPrdTopSell(cateId);
+    })
+
+    function openPrdTopSell(cateId) {
+        tabPrdTopSell = $('.pro-top-rating');
+        $.each(tabPrdTopSell, function () {
+            $(this).removeClass('none');
+            if (this.id != cateId) {
+                $(this).addClass('none');
+            }
+        });
+        tabLink = $('.top-rating .tab-link li');
+        $.each(tabLink, function () {
+            $(this).removeClass('active');
+            if ($(this).attr('data-cate') == cateId) {
+                $(this).addClass('active');
+            }
+        })
+    }
 })

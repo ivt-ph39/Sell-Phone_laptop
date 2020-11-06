@@ -6,38 +6,7 @@
 		}
 	</style>
 @endsection
-@section('menu')
-    <!-- NAVIGATION -->
-		<nav id="navigation">
-			<!-- container -->
-			<div class="container">
-				<!-- responsive-nav -->
-				<div id="responsive-nav">
-					<!-- NAV -->
-					<ul class="main-nav nav navbar-nav">
-					<li class="{{(!isset($page)? "active" : "")}}"><a href="{{route('home')}}">Trang chủ</a></li>
-						<ul class="cate-nav main-nav nav navbar-nav">
-							@foreach ($categories as $category)
-							<li class="{{($category->hasChild($category->id) != false ) ? "hassub" : ""}} {{( isset($page) && Str::slug($category->name)== $page) ? "active" :""}}" ><a href="{{route('store',['page'=>Str::slug($category->name)])}}">{{$category->name}}</a>
-									@if ($category->hasChild($category->id))
-										<ul class="cate-child nav navbar-nav">
-											@foreach ($category->hasChild($category->id) as $category)
-												<li><a href="{{route('store',['page'=>Str::slug($category->name)])}}">{{$category->name}}</a></li>
-											@endforeach
-										</ul>
-									@endif
-								</li>
-							@endforeach
-						</ul>
-					</ul>
-					<!-- /NAV -->
-				</div>
-				<!-- /responsive-nav -->
-			</div>
-			<!-- /container -->
-		</nav>
-	<!-- /NAVIGATION -->
-@endsection
+@extends('frontend.layouts.menu')
 @section('main')
 	@if (isset($product))
     <!-- SECTION -->
@@ -131,8 +100,13 @@
 				<div class="row">
 					<div class="col-md-7">
 						<div class="desciption">
-							<p>Đặc điểm nổi bật của</p>
-							<div class="content"></div>
+							<h4>Đặc điểm nổi bật của</h4>
+							<div class="content">
+								{!!$product->description!!}
+							</div>
+							<div class="show-more" id="show-more" style="display:block;position:sticky;" >
+								<a id="xem-them-bai-viet" href="javascript:;" class="readmore">Đọc thêm</a>
+							</div>
 						</div>
 					</div>
 					<div class="col-md-5">
@@ -655,6 +629,10 @@
 
 				})
 			});
+			
+			$("#show-more").on('click',function(){
+				$('.content').css({"height": "auto", "margin-bottom": "45px"});
+			})
 			let star ;
 			$(".input-rating .stars input").on('click',function(){
 				star  = $(this).val();

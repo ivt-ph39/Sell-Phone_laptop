@@ -31,19 +31,6 @@
                 <li class=" nav-item "><a class="nav-link" href="#">Home</a></li>
             </ul>
 
-            <!-- SEARCH FORM -->
-            <form class="form-inline w-50 ml-auto">
-                <div class="input-group input-group w-100">
-                    <input class="form-control form-control-navbar" type="search" placeholder="Search"
-                        aria-label="Search">
-                    <div class="input-group-append">
-                        <button class="btn btn-navbar" type="submit">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </div>
-            </form>
-
         </nav>
         <!-- /.navbar -->
 
@@ -105,18 +92,18 @@
                             </ul>
                         </li>
                         <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link ">
+                            <a href="" class="nav-link ">
                                 <i class="fas fa-edit mr-2"></i>
                                 <p>
-                                    QL Bài Viết
+                                    QL Đơn Hàng
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link ">
+                                    <a href="" class="nav-link ">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>BV Danh mục</p>
+                                        <p>Đơn hàng mới</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -251,9 +238,6 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 
-    <!-- ckeditor5 -->
-    <script src="{{ asset('editors/ckeditor/ckeditor.js') }}"></script>
-    <script src="{{ asset('editors/ckfinder/ckfinder.js') }}"></script>
     
     @yield('js')
 </body>

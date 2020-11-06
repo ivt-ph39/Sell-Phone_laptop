@@ -12,7 +12,7 @@ class Product extends Model
     protected $fillable = [
         'name', 'quantity', 'active',
         'price', 'sale', 'hot',
-        'category_id', 'avatar', 'title',
+        'category_id', 'avatar', 'title', 'rating',
         'promotion',
         'technical', 'description', 'brand_id',
         'created_by'
@@ -99,5 +99,9 @@ class Product extends Model
     public function orders()
     {
         return $this->belongsTo(Order::class, 'order_product', 'order_id', 'product_id');
+    }
+    public function getRatingAttribute()
+    {
+        return round($this->ratings()->avg('star'), 1);
     }
 }
