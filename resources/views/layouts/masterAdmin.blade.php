@@ -160,7 +160,7 @@
                             <a href="{{ route('admin.comment.list') }}" class="nav-link ">
                                 <i class="fas fa-comments mr-2"></i>
                                 <p>
-                                    QL Comments
+                                    QL Comments <span class="badge badge-danger">0</span>
                                 </p>
                             </a>
                         </li>
@@ -259,9 +259,7 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 
-    <!-- ckeditor5 -->
-    <script src="{{ asset('editors/ckeditor/ckeditor.js') }}"></script>
-    <script src="{{ asset('editors/ckfinder/ckfinder.js') }}"></script>
+    
     
     @yield('js')
 </body>

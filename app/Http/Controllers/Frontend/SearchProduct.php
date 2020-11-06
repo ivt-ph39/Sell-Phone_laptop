@@ -3,23 +3,25 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Model\Brand;
 use App\Model\Category;
-use App\Model\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+use App\Model\Product;
+use App\Model\Rating;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
-class StoreController extends Controller
+class SearchProduct extends Controller
 {
-    public function index($page, Request $request)
+    public function searchTypeaheadJs(Request $request)
     {
-        $id = $this->getIdCategory($page);
-
-        $products = Product::where('category_id', $id);
-        if (isset($request->brand)) {
-            $brand_id = $this->getIdBrand($request->brand);
-            $products = $products->where('brand_id', $brand_id);
+        $products = Product::where('name', 'like', '%' . $request->q . '%')->orderBy('id')->get();
+        return response()->json($products);
+    }
+    public function search(Request $request)
+    {
+        $products = Product::where('name', 'like', '%' . $request->search . '%');
+        if (isset($request->category)) {
+            $products->where('category_id', $this->getIdCategory($request->category));
         }
         if (isset($request->price)) {
             switch ($request->price) {
@@ -58,28 +60,20 @@ class StoreController extends Controller
         } else {
             $products = $products->orderByRaw('price*(100 - sale)/100');
         }
-        $products = $products->where('quantity', '>', 0);
         $data = [
-            'categories' => Category::where('parent_id', 0)->get(),
-            'products'   => $products->paginate(12),
-            'brands'     => Brand::where('category_id', $id)->get(),
-            'page'       => $page
+            'listCategory' => Product::with('category')
+                ->select(DB::raw('count(category_id) as count, category_id'))
+                ->where('name', 'like', '%' . $request->search . '%')
+                ->groupBy('category_id')->get(),
+            'products'     => $products->where('quantity', '>', 0)->paginate(12)
         ];
         return view('frontend.store', $data);
     }
-
-    public function getIdCategory($slug) 
+    public function getIdCategory($slug)
     {
         $categories = Category::all();
         foreach ($categories as $category) {
             if (Str::slug($category->name) == $slug) return $category->id;
-        }
-    }
-    public function getIdBrand($slug)
-    {
-        $brands = Brand::all();
-        foreach ($brands as $brand) {
-            if (Str::slug($brand->name) == $slug) return $brand->id;
         }
     }
 }

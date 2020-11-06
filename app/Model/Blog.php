@@ -17,7 +17,7 @@ class Blog extends Model
                 'source' => 'title'
             ]
         ]; 
-    }
+    } 
 
     public function blog_tag(){
         return $this->hasMany(Blog_tag::class, 'blog_id');

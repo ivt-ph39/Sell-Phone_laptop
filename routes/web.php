@@ -100,6 +100,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::put('permission/{permission}/updateParent', 'Backend\PermissionController@updateParent')->name('admin.permission.updateParent');
     Route::delete('permission/{permission}/delete', 'Backend\PermissionController@destroy')->name('admin.permission.delete');
     //------------comment----
+
     Route::get('comment/list' , 'Backend\CommentController@index')->name('admin.comment.list');
     Route::put('comment/{comment}/active' , 'Backend\CommentController@active')->name('admin.comment.active');
     Route::get('comment/{id}/showReply' , 'Backend\CommentController@showReply')->name('admin.comment.showReply');
@@ -108,6 +109,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::get('blog/list' , 'Backend\BlogController@index')->name('admin.blog.list');
     Route::get('blog/create' , 'Backend\BlogController@create')->name('admin.blog.create');
     Route::post('blog/store' , 'Backend\BlogController@store')->name('admin.blog.store');
+    Route::get('blog/{blog}/show' , 'Backend\BlogController@edit')->name('admin.blog.show');
+    Route::put('blog/{blog}/update', 'Backend\BlogController@update')->name('admin.blog.update');
+    Route::delete('blog/{blog}/destroy' , 'Backend\BlogController@destroy')->name('admin.blog.delete');
+
 });
 // ------------------------- FrontEnd ----------------------
 
@@ -120,6 +125,7 @@ Route::get('dang-xuat', 'Frontend\UserController@logout')->name('user_logout');
 // ---------Account-User--------
 Route::get('tai-khoang', 'Frontend\UserController@getAccount')->name('user_account');
 
+
 // ---------End-Account-User--------
 
 // ---------Comment-User--------
@@ -130,14 +136,29 @@ Route::post('create-rating', 'Backend\RatingController@store')->name('rating_sto
 
 // ---------Create Order----------
 Route::post('create-order', 'Backend\OrderController@store')->name('order_store');
+
 Route::post('get-quantity-product', 'Backend\OrderController@getQuantityProduct')->name('order_getQuantityProduct');
 
 
+Route::post('order-detail', 'Backend\OrderController@show')->name('order_show');
+
+
+// ----------SearchProduct TypeaheadJs--------
+Route::get('search/name', 'Frontend\SearchProduct@searchTypeaheadJs');
+// ----------SearchProduct List--------
+Route::get('search', 'Frontend\SearchProduct@search')->name('search_product_list');
 
 Route::get('/', 'Frontend\HomeController@index')->name('home');
 Route::get('/gio-hang', 'Frontend\CartController@index')->name('cart');
 
+
 Route::get('/{page}', 'Frontend\StoreController@index')->name('store');
 Route::get('/{page}/{productName}', 'Frontend\ProductDetail@index')->name('product');
 
+
+Route::get('/product/{productName}', 'Frontend\ProductDetail@index')->name('product');
+
+Route::get('/{page}', 'Frontend\StoreController@index')->name('store');
+
 //-------------blog---------------
+

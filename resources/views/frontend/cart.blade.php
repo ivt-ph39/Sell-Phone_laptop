@@ -54,14 +54,13 @@
                                 <th style="width: 15%">Số lượng</th>
                                 <th style="width: 15%">Thành tiền</th>
                                 <th style="width: 5%"></th>
-
                                 </tr>
                             </thead>
                             <tbody class="items_cart">
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th colspan="6" class="total">Tổng số tiền: <span class="price"></span></th>
+                                    <th colspan="6" class="total" id="total_amount">Tổng số tiền: <span class="price"></span></th>
                                 </tr>
                             </tfoot>
                             </table>
@@ -124,28 +123,29 @@
                                     </div>
                                     <div class="modal-body">
                                         <div class="form-group">
-                                            <input type="text"
-                                                class="form-control"  id="user_name" aria-describedby="helpId" placeholder="Họ và tên" disabled value="{{ucwords(Auth::user()->name)}}">
+                                            <label for="user_name">Họ và tên:</label>
+                                            <input type="text" class="form-control"  id="user_name" aria-describedby="helpId" placeholder="Họ và tên" disabled value="{{ucwords(Auth::user()->name)}}">
                                                 <small class="error" id="err_name"></small>
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-md-6">
-                                                <input type="email"
-                                                class="form-control"  id="user_email" aria-describedby="helpId" placeholder="Email : abc@gmail.com" disabled value="{{Auth::user()->email}}">
+                                                <label for="user_email">Email:</label>
+                                                <input type="email" class="form-control"  id="user_email" aria-describedby="helpId" placeholder="Email : abc@gmail.com" disabled value="{{Auth::user()->email}}">
                                                 <small class="error" id="err_email"></small>
                                             </div>
-                                            <div class="col-md-6"><input type="text"
-                                                class="form-control"  id="user_phone" aria-describedby="helpId" placeholder="Số điện thoại" disabled value="{{Auth::user()->phone}}">
+                                            <div class="col-md-6">
+                                                <label for="user_phone">Số điện thoại:</label>
+                                                <input type="text" class="form-control"  id="user_phone" aria-describedby="helpId" placeholder="Số điện thoại"  value="{{Auth::user()->phone}}">
                                                 <small class="error" id="err_phone"></small></div>
                                         </div>
                                         <div class="form-group">
-                                            <input type="text"
-                                                class="form-control"  id="user_address" aria-describedby="helpId" placeholder="Địa chỉ nhận hàng" value="{{Auth::user()->address}}">
+                                            <label for="user_address">Địa chỉ nhận hàng:</label>
+                                            <input type="text" class="form-control"  id="user_address" aria-describedby="helpId" placeholder="Địa chỉ nhận hàng" value="{{Auth::user()->address}}">
                                                 <small class="error" id="err_address"></small>
                                         </div>                                        
                                         <div class="form-group">
-                                            <textarea 
-                                                class="form-control"  id="user_status" aria-describedby="helpId" placeholder="Yêu cầu khác của bạn (không bắt buộc)" ></textarea>
+                                            <label for="user_status">Ghi chú</label>
+                                            <textarea  class="form-control"  id="user_status" aria-describedby="helpId" placeholder="Yêu cầu khác của bạn (không bắt buộc)" ></textarea>
                                                 <small class="error" id="err_status"></small>
                                         </div>
                                     </div>
@@ -184,7 +184,8 @@
                         var email = $('#info_user_has_account #user_email').val();
                         var phone = $('#info_user_has_account #user_phone').val();
                         var address = $('#info_user_has_account #user_address').val();
-                        var status = $('#info_user_has_account #user_status').val();
+                        var note = $('#info_user_has_account #user_status').val();
+                        console.log(note);
                         e.preventDefault();
                         $.ajax({
                             url: "{{route('order_store')}}",
@@ -196,7 +197,7 @@
                                 'email' : email,
                                 'phone' : phone,
                                 'address' : address,
-                                'status' : status
+                                'note' : note
                             },
                             success: function(data) {
                                 if(data.error == true){
@@ -215,7 +216,6 @@
                                         icon:'success',
 									    title: 'Thank You!',
 									    text:'Bạn đã đặt hàng thành công!',
-                                        // footer: "<a href =''>Xem đơn hàng của bạn?</a>"
                                         confirmButtonText: 'Xem đơn hàng của bạn?'
                                     }).then((result) => {
                                         if (result.isConfirmed) {
@@ -235,17 +235,17 @@
                         var email = $('#info_user_no_account #user_email').val();
                         var phone = $('#info_user_no_account #user_phone').val();
                         var address = $('#info_user_no_account #user_address').val();
-                        var status = $('#info_user_no_account #user_status').val();
+                        var note = $('#info_user_no_account #user_status').val();
                         $.ajax({
                             url: "{{route('order_store')}}",
                             type:'post',
                             data: {
                                 'orders'  : JSON.parse(localStorage.getItem('cart')),
-                                'name'  : name,
-                                'email' : email,
-                                'phone' : phone,
+                                'name'    : name,
+                                'email'   : email,
+                                'phone'   : phone,
                                 'address' : address,
-                                'status' : status
+                                'note'    : note
                             },
                             success: function(data) {
                                 if(data.error == true){
@@ -278,6 +278,14 @@
                                 }
                                 if(data.success == true){
                                     $('#info_user_no_account').modal('hide');
+                                    localStorage.setItem('cart', JSON.stringify([]));
+                                    Swal.fire({
+                                        icon:'success',
+									    title: 'Bạn đã đặt hàng thành công!',
+									    text:'Kiểm tra email để nhận những thông báo về đơn hàng!',
+                                   }).then((result) => {
+                                        location.reload();
+                                    });
                                 }
                             }
                         });

@@ -22,13 +22,13 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $blogs = Blog::all();
+        $blogs = Blog::latest()->paginate(3);
         $data = [
             'titlePage'   => 'Danh Sách Blog',
             'nameAdmin'   => ucwords($this->infoUser('name')),
             'blogs'  => $blogs
         ];
-        return view('admin.blog.list',$data);
+        return view('admin.blog.list', $data);
     }
 
     /**
@@ -42,7 +42,7 @@ class BlogController extends Controller
             'titlePage'   => 'Tạo Blog',
             'nameAdmin'   => ucwords($this->infoUser('name'))
         ];
-        return view('admin.blog.create',$data);
+        return view('admin.blog.create', $data);
     }
 
     /**
@@ -53,21 +53,21 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-            $thumbnailName = $request->file('thumbnail')->getClientOriginalName();
-            $request->file('thumbnail')->move(public_path('/uploads/images/blogs/'), $thumbnailName);
-        
-            $data = [
-                'title' => $request->title,
-                'thumbnail' => $thumbnailName,
-                'content' => $request->content,
-                'status' => ($request->status == 'on') ? 1 : 0 ,
-                'author' => $this->infoUser('name')
-            ];
-            $blog = Blog::create($data);
-            foreach($request->tag as $tag){
-                Blog_tag::create(['tag' => $tag, 'blog_id' => $blog->id]);
-            }
-            return redirect()->route('admin.blog.list');
+        $thumbnailName = $request->file('thumbnail')->getClientOriginalName();
+        $request->file('thumbnail')->move(public_path('/uploads/images/blogs/'), $thumbnailName);
+
+        $data = [
+            'title' => $request->title,
+            'thumbnail' => $thumbnailName,
+            'content' => $request->content,
+            'status' => ($request->status == 'on') ? 1 : 0,
+            'author' => $this->infoUser('name')
+        ];
+        $blog = Blog::create($data);
+        foreach ($request->tag as $tag) {
+            Blog_tag::create(['tag' => $tag, 'blog_id' => $blog->id]);
+        }
+        return redirect()->route('admin.blog.list');
     }
 
     /**
@@ -87,9 +87,14 @@ class BlogController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Blog $blog)
     {
-        //
+        $data = [
+            'titlePage'   => 'Chỉnh Sửa Blog',
+            'nameAdmin'   => ucwords($this->infoUser('name')),
+            'blog'  => $blog
+        ];
+        return view('admin.blog.edit', $data);
     }
 
     /**
@@ -99,9 +104,24 @@ class BlogController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Blog $blog)
     {
-        //
+        
+            $thumbnailName = $request->file('thumbnail')->getClientOriginalName();
+            $request->file('thumbnail')->move(public_path('/uploads/images/blogs/'), $thumbnailName);
+
+            $data = [
+                'title' => $request->title,
+                'thumbnail' => $thumbnailName,
+                'content' => $request->content,
+                'status' => ($request->status == 'on') ? 1 : 0,
+                'author' => $this->infoUser('name')
+            ];
+            $blog->update($data);
+            foreach ($request->tag as $tag) {
+                Blog_tag::updateOrCreate(['tag' => $tag, 'blog_id' => $blog->id]);
+            }
+            return redirect()->route('admin.blog.list');
     }
 
     /**
@@ -110,8 +130,9 @@ class BlogController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Blog $blog)
     {
-        //
+        $blog->delete();
+        return redirect()->route('admin.blog.list');
     }
 }

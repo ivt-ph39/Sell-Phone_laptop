@@ -3,8 +3,6 @@
     {{ $titlePage }}
 @endsection
 @section('css')
-
-
     <!-- select2 -->
     <link rel="stylesheet" href="adminlte/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="admins/product/create/css/app.css">
@@ -330,6 +328,7 @@
     <script src="admins/product/create/js/app.js"></script>
 
     <script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
+<<<<<<< HEAD
     <script src="{{ asset('editors/ckeditor/ckeditor.js') }}"></script>
     <script>
         
@@ -345,4 +344,6 @@
     </script>
 
 
+=======
+>>>>>>> 4c37983aae1d48e39400122dcdaa825d25f954eb
 @endsection

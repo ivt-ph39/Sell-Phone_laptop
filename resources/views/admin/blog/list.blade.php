@@ -37,11 +37,21 @@
                                         <span class="badge badge-success">{{ $tag->tag }}</span>
                                     @endforeach
                                 </td>
-                                <td></td>
+                                <td>
+                                    <div class="form-inline">
+                                        <form action="{{  route('admin.blog.delete', $blog->id) }}" method="post">
+                                            @csrf
+                                            @method('delete')
+                                            <button class="btn btn-sm btn-outline-danger" type="submit" >Del</button>
+                                        </form>
+                                        <a href="{{ route('admin.blog.show', $blog->id) }}" class="btn btn-sm btn-outline-primary">Edit</a> 
+                                    </div>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
+                {{ $blogs->links() }}
             </div>
         @endif
     </div>

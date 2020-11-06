@@ -3,17 +3,20 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Mail\SendOrder;
 use App\Model\Order;
+use App\Model\OrderProduct;
 use App\Model\Product;
 use App\User;
 use Exception;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
-    public function store(Request $request, User $user, Order $order)
+    public function store(Request $request)
     {
         $rules = [
             'name' => 'required',
@@ -40,15 +43,14 @@ class OrderController extends Controller
                 'email' => $request->email,
                 'address' => $request->address,
                 'phone' => $request->phone,
-                'status' => $request->status
+                'note' => $request->note
             ];
             if ($request->user_id) {
                 $data['user_id'] = $request->user_id;
             }
             try {
                 DB::beginTransaction();
-                $order = $order->create($data);
-                // dd($request->orders);
+                $order = Order::create($data);
                 foreach ($request->orders as $orderProduct) {
                     $dataCreate = [
                         'quantity'   => $orderProduct['quantity'],
@@ -57,11 +59,21 @@ class OrderController extends Controller
                     ];
                     $dataInstance[] = $dataCreate;
                 }
-                $order->products()->attach($dataInstance);
+                $orderProduct = $order->products()->attach($dataInstance);
                 DB::commit();
-                return response()->json([
-                    'success' => true
-                ], 200);
+                // dd($orderProduct);
+                if ($request->user_id) {
+                    return response()->json([
+                        'success' => true
+                    ], 200);
+                } else {
+                    if ($this->sendOrder($request->email, $order->id)) {
+                        return response()->json([
+                            'success' => true,
+                            'sendMail' => true
+                        ], 200);
+                    }
+                }
             } catch (Exception $e) {
                 DB::rollback();
                 return response()->json([
@@ -70,5 +82,26 @@ class OrderController extends Controller
                 ], 200);
             }
         }
+    }
+    public function show(Request $request)
+    {
+        $id_order = $request->id_order;
+        $order = OrderProduct::with('products')->where('order_id', $id_order)->get();
+        if ($order) {
+            return response()->json([
+                'success' => true,
+                'order'  => $order
+            ], 200);
+        } else {
+            return response()->json([
+                'error' => true
+            ], 200);
+        }
+    }
+    public function sendOrder($email, $order_id)
+    {
+        $dataOrder = OrderProduct::with(['products', 'order'])->where('order_id', $order_id)->get();
+        Mail::to($email)->send(new SendOrder($dataOrder));
+        return true;
     }
 }
