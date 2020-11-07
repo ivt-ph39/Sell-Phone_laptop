@@ -51,7 +51,7 @@
 				<!-- /row -->
 				@foreach ($categories as $key => $category)
 				<!-- row -->
-				<div class="row product-new {{($category->id !=1)? "none" : ""}}"  id={{$category->id}}>
+				<div class="row product-new "  id={{$category->id}}>
 					<div class="owl-carousel owl-theme owl-loaded">
 						<div class="owl-stage-outer">
 							<div class="owl-stage">
@@ -198,10 +198,7 @@
 						<div class="owl-stage-outer">
 							<div class="owl-stage">
 								<!-- product -->
-								@php
-									$a = $key
-								@endphp
-								@foreach ($productNews->where('category_id', 1)->get() as $product)
+								@foreach ($productNews->where('category_id', $category->id)->get() as $product)
 									<div class="owl-item">
 										<div class="product product-store">
 											<div class="product-img">
