@@ -296,8 +296,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <textarea name="description" id="editor1" cols="30" rows="10"></textarea>
+                    <div class="form-group" style="width: 642px;margin: auto; margin-top:20px">
+                        <h4>Đặc điểm nổi bật :</h4>
+                        <textarea class="form-control" id="summary-ckeditor" name="description" cols="30" rows="20"></textarea>
                     </div>
                 </div>
                 <!-- /.card-body -->
@@ -326,24 +327,12 @@
 
 
     <script src="admins/product/create/js/app.js"></script>
-
-    <script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
-<<<<<<< HEAD
-    <script src="{{ asset('editors/ckeditor/ckeditor.js') }}"></script>
+    <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
     <script>
-        
-        ClassicEditor
-            .create(document.querySelector('#editor1'), {
-                ckfinder: {
-                    uploadUrl: '/editors/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files&responseType=json'
-                }
-            })
-            .catch(function(error) {
-                console.error(error);
-            });
+    CKEDITOR.replace( 'summary-ckeditor', {
+        filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
+        filebrowserUploadMethod: 'form'
+    });
     </script>
 
-
-=======
->>>>>>> 4c37983aae1d48e39400122dcdaa825d25f954eb
 @endsection

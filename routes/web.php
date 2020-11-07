@@ -52,6 +52,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::get('product/edit/{id}', 'Backend\ProductController@edit')->name('admin.product.edit');
     Route::post('product/update/{id}', 'Backend\ProductController@update')->name('admin.product.update');
     Route::get('product/delete/{id}', 'Backend\ProductController@destroy')->name('admin.product.delete');
+
+    Route::post('ckeditor/image_upload', 'Backend\ProductController@upload')->name('upload');
+
     //---------brands----------
     Route::get('brand/list', 'Backend\BrandController@index')->name('admin.brand.list');
     Route::get('brand/create', 'Backend\BrandController@create')->name('admin.brand.create');
