@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 // use Illuminate\Database\Eloquent\SoftDeletes;
 class Category extends Model
 {
+    use \Staudenmeir\EloquentEagerLimit\HasEagerLimit;
     // use SoftDeletes;
     protected $table = 'categories';
 
@@ -32,6 +33,10 @@ class Category extends Model
                 'id'   => $value
             ];
         }
+    }
+    public function products()
+    {
+        return $this->hasMany(Product::class);
     }
     public function hasChild($value)
     {

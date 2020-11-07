@@ -10,7 +10,7 @@ use Illuminate\Queue\SerializesModels;
 class SendOrder extends Mailable
 {
     use Queueable, SerializesModels;
-
+    public $dataOrder;
     /**
      * Create a new message instance.
      *

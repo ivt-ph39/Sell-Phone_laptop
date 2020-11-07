@@ -100,7 +100,28 @@ class OrderController extends Controller
     }
     public function sendOrder($email, $order_id)
     {
-        $dataOrder = OrderProduct::with(['products', 'order'])->where('order_id', $order_id)->get();
+        $orders   = OrderProduct::with(['products', 'order'])->where('order_id', 16)->get();
+        $dataOrder = [
+            'order'  => [
+                'id' => 16,
+                'created_at' => $orders[0]->order->created_at,
+                'status'     => $orders[0]->order->status,
+            ],
+            'orderAmount' => 0
+        ];
+        $orderDetail = [];
+        foreach ($orders as $order) {
+            $orderDetail[] =  [
+                'productName' => $order->products->name,
+                'productImage' => $order->products->avatar,
+                'productQuantity' => $order->quantity,
+                'productAmount' => number_format($order->amount, 0, ',', '.'),
+            ];
+            $dataOrder['orderAmount'] = $dataOrder['orderAmount'] + $order->amount;
+        }
+        $dataOrder['orderAmount'] = number_format($dataOrder['orderAmount'], 0, ',', '.');
+        $dataOrder['orderDetail'] = $orderDetail;
+        // $dataOrder = ['tt' => 'asdasd'];
         Mail::to($email)->send(new SendOrder($dataOrder));
         return true;
     }

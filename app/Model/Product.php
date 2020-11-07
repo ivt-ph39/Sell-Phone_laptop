@@ -7,6 +7,7 @@ use Illuminate\Support\Arr;
 
 class Product extends Model
 {
+    use \Staudenmeir\EloquentEagerLimit\HasEagerLimit;
     protected $table = 'products';
 
     protected $fillable = [
@@ -98,7 +99,7 @@ class Product extends Model
     }
     public function orders()
     {
-        return $this->belongsTo(Order::class, 'order_product', 'order_id', 'product_id');
+        return $this->belongsToMany(Order::class, 'order_product', 'order_id', 'product_id');
     }
     public function getRatingAttribute()
     {
