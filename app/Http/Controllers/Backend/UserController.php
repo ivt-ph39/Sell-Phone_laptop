@@ -140,12 +140,22 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        //check don hag cua nguoi dung
+        // check trang thai don hang
+        // order don hang
+        // check delete
+
         $user->delete();
         return redirect()->route('admin.user.list');
     }
 
+    public function checkOrder(){
+        // kiem tra don hang cua khach hang 
+    }
+
     public function restore($id)
     {
+        
         User::withTrashed()->find($id)->restore();
         return redirect()->route('admin.user.list');
     }
