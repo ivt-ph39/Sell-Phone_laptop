@@ -147,7 +147,7 @@
                             <a href="{{ route('admin.comment.list') }}" class="nav-link ">
                                 <i class="fas fa-comments mr-2"></i>
                                 <p>
-                                    QL Comments
+                                    QL Comments <span class="badge badge-danger">0</span>
                                 </p>
                             </a>
                         </li>
@@ -164,6 +164,14 @@
                                 <i class="fas fa-photo-video mr-2"></i>
                                 <p>
                                     QL Sliders
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a href="{{ route('admin.blog.list') }}" class="nav-link ">
+                                <i class="fab fa-blogger mr-2"></i>
+                                <p>
+                                    QL Blog 
                                 </p>
                             </a>
                         </li>
@@ -238,7 +246,6 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 
-    
     @yield('js')
 </body>
 

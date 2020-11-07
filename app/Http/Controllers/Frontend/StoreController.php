@@ -68,7 +68,7 @@ class StoreController extends Controller
         return view('frontend.store', $data);
     }
 
-    public function getIdCategory($slug)
+    public function getIdCategory($slug) 
     {
         $categories = Category::all();
         foreach ($categories as $category) {

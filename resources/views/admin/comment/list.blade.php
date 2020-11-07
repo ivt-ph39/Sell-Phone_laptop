@@ -15,7 +15,7 @@
                     <thead>
                         <tr class="text-center">
                             <th scope="col">Infor User</th>
-                            <th scope="col">Nội Dung</th>
+                            <th scope="col" class="w-25">Nội Dung</th>
                             <th scope="col">Thời gian <br> Comment </th>
                             <th scope="col">Hiển Thị</th>
                             <th scope="col" class="text-center">Trạng thái</th>
