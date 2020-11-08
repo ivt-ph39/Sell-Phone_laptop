@@ -23,14 +23,14 @@
                                         @csrf
                                         <div class="form-group">
                                             <label>Tên quyền</label>
-                                            <input type="text" name="name" value="{{ old('name') }}" class="form-control" required>
+                                            <input type="text" name="name" value="{{ old('name') }}" class="form-control" >
                                             @if ($errors->has('name'))
                                                 <span style="color: red" >{{ $errors->first('name') }}</span>
                                             @endif
                                         </div>
                                         <div class="form-group">
                                             <label>Mô tả quyền</label>
-                                            <textarea type="text" name="description" value="{{ old('description') }}" class="form-control" required></textarea>
+                                            <textarea type="text" name="description" value="{{ old('description') }}" class="form-control" ></textarea>
                                             @if ($errors->has('description'))
                                                 <span style="color: red" >{{ $errors->first('description') }}</span>
                                             @endif
@@ -53,28 +53,28 @@
                                         @csrf
                                         <div class="form-group">
                                             <label>Tên quyền</label>
-                                            <input type="text" name="name" value="{{ old('name') }}" class="form-control" required>
+                                            <input type="text" name="name" value="{{ old('name') }}" class="form-control" >
                                             @if ($errors->has('name'))
                                                 <span style="color: red" >{{ $errors->first('name') }}</span>
                                             @endif
                                         </div>
                                         <div class="form-group">
                                             <label>Mô tả quyền</label>
-                                            <input type="text" name="description" value="{{ old('description') }}" class="form-control" required>
+                                            <input type="text" name="description" value="{{ old('description') }}" class="form-control" >
                                             @if ($errors->has('description'))
                                                 <span style="color: red" >{{ $errors->first('description') }}</span>
                                             @endif
                                         </div>
                                         <div class="form-group">
                                             <label>Key code</label>
-                                            <input type="text" name="keycode" value="{{ old('keycode') }}" placeholder="ex: 'list_user'" class="form-control" required>
+                                            <input type="text" name="keycode" value="{{ old('keycode') }}" placeholder="ex: 'list_user'" class="form-control" >
                                             @if ($errors->has('keycode'))
                                                 <span style="color: red" >{{ $errors->first('keycode') }}</span>
                                             @endif
                                         </div>
                                         <div class="form-group">
                                             <label>Chọn quyền cha</label>
-                                            <select name="parent_id" class="form-control" required>
+                                            <select name="parent_id" class="form-control" >
                                                 <option value="">----Choose your children----</option>
                                                 @foreach ($permissionParents as $per)
                                                     <option value="{{ $per->id }}">
@@ -82,6 +82,9 @@
                                                     </option>
                                                 @endforeach
                                             </select>
+                                            @if ($errors->has('parent_id'))
+                                                <span style="color: red" >{{ $errors->first('parent_id') }}</span>
+                                            @endif
                                         </div>
                                         <hr>
                                         <button type="submit" class="btn btn-sm btn-outline-warning">Submit</button>
