@@ -26,9 +26,9 @@ class UserController extends Controller
         }
 
         if (!empty($search)) {
-            $users = User::where('name', 'like', "%$search%")->get();;
+            $users = User::where('name', 'like', "%$search%")->paginate(1);
         } else {
-            $users = User::all();
+            $users = User::paginate(1);
         }
         $titlePage      = 'Danh sách Người Dùng';
         $data = [
@@ -42,7 +42,7 @@ class UserController extends Controller
 
     public function onlyTrashed()
     {
-        $users = User::onlyTrashed()->get();
+        $users = User::onlyTrashed()->paginate(1);
         $titlePage      = 'Danh sách Người Dùng Đã Soft Delete';
         $data = [
             'titlePage'   => $titlePage,
@@ -84,7 +84,7 @@ class UserController extends Controller
         if (!empty($user)) {
             $user->roles()->attach($request->role_id);
         }
-        return redirect()->route('admin.user.list');
+        return redirect()->route('admin.user.list')->with('message', 'Đã thêm thành công nhân viên');
     }
 
     /**
@@ -145,17 +145,21 @@ class UserController extends Controller
         // order don hang
         // check delete
 
-        $user->delete();
-        return redirect()->route('admin.user.list');
+        $rs = $user->delete();
+        if ($rs) {
+            return redirect()->route('admin.user.list')->with('message', 'Đã xóa mềm thành công');
+        }
+        return redirect()->route('admin.user.list')->with('message', 'Lỗi không xóa được');
     }
 
-    public function checkOrder(){
+    public function checkOrder()
+    {
         // kiem tra don hang cua khach hang 
     }
 
     public function restore($id)
     {
-        
+
         User::withTrashed()->find($id)->restore();
         return redirect()->route('admin.user.list');
     }
