@@ -24,16 +24,22 @@ class CreatePermissionChildrenRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'min:6',
-            'description' => 'min:6',
-            'keycode' => 'regex:/^[a-z0-9]*+_+[a-z0-9]*$/'
+            'name' => 'required|min:6',
+            'description' => 'required|min:6',
+            'keycode' => 'required|regex:/^[a-z0-9]*+_+[a-z0-9]*$/',
+            'parent_id' => 'required',
         ];
     }
 
     public function messages()
     {
         return [
+            'name.required' => 'Không được để trống',
+            'name.min' => 'Kí tự phải lớn hơn 6',
+            'description.required' => 'Không được để trống',
+            'keycode.required' => 'Không được để trống',
             'keycode.regex' => 'Chưa đúng định dạng Ex: "list_user"',
+            'parent_id.required' => 'Không được để trống',
         ];
     }
 }

@@ -23,7 +23,7 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        $permissionParents = Permission::where('parent_id', 0)->get();
+        $permissionParents = Permission::where('parent_id', 0)->latest()->paginate(5);
         $titlePage      = 'Danh Sách Quyền Cha';
         $data = [
             'titlePage'   => $titlePage,
@@ -37,7 +37,7 @@ class PermissionController extends Controller
     public function indexChildren($parent_id)
     {
         $permissionParent = Permission::find($parent_id);
-        $permissionChildren = Permission::where('parent_id', $parent_id)->get();
+        $permissionChildren = Permission::where('parent_id', $parent_id)->latest()->paginate(5);
         $titlePage      = 'Danh Sách Quyền Con -- ';
         $data = [
             'titlePage'   => $titlePage,
@@ -77,14 +77,16 @@ class PermissionController extends Controller
     {
         $data = $request->all();
         Permission::create($data);
-        return redirect()->route('admin.permission.list');
+        return redirect()->route('admin.permission.list')
+        ->with('message', 'Đã thêm quyền thành công');
     }
 
     public function storeChildren(CreatePermissionChildrenRequest $request)
     {
         $data = $request->all();
         $permission = Permission::create($data);
-        return redirect()->route('admin.permission.listChildren', ['parent_id' => $permission->parent_id]);
+        return redirect()->route('admin.permission.listChildren', ['parent_id' => $permission->parent_id])
+        ->with('message', 'Đã thêm quyền thành công');
     }
 
     /**
@@ -128,15 +130,25 @@ class PermissionController extends Controller
     public function updateChildren(CreatePermissionChildrenRequest $request, Permission $permission)
     {
         $data = $request->all();
-        $permission->update($data);
-        return redirect()->route('admin.permission.listChildren', ['parent_id' => $permission->parent_id]);
+        $rs = $permission->update($data);
+        if($rs){
+            return redirect()->route('admin.permission.listChildren', ['parent_id' => $permission->parent_id])
+            ->with('message', 'Đã cập nhập quyền thành công');
+        }
+            return redirect()->route('admin.permission.listChildren', ['parent_id' => $permission->parent_id])
+            ->with('message', 'Chưa cập nhập quyền thành công!!');
     }
 
     public function updateParent(CreatePermissionRequest $request, Permission $permission)
     {
         $data = $request->all();
-        $permission->update($data);
-        return redirect()->route('admin.permission.list');
+        $rs = $permission->update($data);
+        if($rs){
+            return redirect()->route('admin.permission.list')
+            ->with('message', 'Đã cập nhập quyền thành công');
+        }
+            return redirect()->route('admin.permission.list')
+            ->with('message', 'Chưa cập nhập quyền thành công!!');
     }
 
     /**
@@ -147,7 +159,23 @@ class PermissionController extends Controller
      */
     public function destroy(Permission $permission)
     {
-        $permission->delete();
-        return redirect()->route('admin.permission.listChildren', ['parent_id' => $permission->parent_id]);
+        $rs = $permission->delete();
+        if($rs){
+            return redirect()->route('admin.permission.list', ['parent_id' => $permission->parent_id])
+            ->with('message', 'Đã xóa 1 quyền cha thành công');
+        }
+        return redirect()->route('admin.permission.list', ['parent_id' => $permission->parent_id])
+        ->with('message', 'Xóa không thành công');
+    }
+
+    public function destroyChildren(Permission $permission)
+    {
+        $rs =$permission->delete();
+        if($rs){
+            return redirect()->route('admin.permission.listChildren', ['parent_id' => $permission->parent_id])
+            ->with('message', 'Đã xóa 1 quyền con thành công');
+        }
+        return redirect()->route('admin.permission.listChildren', ['parent_id' => $permission->parent_id])
+        ->with('message', 'Xóa không thành công');
     }
 }

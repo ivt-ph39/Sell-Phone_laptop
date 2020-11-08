@@ -24,8 +24,8 @@ class CreatePermissionRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'regex:/^Module+\s+[a-zA-Z0-9]*$/',
-            'description' => 'min:6'
+            'name' => 'required|regex:/^Module\s[^^^]*$/',
+            'description' => 'required|min:6'
         ];
     }
 
@@ -33,6 +33,9 @@ class CreatePermissionRequest extends FormRequest
     {
         return [
             'name.regex' => 'Nhập theo định dạng ex : "Module User"',
+            'name.required' => 'Không được để trống tên quyền',
+            'description.min' => 'Nội dung có kí tự từ 6 trở lên',
+            'description.required' => 'Không được để trống nội dung'
         ];
     }
 }
