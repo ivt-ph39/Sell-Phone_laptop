@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Model\Rating;
 use Illuminate\Http\Request;
 
-class RatingControllser extends Controller
+class RatingController extends Controller
 {
     public function store(Request $request, Rating $rating)
     {
