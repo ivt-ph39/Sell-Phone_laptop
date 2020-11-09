@@ -7,19 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Blog extends Model
 {
-    use Sluggable; 
+    use Sluggable;
 
     protected $fillable = ['title', 'slug', 'content', 'status', 'author', 'thumbnail'];
 
-    public function sluggable(){
+    public function sluggable()
+    {
         return [
             'slug' => [
                 'source' => 'title'
             ]
-        ]; 
-    } 
+        ];
+    }
 
-    public function blog_tag(){
+    public function blog_tag()
+    {
         return $this->hasMany(Blog_tag::class, 'blog_id');
     }
 }

@@ -104,18 +104,17 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::delete('permission/{permission}/delete', 'Backend\PermissionController@destroy')->name('admin.permission.delete');
     //------------comment----
 
-    Route::get('comment/list' , 'Backend\CommentController@index')->name('admin.comment.list');
-    Route::put('comment/{comment}/active' , 'Backend\CommentController@active')->name('admin.comment.active');
-    Route::get('comment/{id}/showReply' , 'Backend\CommentController@showReply')->name('admin.comment.showReply');
-    Route::post('comment/{id}/reply' , 'Backend\CommentController@reply')->name('admin.comment.reply');
+    Route::get('comment/list', 'Backend\CommentController@index')->name('admin.comment.list');
+    Route::put('comment/{comment}/active', 'Backend\CommentController@active')->name('admin.comment.active');
+    Route::get('comment/{id}/showReply', 'Backend\CommentController@showReply')->name('admin.comment.showReply');
+    Route::post('comment/{id}/reply', 'Backend\CommentController@reply')->name('admin.comment.reply');
     //-------------Blog------
-    Route::get('blog/list' , 'Backend\BlogController@index')->name('admin.blog.list');
-    Route::get('blog/create' , 'Backend\BlogController@create')->name('admin.blog.create');
-    Route::post('blog/store' , 'Backend\BlogController@store')->name('admin.blog.store');
-    Route::get('blog/{blog}/show' , 'Backend\BlogController@edit')->name('admin.blog.show');
+    Route::get('blog/list', 'Backend\BlogController@index')->name('admin.blog.list');
+    Route::get('blog/create', 'Backend\BlogController@create')->name('admin.blog.create');
+    Route::post('blog/store', 'Backend\BlogController@store')->name('admin.blog.store');
+    Route::get('blog/{blog}/show', 'Backend\BlogController@edit')->name('admin.blog.show');
     Route::put('blog/{blog}/update', 'Backend\BlogController@update')->name('admin.blog.update');
-    Route::delete('blog/{blog}/destroy' , 'Backend\BlogController@destroy')->name('admin.blog.delete');
-
+    Route::delete('blog/{blog}/destroy', 'Backend\BlogController@destroy')->name('admin.blog.delete');
 });
 // ------------------------- FrontEnd ----------------------
 
@@ -156,12 +155,15 @@ Route::get('/gio-hang', 'Frontend\CartController@index')->name('cart');
 
 
 Route::get('/{page}', 'Frontend\StoreController@index')->name('store');
-Route::get('/{page}/{productName}', 'Frontend\ProductDetail@index')->name('product');
+// Route::get('/{page}/{productName}', 'Frontend\ProductDetail@index')->name('product');
 
 
 Route::get('/product/{productName}', 'Frontend\ProductDetail@index')->name('product');
 
 Route::get('/{page}', 'Frontend\StoreController@index')->name('store');
 
-//-------------blog---------------
+Route::post('/getRatings', 'Frontend\ProductDetail@getRatings')->name('get_ratings');
+Route::post('/getComments', 'Frontend\ProductDetail@getComments')->name('get_comments');
 
+
+//-------------blog---------------
