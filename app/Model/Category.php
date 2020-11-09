@@ -40,6 +40,6 @@ class Category extends Model
     }
     public function hasChild($value)
     {
-        return ($this->where('parent_id', $value)->count() != 0) ? $this->where('parent_id', $value)->get() : false;
+        return ($this->where('parent_id', $value)->count() != 0) ? $this->where('parent_id', $value)->orderBy('id', 'desc')->get() : false;
     }
 }

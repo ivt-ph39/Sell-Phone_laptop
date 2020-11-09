@@ -67,7 +67,7 @@
 										}
 									@endphp
 								</div>
-								<a class="review-link" href="#"> {{$total_rating}} (Đánh giá)</a>
+								<a class="review-link" href="#"> {{$ratings->count()}} (Đánh giá)</a>
 								<div class="clearfix"></div>
 							</div>
 							<div class="product-price ">
@@ -100,7 +100,7 @@
 				<div class="row">
 					<div class="col-md-7">
 						<div class="desciption">
-							<h4>Đặc điểm nổi bật của</h4>
+							<h4>Đặc điểm nổi bật:</h4>
 							<div class="content">
 								{!!$product->description!!}
 							</div>
@@ -161,6 +161,7 @@
 									<!-- AddReview Form -->
 								</div>	
 								@endif
+							<h3>Có {{$ratings->count()}} đánh giá:</h3>
 									<div class="row">
 										<!-- Rating -->
 											<div class="col-md-3">
@@ -270,9 +271,9 @@
 										<!-- Reviews -->
 											<div class="col-md-9">
 												<div id="reviews">
-													@if ($total_rating > 0)
+													@if ($ratings->count() > 0)
 														<ul class="reviews">
-															@foreach ($ratings as $rating)
+															@foreach ($ratings->take(4) as $rating)
 																<li>
 																	<div class="review-heading">
 																		<h5 class="name">{{$rating->user->name}} </h5>
@@ -290,8 +291,24 @@
 																		<p>{{$rating->content}}</p>
 																	</div>
 																</li>
+																<hr>
 															@endforeach
 														</ul>
+														<div class="pagination_review" style="text-align: center;">
+															<nav aria-label="Page navigation example">
+																<ul class="pagination">
+																	<li class="page-item " data-page="pre" id="review_pre">
+																		<a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+																	</li>
+																	@for ($i = 1; $i <= (ceil($ratings->count()/4)); $i++)
+																	<li class="page-item {{($i==1)?"active":""}} review_page" data-page="{{$i}}" data-pro_id="{{$product->id}}"><a href="#" class="page-link">{{$i}}</a></li>
+																	@endfor
+																	<li class="page-item" data-page="next" id="review_next">
+																		<a class="page-link" href="#" aria-label="Next" ><span aria-hidden="true">&raquo;</span></a>
+																	</li>
+																</ul>
+															</nav>
+														</div>
 													@else
 														<p class="show_no_prod"> Sản phẩm chưa có đánh giá nào.</p>
 														<ul class="reviews">
@@ -355,31 +372,76 @@
 							</div>
 					</div>
 					<div class="col-md-12">
-						<span class="total-comment">Có {{$total_comment}} bình luận </span>
-						<ul class="list-comment">
-							@foreach ($comments as $comment)
-								<li class="comment_ask" id="">
-									<div class="row_user">
-										<span>{{$comment->getCharFirstLastName($comment->name)}}</span>
-										<strong>{{$comment->name}}</strong>
-									</div>
-									<div class="question">
-										{{$comment->content}}
-									</div>
-									<div class="reply">
-										<a  href="" class="respondent">Trả lời</a>
-										<a  class="time"> 1 ngay</a>
-									</div>
-								</li>
-							@endforeach
-						</ul>
+						{{-- {{dd($comments->get()->count())}} --}}
+						@if ($comments->where('parent_id',0)->count()>0)
+							<span class="total-comment">Có {{$comments->where('parent_id',0)->count()}} bình luận </span>
+							<ul class="list-comment">
+								@foreach ($comments->where('parent_id',0)->take(5)->get() as $comment)
+									<li class="comment_ask" id="">
+										<div class="row_user">
+											<span>{{$comment->getCharFirstLastName($comment->name)}}</span>
+											<strong>{{$comment->name}}</strong>
+										</div>
+										<div class="question">
+											{{$comment->content}}
+										</div>
+										<div class="reply">
+											<a  href="" class="respondent">Trả lời</a>
+											<a  class="time"> {{$comment->created_at}}</a>
+											
+											@if ($comment->hasChild($comment->id))
+											<div class="reply_admin">
+												@foreach ($comment->hasChild($comment->id) as $commentChild)
+													<div class="row_user">
+														<span>Ad</span>
+														<strong>Quản trị viên</strong>
+													</div>
+													<div class="question">
+														{{$commentChild->content}}
+													</div>
+													<div class="reply">
+														<a  href="" class="respondent">Trả lời</a>
+														<a  class="time"> {{$comment->created_at}}</a>
+													</div>
+													
+												@endforeach
+											</div>
+											@endif
+										</div>
+									</li>
+									<hr>
+								@endforeach
+							</ul>
+							<div class="pagination_comment" style="text-align: center;">
+								<nav aria-label="Page navigation example">
+									<ul class="pagination">
+										<li class="page-item" id="comment_pre">
+											<a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span>
+											</a>
+										</li>
+										@for ($i = 1; $i <= (ceil($comments->count()/5)); $i++)
+										<li class="page-item comment_page {{($i==1)?"active":""}}" data-page="{{$i}}" data-pro_id="{{$product->id}}"><a class="page-link" href="#">{{$i}}</a></li>
+										@endfor
+										<li class="page-item" id="comment_next">
+											<a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span>
+											</a>
+										</li>
+									</ul>
+								</nav>
+							</div>
+						@else
+							<span class="total-comment">Chưa có bình luận:</span>
+							<ul class="list-comment"></ul>
+						@endif
 					</div>
 					
 				</div>
 			</div>
 			<!-- /container -->
 		</div>
-    <!-- /SECTION -->
+	<!-- /SECTION -->
+	<div id="data-container"></div>
+	<div id="pagination-container"></div>
 	<!-- Section -->
 		<div class="section">
 			<!-- container -->
@@ -393,135 +455,6 @@
 							<h3 class="title">Sản Phẩm Liên Quan</h3>
 						</div>
 					</div>
-
-					<!-- product -->
-					<div class="col-md-3 col-xs-6">
-						<div class="product product-store">
-							<div class="product-img">
-                                <a href="">
-								    <img src="{{asset("https://didongviet.vn/pub/media/catalog/product/i/p/iphone-11-128gb-chinh-hang_1.jpg")}}" alt="">
-                                </a>
-								<div class="product-label">
-									<span class="sale">-30%</span>
-								</div>
-							</div>
-							<div class="product-body">
-								<p class="product-category">Category</p>
-								<h3 class="product-name"><a href="#">product name goes here</a></h3>
-								<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-								<div class="product-rating">
-								</div>
-								<div class="product-btns">
-									<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
-									<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
-									<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
-								</div>
-							</div>
-							<div class="add-to-cart">
-								<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>Mua Ngay</button>
-							</div>
-						</div>
-					</div>
-					<!-- /product -->
-
-					<!-- product -->
-					<div class="col-md-3 col-xs-6">
-						<div class="product product-store">
-							<div class="product-img">
-                                <a href="">
-								<img src="{{asset("frontend/img/product02.png")}}" alt="">
-
-                                </a>
-								<div class="product-label">
-									<span class="new">NEW</span>
-								</div>
-							</div>
-							<div class="product-body">
-								<p class="product-category">Category</p>
-								<h3 class="product-name"><a href="#">product name goes here</a></h3>
-								<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-								<div class="product-rating">
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-								</div>
-								<div class="product-btns">
-									<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
-									<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
-									<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
-								</div>
-							</div>
-							<div class="add-to-cart">
-								<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>Mua Ngay</button>
-							</div>
-						</div>
-					</div>
-					<!-- /product -->
-
-					<div class="clearfix visible-sm visible-xs"></div>
-
-					<!-- product -->
-					<div class="col-md-3 col-xs-6">
-						<div class="product product-store">
-							<div class="product-img">
-                                <a href="">
-								<img src="{{asset("frontend/img/product03.png")}}" alt="">
-
-                                </a>
-							</div>
-							<div class="product-body">
-								<p class="product-category">Category</p>
-								<h3 class="product-name"><a href="#">product name goes here</a></h3>
-								<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-								<div class="product-rating">
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star-o"></i>
-								</div>
-								<div class="product-btns">
-									<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
-									<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
-									<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
-								</div>
-							</div>
-							<div class="add-to-cart">
-								<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>Mua Ngay</button>
-							</div>
-						</div>
-					</div>
-					<!-- /product -->
-
-					<!-- product -->
-					<div class="col-md-3 col-xs-6">
-						<div class="product product-store">
-							<div class="product-img">
-                                <a href="">
-								<img src="{{asset("frontend/img/product04.png")}}" alt="">
-                                </a>
-                            </div>
-							<div class="product-body">
-								<p class="product-category">Category</p>
-								<h3 class="product-name"><a href="#">product name goes here</a></h3>
-								<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-								<div class="product-rating">
-								</div>
-								<div class="product-btns">
-									<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
-									<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
-									<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
-								</div>
-							</div>
-							<div class="add-to-cart">
-								<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>Mua Ngay</button>
-							</div>
-						</div>
-					</div>
-					<!-- /product -->
-
 				</div>
 				<!-- /row -->
 			</div>
@@ -533,6 +466,7 @@
 	@endif
 @endsection
 @section('js')
+	<script src="{{asset('frontend/js/pagination.js')}}"></script>
     <script>
 		$(document).ready(function(){
 			let product_id = $("#product_id").attr('data-product-id') ;
@@ -660,45 +594,242 @@
 						},
 						type: 'post',
 						success : function(data){
+
 							if(data.success == true){
 								Swal.fire(
 									'Chân thành cám ơn!',
 									'Bạn đã tạo thêm bình luận thành công!'
 									);
-							}
-							htmlStar = '' ;
-							for(i=0;i<data.rating['star']; i++){
-								htmlStar += '<i class="fa fa-star"></i>'
-							}
-							if((5 - data.rating['star']) > 0){
-								for(i=0;i < (5 - data.rating['star']); i++){
-								htmlStar += '<i class="fa fa-star-o empty"></i>'
-							}
-							htmlContentRating = 
-							'<li>'
-								+'<div class="review-heading">'
-									+'<h5 class="name">'+ data.rating['name_user'] +'</h5>'
-									+'<p class="date">'+data.rating['date']+'</p>'
-									+'<div class="review-rating">'
-										+htmlStar
+								htmlStar = '' ;
+								for(i=0;i<data.rating['star']; i++){
+									htmlStar += '<i class="fa fa-star"></i>'
+								}
+								if((5 - data.rating['star']) > 0){
+									for(i=0;i < (5 - data.rating['star']); i++){
+									htmlStar += '<i class="fa fa-star-o empty"></i>'
+								}
+								
+
+								htmlContentRating = 
+								'<li>'
+									+'<div class="review-heading">'
+										+'<h5 class="name">'+ data.rating['name_user'] +'</h5>'
+										+'<p class="date">'+data.rating['date']+'</p>'
+										+'<div class="review-rating">'
+											+htmlStar
+										+'</div>'
 									+'</div>'
-								+'</div>'
-								+'<div class="review-body">'
-									+'<p>'+data.rating['content']+'</p>'
-								+'</div>'
-							+'</li>';
-							$(".show_no_prod").remove();
-							$(".reviews").prepend(htmlContentRating);
-							$(" form.rating").hide();
-							console.log(data);
+									+'<div class="review-body">'
+										+'<p>'+data.rating['content']+'</p>'
+									+'</div>'
+								+'</li>';
+								$(".show_no_prod").remove();
+								$(".reviews").prepend(htmlContentRating);
+								$(" form.rating").hide();
+								
+
+							}
+							
 						}
 					}
 					});
 				}
+			})
+
+			// pagination REVIEWS
+			$('.review_page').on('click',function(e){
+				e.preventDefault();
+				var id 	 = $(this).attr('data-pro_id');
+				var page = $(this).attr('data-page');
+				
+				if(!$(this).hasClass('active')){
+					ajaxPaginateReview(id, page,"{{route('get_ratings')}}");
+				}
+				openActive('.review_page',page);
 			})	
+			$('#review_next').on('click',function(e){
+				e.preventDefault();
+				count = $(".review_page").length;
+				$('.review_page').each(function(){
+					if($(this).hasClass('active')){
+						id 	 = $(this).attr('data-pro_id');
+						page = parseInt($(this).attr('data-page'))+1;
+					}
+				})
+				if(page <= count){
+					ajaxPaginateReview(id, page,"{{route('get_ratings')}}");
+					openActive('.review_page',page);
+				}
+			})
+			$('#review_pre').on('click',function(e){
+				e.preventDefault();
+				count = $(".review_page").length;
+				$('.review_page').each(function(){
+					if($(this).hasClass('active')){
+						id 	 = $(this).attr('data-pro_id');
+						page = parseInt($(this).attr('data-page'))-1;
+					}
+				})
+				if(page >= 1){
+					ajaxPaginateReview(id, page,"{{route('get_ratings')}}");
+					openActive('.review_page',page);
+				}
+			})
+			function ajaxPaginateReview(id,page,url){
+				$.ajax({
+					url : url,
+					data: {
+						id : id,
+						page : page
+					},
+					type :'post',
+					success : function(data){
+						showReviews(data.ratings);
+					}
+				})
+			}
+			function showReviews(data){
+				$('.reviews').empty();
+				
+				htmlRatings = '';
+
+				$.each(data,function(key, rating){
+					htmlRatings += 
+						'<li>'
+							+'<div class="review-heading">'
+								+'<h5 class="name">'+rating.name+'</h5>'
+								+'<p class="date">'+rating.created_at+'</p>'
+								+'<div class="review-rating">'
+								+getStar(rating.star)
+								+'</div>'
+							+'</div>'
+							+'<div class="review-body">'
+								+'<p>'+rating.content+'</p>'
+							+'</div>'
+						+'</li>'
+						+'<hr>';
+				})
+				// return htmlRatings;
+				$('.reviews').append(htmlRatings);
+			}
+			function getStar(star){
+				htmlStar = '' ;
+				for(i = 0; i < star; i++){
+					htmlStar += '<i class="fa fa-star"></i>';
+				}
+				for(i = 0;i < (5-star); i++){
+					htmlStar += '<i class="fa fa-star-o empty"></i>';
+				}
+				return htmlStar;
+			}
+			// pagination COMMENTS
+			$('.comment_page').on('click',function(e){
+				e.preventDefault();
+				var id 	 = $(this).attr('data-pro_id');
+				var page = $(this).attr('data-page');
+				console.log(id, page);
+				if(!$(this).hasClass('active')){
+					ajaxPaginateComment(id, page,"{{route('get_comments')}}");
+				}
+				openActive('.comment_page',page);
+			})
+			$('#comment_next').on('click',function(e){
+				e.preventDefault();
+				count = $(".comment_page").length;
+				$('.comment_page').each(function(){
+					if($(this).hasClass('active')){
+						id 	 = $(this).attr('data-pro_id');
+						page = parseInt($(this).attr('data-page'))+1;
+					}
+				})
+				if(page <= count){
+					ajaxPaginateComment(id, page,"{{route('get_comments')}}");
+					openActive('.comment_page',page);
+				}
+			})
+			$('#comment_pre').on('click',function(e){
+				e.preventDefault();
+				count = $(".comment_page").length;
+				$('.comment_page').each(function(){
+					if($(this).hasClass('active')){
+						id 	 = $(this).attr('data-pro_id');
+						page = parseInt($(this).attr('data-page'))-1;
+					}
+				})
+				if(page >= 1){
+					ajaxPaginateComment(id, page,"{{route('get_comments')}}");
+					openActive('.comment_page',page);
+				}
+			})
+			function ajaxPaginateComment(id,page,url){
+				$.ajax({
+					url : url,
+					data: {
+						id : id,
+						page : page
+					},
+					type :'post',
+					success : function(data){
+						showComments(data.comments);
+						console.log(data);
+					}
+				})
+			}
+			function showComments(data){
+				$('.list-comment').empty();
+				
+				htmlComments = '';
+
+				$.each(data,function(key, comment){
+					htmlComments += 
+						'<li class="comment_ask" id="">'
+							+'<div class="row_user">'
+								+'<span>'+comment.avatar+'</span>'
+								+'<strong>'+comment.name+'</strong>'
+							+'</div>'
+							+'<div class="question">'
+								+comment.content
+							+'</div>'
+							+'<div class="reply">'
+								+'<a  href="" class="respondent">Trả lời</a>'
+								+'<a  class="time">'+comment.time+'</a>';
+									if (comment.child !== undefined){
+										htmlComments +=
+										'<div class="reply_admin">'
+											+'<div class="row_user">'
+												+'<span>Ad</span>'
+												+'<strong>Quản trị viên</strong>'
+											+'</div>'
+											+'<div class="question">'
+												+comment.child.contentChild
+											+'</div>'
+											+'<div class="reply">'
+												+'<a  href="" class="respondent">Trả lời</a>'
+												+'<a  class="time">'+comment.child.timeChild+'</a>'
+											+'</div>'
+										+'</div>'
+									}
+					htmlComments +=	
+							'</div>'
+						+'</li>';
+				})
+				// return htmlRatings;
+				$('.list-comment').append(htmlComments);
+			}
+
+			function openActive(element,page){
+				$(element).each(function(){
+					$(this).removeClass('active');
+					if($(this).attr('data-page')== page){
+						$(this).addClass('active');
+					}
+				})
+				// $(thisActive).addClass('active');
+			}
+			
 			function isEmail(email) {
-			var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-			return regex.test(email);
+				var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+				return regex.test(email);
 			}
 			// show avatar and images product
 			$('.product-image .owl-carousel').owlCarousel({
@@ -756,7 +887,7 @@
 				window.location="{{route('cart')}}";
 			});
 		})
-				
+			
 	</script>
 
 @endsection
