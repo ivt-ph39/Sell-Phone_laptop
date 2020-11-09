@@ -26,9 +26,9 @@ class UserController extends Controller
         }
 
         if (!empty($search)) {
-            $users = User::where('name', 'like', "%$search%")->paginate(1);
+            $users = User::where('name', 'like', "%$search%")->paginate(5);
         } else {
-            $users = User::paginate(1);
+            $users = User::paginate(5);
         }
         $titlePage      = 'Danh sách Người Dùng';
         $data = [
@@ -144,7 +144,9 @@ class UserController extends Controller
         // check trang thai don hang
         // order don hang
         // check delete
-
+        if($user->id == Auth::user()->id){
+            return redirect()->route('admin.user.list')->with('message', 'Không thể xóa chính mình!!!');
+        }
         $rs = $user->delete();
         if ($rs) {
             return redirect()->route('admin.user.list')->with('message', 'Đã xóa mềm thành công');
