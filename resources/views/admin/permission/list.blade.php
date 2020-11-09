@@ -6,16 +6,27 @@
     <div class="container">
         @if (empty($permissionParents))
             <h4>No Data.</h4>
-            <a href="{{ route('admin.permission.create', ['parent' => 1]) }}" class="btn btn-outline-success" ><i class="fas fa-plus-square"></i> Thêm Quyền</a>
+            <a href="{{ route('admin.permission.create', ['parent' => 1]) }}" class="btn btn-outline-success"><i
+                    class="fas fa-plus-square"></i> Thêm Quyền</a>
         @else
-            @if(\Session::has('message'))
-                 <div class="alert alert-primary message" role="alert">
-                    {!! \Session::get('message') !!} 
+            @if (\Session::has('message'))
+                <div class="alert alert-primary message" role="alert">
+                    {!! \Session::get('message') !!}
                 </div>
             @endif
-            <div class="pt-3">
-                <h4 class="float-left m-3">{{ $titlePage }}.</h4>
-            <a href="{{ route('admin.permission.create', ['parent' => 1]) }}" class="btn btn-outline-success m-3 float-right" ><i class="fas fa-plus-square"></i> Thêm Quyền</a>
+            <div class="pt-3 pb-3 row">
+                <h4 class="float-left col">{{ $titlePage }}.</h4>
+                <form action="{{ route('admin.permission.list') }}" method="get" class="form-inline col">
+                    <div class="input-group ">
+                        <input type="text" class="form-control" name="search" placeholder="(*)Search name">
+                        <div class="input-group-append">
+                            <button title="Tìm kiếm quyền cha theo tên" class="btn btn-outline-success" type="submit"><i
+                                    class="fas fa-search-plus"></i></button>
+                        </div>
+                    </div>
+                </form>
+                <a href="{{ route('admin.permission.create', ['parent' => 1]) }}"
+                    class="btn btn-outline-success float-right col"><i class="fas fa-plus-square"></i> Thêm Quyền</a>
             </div>
             <div class="content">
                 <table class="table table-bordered">
@@ -41,12 +52,19 @@
                                 <td>{{ $permission->parent_id }}</td>
                                 <td>
                                     <div class="form-inline">
-                                        <a title="Chỉnh sửa quyền cha" href="{{ route('admin.permission.edit', $permission->id) }}" class="btn btn-sm btn-outline-dark mr-2"><i class="fas fa-edit"></i></a>
-                                        <a title="Xem danh sách quyền con" href="{{ route('admin.permission.listChildren', $permission->id) }}" class="btn btn-sm btn-outline-success mr-2"><i class="fas fa-list"></i></a>
-                                        <form action="{{ route('admin.permission.delete', $permission->id) }}" method="post">
-                                            @csrf 
+                                        <a title="Chỉnh sửa quyền cha"
+                                            href="{{ route('admin.permission.edit', $permission->id) }}"
+                                            class="btn btn-sm btn-outline-dark mr-2"><i class="fas fa-edit"></i></a>
+                                        <a title="Xem danh sách quyền con"
+                                            href="{{ route('admin.permission.listChildren', $permission->id) }}"
+                                            class="btn btn-sm btn-outline-success mr-2"><i class="fas fa-list"></i></a>
+                                        <form action="{{ route('admin.permission.delete', $permission->id) }}"
+                                            method="post">
+                                            @csrf
                                             @method('DELETE')
-                                            <button title="Xóa quyền cha" class="btn btn-sm btn-outline-danger" type="submit" onclick="return confirm('Bạn có chắc muốn xóa??')"><i class="far fa-trash-alt"></i></button>
+                                            <button title="Xóa quyền cha" class="btn btn-sm btn-outline-danger"
+                                                type="submit" onclick="return confirm('Bạn có chắc muốn xóa??')"><i
+                                                    class="far fa-trash-alt"></i></button>
                                         </form>
                                     </div>
                                 </td>
@@ -61,13 +79,14 @@
 @endsection
 @section('js')
     <script>
-        $(function(){
-            $('.message').click(function(){
+        $(function() {
+            $('.message').click(function() {
                 let $this = $(this);
-               setTimeout(function(){
+                setTimeout(function() {
                     $this.hide();
-               }, 600);
+                }, 600);
             });
         });
+
     </script>
-@endsection 
+@endsection

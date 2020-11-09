@@ -22,9 +22,9 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index() 
     {
-        $roles = Role::all();
+        $roles = Role::latest()->paginate(5);
         $titlePage      = 'Danh sách Vai Trò';
         $data = [
             'titlePage'   => $titlePage,
@@ -66,7 +66,7 @@ class RoleController extends Controller
 
             $role->permissions()->attach($request->permission_id);
             DB::commit();
-            return redirect()->route('admin.role.list');
+            return redirect()->route('admin.role.list')->with('message', 'Thêm vai trò thành công!!!');
         } catch (Exception $e) {
             DB::rollback();
             echo "Error : " . $e->getMessage();
@@ -119,7 +119,7 @@ class RoleController extends Controller
             $rs = $role->update($data);
             if ($rs) {
                 $role->permissions()->sync($request->permission_id);
-                return redirect()->route('admin.role.list');
+                return redirect()->route('admin.role.list')->with('message', 'Chỉnh sửa vai trò thành công!!!');
             }
         } catch (\Throwable $th) {
             throw $th;
@@ -135,7 +135,11 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        $role->delete();
-        return redirect()->route('admin.role.list');
+        $rs = $role->delete();
+        if($rs){
+            return redirect()->route('admin.role.list')->with('message', 'Xóa vai trò thành công!!!');
+        }
+        return redirect()->route('admin.role.list')->with('message', 'Xóa vai trò không thành công!!!');
+        
     }
 }
