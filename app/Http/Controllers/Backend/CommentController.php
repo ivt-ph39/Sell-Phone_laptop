@@ -36,12 +36,12 @@ class CommentController extends Controller
 
         if (!empty($id) || !empty($created_at)) {
             $comments = Comment::where('parent_id', 0)
-                                ->whereDate('created_at', '=', $created_at)
-                                ->orwhere('id','=', $id)
-                                ->latest()
-                                ->paginate(3);
+                ->whereDate('created_at', '=', $created_at)
+                ->orwhere('id', '=', $id)
+                ->latest()
+                ->paginate(3);
         } else {
-            $comments = Comment::where('parent_id', 0)->latest()->paginate(3);
+            $comments = Comment::where('parent_id', 0)->where('status', 0)->latest()->paginate(5);
         }
 
         $data = [
@@ -52,23 +52,24 @@ class CommentController extends Controller
         return view('admin.comment.list', $data);
     }
 
-    public function active(Comment $comment){
-        // dd(str_replace(url('/'), '', url()->previous()));
-        // $path=str_replace(url('/'), '', url()->previous());
-        if($comment->active){ // show -> hiden
+    public function active(Comment $comment)
+    {
+        if ($comment->active) { // show -> hiden
             $comment->update(['active' => 0]);
-        }else{ $comment->update(['active' => 1]); }
+        } else {
+            $comment->update(['active' => 1]);
+        }
         return redirect()->back();
     }
 
-    public function showMessage(){
+    public function showMessage()
+    {
         $status = Comment::where('status', 0)->get();
-        if($status){
+        if ($status) {
             return response()->json([
                 'count' => count($status),
-            ],200);
+            ], 200);
         }
-        
     }
 
     public function store(Request $request, Comment $comment, User $user)
@@ -104,7 +105,8 @@ class CommentController extends Controller
             ], 200);
         }
     }
-    public function showReply($id){
+    public function showReply($id)
+    {
         $data = [
             'comment'  => Comment::find($id),
             'titlePage' => 'Reply Comment',
@@ -113,13 +115,16 @@ class CommentController extends Controller
         return view('admin.comment.reply', $data);
     }
 
-    public function reply($id, Request $request){
-        $request->validate([
-            'content' => 'required'
-        ],
-        [
-            'content.required' => 'Không được để trống nội dung'
-        ]);
+    public function reply($id, Request $request)
+    {
+        $request->validate(
+            [
+                'content' => 'required'
+            ],
+            [
+                'content.required' => 'Không được để trống nội dung'
+            ]
+        );
         $client = Comment::find($id);
         $data = [
             'name' => $this->infoUser('name'),
@@ -130,25 +135,23 @@ class CommentController extends Controller
             'parent_id' => $id,
             'status' => 1
         ];
-            $rs = Comment::create($data);
-            if(!empty($rs)){
-                $client->update(['status' => 1]); // 0 chưa 1 rồi
-                return redirect()->route('admin.comment.list')
-                                    ->with('message', 'Đã trả lời cho comment khách hàng');
-            }
+        $rs = Comment::create($data);
+        if (!empty($rs)) {
+            $client->update(['status' => 1]); // 0 chưa 1 rồi
             return redirect()->route('admin.comment.list')
+                ->with('message', 'Đã trả lời cho comment khách hàng');
+        }
+        return redirect()->route('admin.comment.list')
             ->with('message', 'Lỗi comment cho khách hàng');
     }
 
-    
-  public function destroy(Comment $comment)
-  {
-    $rs = $comment->delete();
-    if($rs){
-        return redirect()->back()->with('message' , 'Đã xóa comment thành công');
-    }
-    return redirect()->back()->with('message' , 'Xóa comment không thành công!!!!');
-  }
-  
-}
 
+    public function destroy(Comment $comment)
+    {
+        $rs = $comment->delete();
+        if ($rs) {
+            return redirect()->back()->with('message', 'Đã xóa comment thành công');
+        }
+        return redirect()->back()->with('message', 'Xóa comment không thành công!!!!');
+    }
+}

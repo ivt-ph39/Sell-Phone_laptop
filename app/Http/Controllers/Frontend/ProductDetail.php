@@ -23,9 +23,9 @@ class ProductDetail extends Controller
             'ratings'         => $product->ratings->sortByDesc('id'),
             'comments'        => Comment::where('product_id', $product_id)->where('active', 1)->orderBy('id', 'desc'),
             'star_product'    => $this->getStarProduct($product_id),
-            'product_related' => ''
+            'product_related' => Product::where('category_id', $product->category_id)->orderBy('id', 'desc')->take(4)->get()
         ];
-
+        // dd($data['product_related'], $product->category_id);
         return view('frontend.product_detail', $data);
     }
     public function getRatings(Request $request)
