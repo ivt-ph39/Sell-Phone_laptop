@@ -26,6 +26,7 @@ class UserController extends Controller
         }
 
         if (!empty($search)) {
+
             $users = User::where('name', 'like', "%$search%")->paginate(4);
         } else {
             $users = User::paginate(4);

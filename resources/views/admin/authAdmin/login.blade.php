@@ -65,7 +65,6 @@
           <div class=" mt-2 mt-2 text-danger">{{session('login_false')}}</div>
       @endif 
       <a href="{{route('admin.password.reset')}}">Quên mật khẩu?&nbsp;</a>
-      <a href="{{route('admin.register')}}" class="text-center">Đăng kí mới ?</a>
     </div>
     <!-- /.login-card-body -->
   </div>

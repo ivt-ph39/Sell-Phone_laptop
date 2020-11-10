@@ -115,7 +115,8 @@
                     <tr>
                         <th>{{$key+1}}</th>
                         <td>{{$order->created_at}}</td>
-                        <td>{{$order->status}}</td>
+                        <td>Đang xử lý</td>
+                        {{-- <td>{{$order->status}}</td> --}}
                         <td>{{$order->finished_at}}</td>
                         <td data-id="{{$order->id}}" class="detail_order"><i class="fas fa-eye"></i></td>
                     </tr>
