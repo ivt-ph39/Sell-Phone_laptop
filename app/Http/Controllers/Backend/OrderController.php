@@ -37,9 +37,9 @@ class OrderController extends Controller
         if (!empty($created_at) || !empty($status)) {
             $orders = Order::whereDate('created_at', '=', $created_at)
                             ->orwhere('status', '=', $status)
-                            ->latest()->paginate(4);
+                            ->latest()->paginate(3);
         } else {
-            $orders = Order::latest()->paginate(4);
+            $orders = Order::latest()->paginate(3);
         }
         $data = [
             'titlePage'   => 'Danh sách đơn hàng',
@@ -186,6 +186,9 @@ class OrderController extends Controller
     }
 
     public function destroy(Order $order){
+        if($order->status != 3){
+            return redirect()->back()->with('message', 'Đơn hàng chưa hoàn thành không thể xóa đơn hàng');
+        }
         $rs = $order->delete();
         if($rs){
             return redirect()->back()->with('message', 'Đã xóa đơn hàng thành công');

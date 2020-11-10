@@ -130,7 +130,9 @@
                         @endforeach
                     </tbody>
                 </table>
+                <div style="">
                 {{ $orders->appends(request()->query())->links() }}
+                </div>
             </div>
         @endif
     </div>
