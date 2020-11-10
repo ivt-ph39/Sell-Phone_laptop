@@ -85,7 +85,7 @@ class UserController extends Controller
             $user->roles()->attach($request->role_id);
         }
         return redirect()->route('admin.user.list')->with('message', 'Đã thêm thành công nhân viên');
-    }
+    } 
 
     /**
      * Display the specified resource.
