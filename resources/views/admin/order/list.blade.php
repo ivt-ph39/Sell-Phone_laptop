@@ -60,18 +60,8 @@
                                         @csrf
                                         @method('PUT')
                                         <button title="Ẩn or Hiện nội dung comment lên trang sản phẩm" type="submit"
-                                            class="badge badge-info " {{ $order->status == 3 ? 'disabled' : '' }}>
-                                            @if ($order->status == 0)
-                                                Đang xử lý
-                                            @elseif($order->status == 1)
-                                                Đã xử lý
-                                            @elseif($order->status == 2)
-                                                Đang giao
-                                            @elseif ($order->status == 3)
-                                                Đã hoàn thành
-                                            @else
-                                                Hàng bị hủy
-                                            @endif
+                                            class="badge badge-info " {{ $order->status == "Hoàn thành" ? 'disabled' : ''}}>
+                                             {{ $order->status }}
                                         </button>
                                     </form>
                                 </td>
@@ -82,7 +72,7 @@
                                     <form action="{{ route('admin.order.destroy', $order->id) }}" method="post">
                                         @csrf
                                         @method('delete')
-                                        <button type="submit" title="Xóa đơn hàng" class="btn btn-sm btn-danger"><i
+                                        <button onclick="return confirm('Bạn có chắc muốn xóa đơn hàng không???')" type="submit" title="Xóa đơn hàng" class="btn btn-sm btn-danger"><i
                                                 class="fas fa-minus-circle"></i></button>
                                     </form>
                                     <!-- Button trigger modal -->
@@ -130,9 +120,7 @@
                         @endforeach
                     </tbody>
                 </table>
-                <div style="">
                 {{ $orders->appends(request()->query())->links() }}
-                </div>
             </div>
         @endif
     </div>

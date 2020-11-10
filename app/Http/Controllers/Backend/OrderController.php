@@ -169,20 +169,21 @@ class OrderController extends Controller
     }
 
     public function update(Order $order){
-        if($order->status < 3){
-            $rs = $order->update(['status', $order->status++]);
+        if($order->status == "Đang xử lý"){
+            $rs = $order->update(['status' => 1]);
+        }elseif($order->status == "Đã xử lý"){
+            $rs = $order->update(['status' => 2]);
+        }elseif($order->status == "Đang giao"){
+            $rs = $order->update(['status' => 3]);
+        }else{
+            $rs = $order->update(['finished_at' => now()]);
         }
-        if($order->status == 3){
-            $rs1 = $order->update(['finished_at' => now()]);
-            if($rs1){
-                
-            }
-        }
-        if(!empty($rs)){
-            return redirect()->back()->with('message', 'Đã thay đổi trạng thái đơn hàng');
-        }
-        return redirect()->back()->with('message', 'Không thể thay đổi trạng thái đơn hàng');
         
+        if(!empty($rs)){
+          return redirect()->back()->with('message', 'Đã thay đổi trạng thái đơn hàng');
+         }
+        return redirect()->back()->with('message', 'Không thể thay đổi trạng thái đơn hàng');
+
     }
 
     public function destroy(Order $order){
