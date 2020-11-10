@@ -21,9 +21,22 @@ class PermissionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $permissionParents = Permission::where('parent_id', 0)->latest()->paginate(5);
+        if (isset($request->search)) {
+            $search = $request->search;
+        } else {
+            $search = '';
+        }
+
+        if (!empty($search)) {
+            $permissionParents = Permission::where('parent_id', 0)
+                                            ->where('name', 'like', "%$search%")
+                                            ->latest()->paginate(5);
+        } else {
+            $permissionParents = Permission::where('parent_id', 0)->latest()->paginate(5);
+        }
+        
         $titlePage      = 'Danh Sách Quyền Cha';
         $data = [
             'titlePage'   => $titlePage,

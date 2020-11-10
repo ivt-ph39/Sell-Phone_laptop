@@ -24,15 +24,22 @@ class OrderController extends Controller
     
     public function index(Request $request){
         if (isset($request->created_at)) {
-            $created_at = date($request->created_at);
+            $created_at = date($request->created_at); 
         } else {
             $created_at = '';
         }
-
-        if (!empty($created_at)) {
-            $orders = Order::whereDate('created_at', '=', $created_at)->paginate(4);
+        if (isset($request->status)) {
+            $status = $request->status; 
         } else {
-            $orders = Order::latest()->paginate(4);
+            $status = '';
+        }
+
+        if (!empty($created_at) || !empty($status)) {
+            $orders = Order::whereDate('created_at', '=', $created_at)
+                            ->orwhere('status', '=', $status)
+                            ->latest()->paginate(3);
+        } else {
+            $orders = Order::latest()->paginate(3);
         }
         $data = [
             'titlePage'   => 'Danh sách đơn hàng',
@@ -40,6 +47,15 @@ class OrderController extends Controller
             'orders' => $orders
         ];
         return view('admin.order.list', $data);
+    }
+
+    public function productOrder($id){
+        $products = DB::table('order_product')->where('order_id','=', $id)->get();
+        if(!empty($products)){
+            return response()->json([
+                'products' => $products
+            ], 200);
+        }
     }
 
     public function store(Request $request)
@@ -158,6 +174,9 @@ class OrderController extends Controller
         }
         if($order->status == 3){
             $rs1 = $order->update(['finished_at' => now()]);
+            if($rs1){
+                
+            }
         }
         if(!empty($rs)){
             return redirect()->back()->with('message', 'Đã thay đổi trạng thái đơn hàng');
@@ -167,6 +186,9 @@ class OrderController extends Controller
     }
 
     public function destroy(Order $order){
+        if($order->status != 3){
+            return redirect()->back()->with('message', 'Đơn hàng chưa hoàn thành không thể xóa đơn hàng');
+        }
         $rs = $order->delete();
         if($rs){
             return redirect()->back()->with('message', 'Đã xóa đơn hàng thành công');

@@ -25,9 +25,10 @@ class CreateUserRequest extends FormRequest
     {
         return [
             'name'     => 'required|min:2',
-            'email'    => 'required|email',
+            'email'    => 'required|unique:users|email',
             'password' => 'required|confirmed|min:8',
-            'address'  => 'required|min:6'
+            'address'  => 'required|min:6',
+            'role_id'  => 'required'
         ];
     }
 
@@ -36,12 +37,14 @@ class CreateUserRequest extends FormRequest
             'name.required' => 'Không được bỏ trống họ tên',
             'name.min' => 'Kí tự phải từ 2 trở lên',
             'email.required' => 'Không được bỏ trống email',
+            'email.unique' => 'Không được trùng email',
             'email.email' => 'Không đúng định dạng email',
             'password.required' => 'Không bỏ trống mật khẩu',
             'password.min' => 'Mật khẩu có từ 8 kí tự trở lên',
             'password.confirmed' => 'Mật khẩu nhập lại không chính xác',
             'address.required' => 'Địa chỉ không được để trống',
-            'address.min' => 'Địa chỉ phải có kí tự từ 6 trở lên'
+            'address.min' => 'Địa chỉ phải có kí tự từ 6 trở lên',
+            'role_id.required' => 'Không được để trống'
         ];
     }
 }

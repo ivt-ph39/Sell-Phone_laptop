@@ -25,4 +25,8 @@ class Order extends Model
     // {
     //     return Arr::get($this->status, $value);
     // }
+    public function order_product(){
+        return $this->hasMany(OrderProduct::class, 'order_id');
+    }
+
 }
