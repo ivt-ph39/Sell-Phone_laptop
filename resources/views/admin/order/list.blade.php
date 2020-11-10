@@ -22,8 +22,8 @@
                         <div class="input-group ">
                             <input type="date" class="form-control" name="created_at" placeholder="Search created_at">
                             <div class="input-group-append">
-                                <button title="Tìm kiếm đơn hàng theo ngày tạo" class="btn btn-outline-success" type="submit"><i
-                                        class="fas fa-search-plus"></i></button>
+                                <button title="Tìm kiếm đơn hàng theo ngày tạo" class="btn btn-outline-success"
+                                    type="submit"><i class="fas fa-search-plus"></i></button>
                             </div>
                         </div>
                     </form>
@@ -48,7 +48,7 @@
                         @foreach ($orders as $order)
                             <tr>
                                 <td>{{ $order->id }}</td>
-                                <td>{{ $order->name. ' - '. $order->user_id }}</td>
+                                <td>{{ $order->name . ' - ' . $order->user_id }}</td>
                                 <td>{{ $order->email }}</td>
                                 <td>{{ $order->address }}</td>
                                 <td>{{ $order->created_at }}</td>
@@ -58,7 +58,7 @@
                                         @csrf
                                         @method('PUT')
                                         <button title="Ẩn or Hiện nội dung comment lên trang sản phẩm" type="submit"
-                                            class="badge badge-info " {{ ($order->status == 3) ? 'disabled' : '' }}>
+                                            class="badge badge-info " {{ $order->status == 3 ? 'disabled' : '' }}>
                                             @if ($order->status == 0)
                                                 Đang xử lí
                                             @elseif($order->status == 1)
@@ -72,15 +72,46 @@
                                             @endif
                                         </button>
                                     </form>
-                                </td>  
-                                {{--  0 dang xu li 1 đã xử lí 2 đang giao 3 hoan thanh  --}}
+                                </td>
+                                {{-- 0 dang xu li 1 đã xử lí 2 đang giao 3 hoan thanh
+                                --}}
                                 <td>{{ $order->note }}</td>
                                 <td>
                                     <form action="{{ route('admin.order.destroy', $order->id) }}" method="post">
                                         @csrf
                                         @method('delete')
-                                        <button type="submit" title="Xóa đơn hàng" class="btn btn-sm btn-danger"><i class="fas fa-minus-circle"></i></button>
+                                        <button type="submit" title="Xóa đơn hàng" class="btn btn-sm btn-danger"><i
+                                                class="fas fa-minus-circle"></i></button>
                                     </form>
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                        data-target="#exampleModal">
+                                        Launch demo modal
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    ...
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
@@ -102,6 +133,7 @@
             });
 
         });
+
     </script>
-    
+
 @endsection
