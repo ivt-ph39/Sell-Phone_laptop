@@ -40,6 +40,16 @@ class CommentController extends Controller
         return redirect()->back();
     }
 
+    public function showMessage(){
+        $actives = Comment::where('active', 1)->get();
+        if($actives){
+            return response()->json([
+                'count' => count($actives),
+            ],200);
+        }
+        
+    }
+
     public function store(Request $request, Comment $comment, User $user)
     {
         if ($request->id) {
