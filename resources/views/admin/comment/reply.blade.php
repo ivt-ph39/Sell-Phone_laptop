@@ -19,6 +19,9 @@
                         <div>
                             Admin : <span class="badge badge-warning">{{ Auth::user()->name }}</span>
                             <textarea class="form-control" name="content" cols="30" rows="3"></textarea>
+                            @if ($errors->has('content'))
+                                <span style="color: #e23d63;">{{ $errors->first('content') }}</span>
+                            @endif
                         </div>
                         <hr>
                         <input type="submit" class="btn btn-primary" value="Send">

@@ -7,8 +7,19 @@
         @if (!isset($comments))
             <h4>No Data.</h4>
         @else
+            @if (\Session::has('message'))
+                <div class="alert alert-primary message" role="alert">
+                    {!! \Session::get('message') !!}
+                </div>
+            @endif
             <div class="pt-3">
                 <h4 class="float-left">{{ $titlePage }}.</h4>
+                <form action="{{ route('admin.comment.list') }}" method="get" class="form-inline float-right">
+                    <input type="number" class="form-control" name="id" placeholder="Tìm theo mã sản phẩm">
+                    <input type="date" class="form-control" name="created_at">
+                    <button title="Tìm kiếm comment" class="btn btn-outline-success" type="submit"><i
+                            class="fas fa-search-plus"></i></button>
+                </form>
             </div>
             <div class="content">
                 <table class="table table-bordered">
@@ -31,6 +42,8 @@
                                         <li>Name : {{ $comment->name }}</li>
                                         <li>Email: {{ $comment->email }}</li>
                                         <li>Phone:{{ $comment->phone }}</li>
+                                        <li>Mã sản phẩm: ID{{ $comment->products['id'] }}</li>
+                                        <li>Tên sản phẩm: {{ $comment->products['name'] }}</li>
                                     </ul>
                                 </th>
                                 <td>{{ $comment->content }}</td>
@@ -39,25 +52,44 @@
                                     <form action="{{ route('admin.comment.active', $comment->id) }}" method="post">
                                         @csrf
                                         @method('PUT')
-                                        <button type="submit"
-                                            class="badge badge-{{ $comment->active ? 'primary' : 'danger' }}">{{ $comment->active ? 'show' : 'hidden' }}</button>
+                                        <button title="Ẩn or Hiện nội dung comment lên trang sản phẩm" type="submit"
+                                            class="badge badge-{{ $comment->active ? 'primary' : 'danger' }}">{{ $comment->active ? 'Hiện' : 'Ẩn' }}</button>
                                     </form>
                                 </td>
                                 <td><span
-                                        class="badge badge-{{ $comment->status ? 'success' : 'danger' }}">{{ $comment->status ? 'commented' : 'notyet' }}</span>
+                                        class="badge badge-{{ $comment->status ? 'success' : 'danger' }}">{{ $comment->status ? 'Đã trả lời' : 'Chưa trả lời' }}</span>
                                 </td>
                                 <td>
                                     @if ($comment->status == 0)
-                                        <a href="{{ route('admin.comment.showReply', $comment->id) }}" class="btn btn-sm btn-success" >Reply</a>
+                                        <a href="{{ route('admin.comment.showReply', $comment->id) }}"
+                                            class="btn btn-sm btn-success">Reply</a>
                                     @endif
+                                    <form action="{{ route('admin.comment.destroy', $comment->id) }}" method="post">
+                                        @csrf
+                                        @method('delete')
+                                        <button onclick="return confirm('Bạn có chắc muốn xóa comment')" title="Xóa comment" type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
 
                 </table>
-                {{ $comments->links() }}
+                {{ $comments->appends(request()->query())->links() }}
             </div>
         @endif
     </div>
+@endsection
+@section('js')
+    <script>
+        $(function() {
+            $('.message').click(function() {
+                let $this = $(this);
+                setTimeout(function() {
+                    $this.hide();
+                }, 600);
+            });
+        });
+
+    </script>
 @endsection

@@ -147,7 +147,7 @@
                             <a href="{{ route('admin.comment.list') }}" class="nav-link ">
                                 <i class="fas fa-comments mr-2"></i>
                                 <p>
-                                    QL Comments <span class="badge badge-danger">0</span>
+                                    QL Comments <span class="badge badge-danger mess"></span>
                                 </p>
                             </a>
                         </li>
@@ -247,6 +247,22 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 
     @yield('js')
+    <script>
+        $(function(){
+            setInterval(function(){
+                $.ajax({
+                    type:"get",
+                    url:"{{ route('admin.comment.showMess') }}",
+                    success: function(res){
+                        $('.mess').html(res.count);
+                    },
+                    error: function(er){
+                        $('.mess').html('error');
+                    }
+                });
+            }, 2000);
+        })
+    </script>
 </body>
 
 </html>
