@@ -7,6 +7,7 @@ use App\Mail\SendOrder;
 use App\Model\Order;
 use App\Model\OrderProduct;
 use App\Model\Product;
+use App\Model\Rating;
 use App\User;
 use Exception;
 use Illuminate\Support\Facades\Validator;
@@ -21,23 +22,24 @@ class OrderController extends Controller
     {
         return Auth::user()->$value;
     }
-    
-    public function index(Request $request){
+
+    public function index(Request $request)
+    {
         if (isset($request->created_at)) {
-            $created_at = date($request->created_at); 
+            $created_at = date($request->created_at);
         } else {
             $created_at = '';
         }
         if (isset($request->status)) {
-            $status = $request->status; 
+            $status = $request->status;
         } else {
             $status = '';
         }
 
         if (!empty($created_at) || !empty($status)) {
             $orders = Order::whereDate('created_at', '=', $created_at)
-                            ->orwhere('status', '=', $status)
-                            ->latest()->paginate(3);
+                ->orwhere('status', '=', $status)
+                ->latest()->paginate(3);
         } else {
             $orders = Order::latest()->paginate(3);
         }
@@ -49,9 +51,10 @@ class OrderController extends Controller
         return view('admin.order.list', $data);
     }
 
-    public function productOrder($id){
-        $products = DB::table('order_product')->where('order_id','=', $id)->get();
-        if(!empty($products)){
+    public function productOrder($id)
+    {
+        $products = DB::table('order_product')->where('order_id', '=', $id)->get();
+        if (!empty($products)) {
             return response()->json([
                 'products' => $products
             ], 200);
@@ -168,32 +171,78 @@ class OrderController extends Controller
         return true;
     }
 
-    public function update(Order $order){
-        if($order->status == "Đang xử lý"){
+    public function update(Order $order)
+    {
+        if ($order->status == "Đang chờ xử lý") {
             $rs = $order->update(['status' => 1]);
-        }elseif($order->status == "Đã xử lý"){
+        } elseif ($order->status == "Đang xử lý") {
             $rs = $order->update(['status' => 2]);
-        }elseif($order->status == "Đang giao"){
+        } elseif ($order->status == "Đang giao") {
             $rs = $order->update(['status' => 3]);
-        }else{
+        } else {
             $rs = $order->update(['finished_at' => now()]);
         }
-        
-        if(!empty($rs)){
-          return redirect()->back()->with('message', 'Đã thay đổi trạng thái đơn hàng');
-         }
+        if (!empty($rs)) {
+            return redirect()->back()->with('message', 'Đã thay đổi trạng thái đơn hàng');
+        }
         return redirect()->back()->with('message', 'Không thể thay đổi trạng thái đơn hàng');
-
     }
 
-    public function destroy(Order $order){
-        if($order->status != 3){
+    public function destroy($id)
+    {
+
+        $order = Order::find($id);
+        if ($order->status != 'Hoàn thành') {
             return redirect()->back()->with('message', 'Đơn hàng chưa hoàn thành không thể xóa đơn hàng');
         }
         $rs = $order->delete();
-        if($rs){
+        if ($rs) {
             return redirect()->back()->with('message', 'Đã xóa đơn hàng thành công');
         }
         return redirect()->back()->with('message', 'Xóa đơn hàng không thành công');
+    }
+    public function cancelOrder(Request $request)
+    {
+        $id = $request->id;
+        $order = Order::find($id);
+        if ($order->status === 'Đang chờ xử lý' || $order->status === 'Đang xử lý') {
+            $order->delete();
+            return response()->json(
+                [
+                    'success' => true,
+                    'id'      => $id
+                ],
+                200
+            );
+        } else {
+            return response()->json(
+                [
+                    'success' => false,
+                ],
+                200
+            );
+        }
+    }
+    public function deleteAjax(Request $request)
+    {
+        $id = $request->id;
+        $order = Order::find($id);
+        if ($order->status == 'Hoàn thành') {
+            $order->delete();
+            return response()->json(
+                [
+                    'success' => true,
+                    'id'      => $id
+                ],
+                200
+            );
+        } else {
+            return response()->json(
+                [
+                    'success' => false,
+                ],
+                200
+            );
+        }
     }
 }

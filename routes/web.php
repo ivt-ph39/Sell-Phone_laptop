@@ -121,8 +121,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     // ------------Order-----------
     Route::get('order/list', 'Backend\OrderController@index')->name('admin.order.list');
     Route::put('order/{order}/update', 'Backend\OrderController@update')->name('admin.order.update');
-    Route::delete('order/{order}/destroy', 'Backend\OrderController@destroy')->name('admin.order.destroy');
+    Route::delete('order/{id}/destroy', 'Backend\OrderController@destroy')->name('admin.order.destroy');
     Route::get('order/{id}/productOrder', 'Backend\OrderController@productOrder')->name('admin.order.productOrder');
+    Route::post('order/cancelOrder', 'Backend\OrderController@cancelOrder')->name('admin.order.cancelOrder');
+    Route::post('order/deleteAjax', 'Backend\OrderController@deleteAjax')->name('admin.order.deleteOrder');
 });
 // ------------------------- FrontEnd ----------------------
 

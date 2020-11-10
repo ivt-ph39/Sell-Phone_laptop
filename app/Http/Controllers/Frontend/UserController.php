@@ -89,7 +89,7 @@ class UserController extends Controller
         $data = [
             'categories' => $category->where('parent_id', 0)->get(),
             'info_user'  => Auth::user(),
-            'list_order' => Order::where('user_id', Auth::user()->id)->get(),
+            'list_order' => Order::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->get(),
         ];
         return view('frontend.account', $data);
     }

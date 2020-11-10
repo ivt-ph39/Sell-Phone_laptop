@@ -12,8 +12,8 @@ class Order extends Model
 
     // 0 dang xu li 1 đã xử lí 2 đang giao 3 hoan thanh
     protected $status = [
-        0 => 'Đang xử lý',
-        1 => 'Đã xử lý',
+        0 => 'Đang chờ xử lý',
+        1 => 'Đang xử lý',
         2 => 'Đang giao',
         3 => 'Hoàn thành'
     ];
@@ -25,8 +25,8 @@ class Order extends Model
     {
         return Arr::get($this->status, $value);
     }
-    public function order_product(){
+    public function order_product()
+    {
         return $this->hasMany(OrderProduct::class, 'order_id');
     }
-
 }
