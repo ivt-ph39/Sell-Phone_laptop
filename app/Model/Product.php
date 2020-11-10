@@ -99,7 +99,11 @@ class Product extends Model
     }
     public function orders()
     {
-        return $this->belongsToMany(Order::class, 'order_product', 'order_id', 'product_id');
+        return $this->belongsToMany(Order::class);
+    }
+    public function order_product()
+    {
+        return $this->hasMany(OrderProduct::class, 'product_id');
     }
     public function getRatingAttribute()
     {

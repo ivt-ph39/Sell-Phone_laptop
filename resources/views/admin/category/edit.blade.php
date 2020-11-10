@@ -17,6 +17,7 @@
             <div class="card-body">
                 <form class="form-inline" action="{{route('admin.category.update',['id' => $category->id ])}}" method="post" enctype="multipart/form-data">
                 @csrf
+                @method('put')
                 <div class="form-group w-100 mb-3 row">
                     <div class="col-4">
                         <label for="name" class="d-flex justify-content-end pr-5">Tên Danh Mục <span class=" text-danger">(<sup>*</sup>)</span> :</label>

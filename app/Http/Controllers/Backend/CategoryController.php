@@ -30,9 +30,9 @@ class CategoryController extends Controller
         return view('admin.category.list', $data);
     }
 
-    public function create(Category $category)
+    public function create()
     {
-        $categories     = $category->all();
+        $categories     = Category::all();
 
         $recursive      = new RecursiveCategory($categories);
 
@@ -49,7 +49,7 @@ class CategoryController extends Controller
 
     public function store(CategoryRequest $request)
     {
-        $category = new Category;
+        // $category = new Category;
         if ($request->image) {
             $image = $this->storeFile($request->image);
         }
@@ -62,9 +62,9 @@ class CategoryController extends Controller
             'active'      => ($request->active) ? 1 : 0,
             'create_by'   => $this->infoUser('id')
         ];
-        $create_cate =  $category->create($data);
+        $create_cate =  Category::create($data);
 
-        if ($create_cate) return redirect()->to(route('admin.category.list'));
+        return redirect()->route('admin.category.list')->with('success', 'Bạn đã tạo thành công danh mục mới.');
     }
 
     public function edit($id)
@@ -107,15 +107,22 @@ class CategoryController extends Controller
             $dataUpdate['image'] = $image;
         }
         $category->update($dataUpdate);
-        return redirect()->route('admin.category.list');
+        return redirect()->route('admin.category.list')->with('success', 'Update danh mục thành công');
     }
 
 
-    public function destroy($id)
+    public function delete($id)
     {
-        $category = Category::find($id);
-        $category->delete();
-        return redirect()->route('admin.category.list');
+        $category = Category::with('products')->find($id);
+
+        if ($category->products->count() == 0) {
+            $category->delete();
+
+            return redirect()->route('admin.category.list')->with('success', 'Xoá danh mục thành công');
+        } else {
+            return redirect()->route('admin.category.list')->with('error', 'Danh mục này không thể xóa');
+        }
+        dd($category->products->count());
     }
     //
     public function storeFile($file)
