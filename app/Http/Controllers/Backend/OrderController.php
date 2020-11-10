@@ -158,6 +158,9 @@ class OrderController extends Controller
         }
         if($order->status == 3){
             $rs1 = $order->update(['finished_at' => now()]);
+            if($rs1){
+                
+            }
         }
         if(!empty($rs)){
             return redirect()->back()->with('message', 'Đã thay đổi trạng thái đơn hàng');
