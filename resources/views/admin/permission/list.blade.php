@@ -13,9 +13,18 @@
                     {!! \Session::get('message') !!} 
                 </div>
             @endif
-            <div class="pt-3">
-                <h4 class="float-left m-3">{{ $titlePage }}.</h4>
-            <a href="{{ route('admin.permission.create', ['parent' => 1]) }}" class="btn btn-outline-success m-3 float-right" ><i class="fas fa-plus-square"></i> Thêm Quyền</a>
+            <div class="pt-3 pb-3 row">
+                <h4 class="float-left col">{{ $titlePage }}.</h4>
+                <form action="{{ route('admin.permission.list') }}" method="get" class="form-inline col">
+                    <div class="input-group ">
+                        <input type="text" class="form-control" name="search" placeholder="Tìm theo tên module">
+                        <div class="input-group-append">
+                            <button title="Tìm kiếm quyền" class="btn btn-outline-success" type="submit"><i
+                                    class="fas fa-search-plus"></i></button>
+                        </div>
+                    </div>
+                </form>
+                <a href="{{ route('admin.permission.create', ['parent' => 1]) }}" class="btn btn-outline-success" ><i class="fas fa-plus-square"></i> Thêm Quyền</a>
             </div>
             <div class="content">
                 <table class="table table-bordered">
@@ -54,7 +63,7 @@
                         @endforeach
                     </tbody>
                 </table>
-                {{ $permissionParents->links() }}
+                {{ $permissionParents->appends(request()->query())->links() }}
             </div>
         @endif
     </div>

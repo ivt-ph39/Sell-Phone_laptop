@@ -12,11 +12,17 @@
                 @csrf
                 <div class="form-group">
                     <label>Tên vai trò</label>
-                    <input type="text" name="name" class="form-control" placeholder="(*) admin" required>
+                    <input type="text" name="name" value="{{ old('name') }}" class="form-control" placeholder="admin">
+                    @if ($errors->has('name'))
+                        <span style="color: #e23d63;"> {{ $errors->first('name') }}</span>
+                    @endif
                 </div>
                 <div class="form-group">
                     <label>Mô tả vai trò</label>
-                    <textarea type="text" name="description" class="form-control" placeholder="(*) Quan tri vien" required></textarea>
+                    <textarea type="text" name="description" value="{{ old('description') }}" class="form-control" placeholder="Quan tri vien"></textarea>
+                    @if ($errors->has('description'))
+                        <span style="color: #e23d63;"> {{ $errors->first('description') }}</span>
+                    @endif
                 </div>
                 <div class="card mb-3 bg-success">
                     <div class="card-body">

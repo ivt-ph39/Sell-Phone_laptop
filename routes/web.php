@@ -76,7 +76,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::put('slider/{id}/update', 'Backend\SliderController@update')->name('admin.slider.update');
     Route::delete('slider/{id}/delete', 'Backend\SliderController@delete')->name('admin.slider.delete');
     //-----------users-------------
-    Route::get('user/list', 'Backend\UserController@index')->name('admin.user.list')->middleware('can:list_user');
+    Route::get('user/list', 'Backend\UserController@index')->name('admin.user.list');
     Route::get('user/list/onlyTrashed', 'Backend\UserController@onlyTrashed')->name('admin.user.onlyTrashed');
     Route::get('user/create', 'Backend\UserController@create')->name('admin.user.create');
     Route::post('user/store', 'Backend\UserController@store')->name('admin.user.store');
