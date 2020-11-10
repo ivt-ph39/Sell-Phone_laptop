@@ -43,15 +43,15 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::post('category/store', 'Backend\CategoryController@store')->name('admin.category.store');
     Route::get('category/show/{id}', 'Backend\CategoryController@show')->name('admin.category.show');
     Route::get('category/edit/{id}', 'Backend\CategoryController@edit')->name('admin.category.edit');
-    Route::post('category/update/{id}', 'Backend\CategoryController@update')->name('admin.category.update');
-    Route::get('category/delete/{id}', 'Backend\CategoryController@destroy')->name('admin.category.delete');
+    Route::put('category/update/{id}', 'Backend\CategoryController@update')->name('admin.category.update');
+    Route::delete('category/delete/{id}', 'Backend\CategoryController@delete')->name('admin.category.delete');
     //---------products----------
     Route::get('product/list', 'Backend\ProductController@index')->name('admin.product.list');
     Route::get('product/create', 'Backend\ProductController@create')->name('admin.product.create');
     Route::post('product/store', 'Backend\ProductController@store')->name('admin.product.store');
     Route::get('product/edit/{id}', 'Backend\ProductController@edit')->name('admin.product.edit');
     Route::post('product/update/{id}', 'Backend\ProductController@update')->name('admin.product.update');
-    Route::get('product/delete/{id}', 'Backend\ProductController@destroy')->name('admin.product.delete');
+    Route::delete('product/delete/{id}', 'Backend\ProductController@destroy')->name('admin.product.delete');
 
     Route::post('ckeditor/image_upload', 'Backend\ProductController@upload')->name('upload');
 
@@ -61,6 +61,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::get('brand/{id}/edit', 'Backend\BrandController@edit')->name('admin.brand.edit');
     Route::post('brand/store', 'Backend\BrandController@store')->name('admin.brand.store');
     Route::put('brand/{id}/update', 'Backend\BrandController@update')->name('admin.brand.update');
+    Route::delete('brand/{id}/delete', 'Backend\BrandController@delete')->name('admin.brand.delete');
     //---------contacts----------
     Route::get('contact/list', 'Backend\ContactController@index')->name('admin.contact.list');
     Route::get('contact/create', 'Backend\ContactController@create')->name('admin.contact.create');

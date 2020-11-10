@@ -15,6 +15,14 @@
     <a href="{{route('admin.product.create')}}" class="btn btn-primary">Thêm Sản Phẩm</a>
     @else
     <div class="row pt-4 mb-4">
+        <div class="get_mess" 
+                    @if (Session::has('success'))
+                        data-success ="{{ Session::get('success') }}"
+                    @endif
+                    @if (Session::has('error'))
+                        data-error  ="{{ Session::get('error') }}"
+                    @endif>
+                </div>
         <form class=" mr-auto form-inline" method="get" action="{{route('admin.product.list')}}">
             <div class="input-group pl-2 pr-2" style="width: 370px">
                 <div class="input-group-prepend">
@@ -79,8 +87,13 @@
                     <td>
                         <a href="{{route('admin.product.edit',['id'=>$product->id])}}"
                             class="badge badge-primary mr-1 ml-1">Edit</a>
-                        <a href="{{route('admin.product.delete',['id'=>$product->id])}}"
-                            class="badge badge-danger mr-1 ml-1">Delete</a>
+                        <span>
+                            <form action="{{route('admin.product.delete',['id'=>$product->id])}}" method="post" class="d-inline" >
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class=" badge badge-danger border-0">Delete</button>
+                            </form>
+                        </span>
                     </td>
                 </tr>
                 @endforeach
@@ -95,4 +108,23 @@
     <!-- Select2 -->
     <script src="adminlte/plugins/select2/js/select2.min.js"></script>
     <script src="admins/product/list/js/app.js"></script>
+    <script>
+        $(document).ready(function(){
+            success = $('.get_mess').attr('data-success');
+            error   = $('.get_mess').attr('data-error')
+            if(success != undefined){
+                Swal.fire({
+                icon: 'success',
+                text: success ,
+                })
+            }
+            if(error != undefined){
+               Swal.fire({
+                icon: 'error',
+                title: 'Lỗi...',
+                text: error ,
+                })
+            }
+        })
+    </script>
 @endsection

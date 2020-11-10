@@ -43,7 +43,7 @@ class SliderController extends Controller
             'path'   => $this->storeFile($request->path)
         ];
         $slider->create($data);
-        return redirect()->route('admin.slider.list');
+        return redirect()->route('admin.slider.list')->with('success', 'Tạp Slide mới thành công');
     }
     public function edit($id, Slider $slider)
     {
@@ -66,12 +66,12 @@ class SliderController extends Controller
             $data['path'] = $this->storeFile($request->path);
         }
         $slider->find($id)->update($data);
-        return redirect()->route('admin.slider.list');
+        return redirect()->route('admin.slider.list')->with('success', 'Update slide mới thành công');
     }
     public function delete($id, Slider $slider)
     {
         $slider->find($id)->delete();
-        return redirect()->route('admin.slider.list');
+        return redirect()->route('admin.slider.list')->with('success', 'Đã xóa slide thành công');
     }
     public function storeFile($request)
     {

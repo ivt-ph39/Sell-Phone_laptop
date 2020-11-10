@@ -45,7 +45,7 @@ class BrandController extends Controller
             'avatar'  => $path_avatar
         ];
         $brand->create($dataCreate);
-        return redirect()->route('admin.brand.list');
+        return redirect()->route('admin.brand.list')->with('success', 'Tạo mới thương hiệu thành công');
     }
 
     public function edit($id, Brand $brand)
@@ -70,7 +70,11 @@ class BrandController extends Controller
         }
 
         $brand->find($id)->update($dataUpdate);
-        return redirect()->route('admin.brand.list');
+        return redirect()->route('admin.brand.list')->with('success', 'Update thương hiệu thành công');
+    }
+    public function delete($id)
+    {
+        dd($id);
     }
     public function storeFile($file)
     {
