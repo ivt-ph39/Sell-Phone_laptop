@@ -109,6 +109,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::get('comment/{id}/showReply', 'Backend\CommentController@showReply')->name('admin.comment.showReply');
     Route::post('comment/{id}/reply', 'Backend\CommentController@reply')->name('admin.comment.reply');
     Route::get('comment/showMess' , 'Backend\CommentController@showMessage')->name('admin.comment.showMess');
+    Route::delete('comment/{comment}/destroy', 'Backend\CommentController@destroy')->name('admin.comment.destroy');
     //-------------Blog------
     Route::get('blog/list', 'Backend\BlogController@index')->name('admin.blog.list');
     Route::get('blog/create', 'Backend\BlogController@create')->name('admin.blog.create');

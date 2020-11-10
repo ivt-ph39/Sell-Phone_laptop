@@ -21,10 +21,31 @@ class CommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        if (isset($request->id)) {
+            $id = $request->id;
+        } else {
+            $id = '';
+        }
+        if (isset($request->created_at)) {
+            $created_at = date($request->created_at);
+        } else {
+            $created_at = '';
+        }
+
+        if (!empty($id) || !empty($created_at)) {
+            $comments = Comment::where('parent_id', 0)
+                                ->whereDate('created_at', '=', $created_at)
+                                ->orwhere('id','=', $id)
+                                ->latest()
+                                ->paginate(3);
+        } else {
+            $comments = Comment::where('parent_id', 0)->latest()->paginate(3);
+        }
+
         $data = [
-            'comments'  => Comment::where('parent_id', 0)->paginate(4),
+            'comments'  => $comments,
             'titlePage' => 'List Comment',
             'nameAdmin' => ucwords($this->infoUser('name'))
         ];
@@ -41,10 +62,10 @@ class CommentController extends Controller
     }
 
     public function showMessage(){
-        $actives = Comment::where('active', 1)->get();
-        if($actives){
+        $status = Comment::where('status', 0)->get();
+        if($status){
             return response()->json([
-                'count' => count($actives),
+                'count' => count($status),
             ],200);
         }
         
@@ -93,6 +114,12 @@ class CommentController extends Controller
     }
 
     public function reply($id, Request $request){
+        $request->validate([
+            'content' => 'required'
+        ],
+        [
+            'content.required' => 'Không được để trống nội dung'
+        ]);
         $client = Comment::find($id);
         $data = [
             'name' => $this->infoUser('name'),
@@ -100,22 +127,28 @@ class CommentController extends Controller
             'email' => $this->infoUser('email'),
             'content' => $request->content,
             'product_id' => $client->product_id,
-            'parent_id' => $id
+            'parent_id' => $id,
+            'status' => 1
         ];
-        try {
-            DB::beginTransaction();
-            Comment::create($data);
-            $client->update(['status'=> 1] );
-            DB::commit();
-        } catch (\Throwable $th) {
-            echo $th->getMessage();
-            DB::rollback();
-        }
-        return redirect()->route('admin.comment.list');
+            $rs = Comment::create($data);
+            if(!empty($rs)){
+                $client->update(['status' => 1]); // 0 chưa 1 rồi
+                return redirect()->route('admin.comment.list')
+                                    ->with('message', 'Đã trả lời cho comment khách hàng');
+            }
+            return redirect()->route('admin.comment.list')
+            ->with('message', 'Lỗi comment cho khách hàng');
     }
 
     
-  
+  public function destroy(Comment $comment)
+  {
+    $rs = $comment->delete();
+    if($rs){
+        return redirect()->back()->with('message' , 'Đã xóa comment thành công');
+    }
+    return redirect()->back()->with('message' , 'Xóa comment không thành công!!!!');
+  }
   
 }
 
