@@ -117,6 +117,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::get('blog/{blog}/show', 'Backend\BlogController@edit')->name('admin.blog.show');
     Route::put('blog/{blog}/update', 'Backend\BlogController@update')->name('admin.blog.update');
     Route::delete('blog/{blog}/destroy', 'Backend\BlogController@destroy')->name('admin.blog.delete');
+    // ------------Order-----------
+    Route::get('order/list' , 'Backend\OrderController@index')->name('admin.order.list');
+    Route::put('order/{order}/update' , 'Backend\OrderController@update')->name('admin.order.update');
+    Route::delete('order/{order}/destroy', 'Backend\OrderController@destroy')->name('admin.order.destroy');
 });
 // ------------------------- FrontEnd ----------------------
 
