@@ -12,11 +12,11 @@
                     {!! \Session::get('message') !!}
                 </div>
             @endif
-            <div class="pt-3">
+            <div class="pt-3 mb-3 mr-3">
                 <h4 class="float-left">{{ $titlePage }}.</h4>
-                <form action="{{ route('admin.comment.list') }}" method="get" class="form-inline float-right">
-                    <input type="number" class="form-control" name="id" placeholder="Tìm theo mã sản phẩm">
-                    <input type="date" class="form-control" name="created_at">
+                <form action="{{ route('admin.comment.list') }}" method="get" class="form-inline float-right mb-3" >
+                    <input type="number" class="form-control mr-2" name="id" placeholder="Tìm theo mã sản phẩm">
+                    <input type="date" class="form-control mr-2" name="created_at">
                     <button title="Tìm kiếm comment" class="btn btn-outline-success" type="submit"><i
                             class="fas fa-search-plus"></i></button>
                 </form>
@@ -25,7 +25,7 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr class="text-center">
-                            <th scope="col">Infor User</th>
+                            <th scope="col">Info User</th>
                             <th scope="col" class="w-25">Nội Dung</th>
                             <th scope="col">Thời gian <br> Comment </th>
                             <th scope="col">Hiển Thị</th>
@@ -46,7 +46,7 @@
                                         <li>Tên sản phẩm: {{ $comment->products['name'] }}</li>
                                     </ul>
                                 </th>
-                                <td>{{ $comment->content }}</td>
+                                <td class="w-25" style="width: 20%">{{ $comment->content }}</td>
                                 <td>{{ $comment->created_at }}</td>
                                 <td>
                                     <form action="{{ route('admin.comment.active', $comment->id) }}" method="post">
@@ -59,23 +59,27 @@
                                 <td><span
                                         class="badge badge-{{ $comment->status ? 'success' : 'danger' }}">{{ $comment->status ? 'Đã trả lời' : 'Chưa trả lời' }}</span>
                                 </td>
-                                <td>
+                                <td class="">
                                     @if ($comment->status == 0)
                                         <a href="{{ route('admin.comment.showReply', $comment->id) }}"
                                             class="btn btn-sm btn-success">Reply</a>
                                     @endif
-                                    <form action="{{ route('admin.comment.destroy', $comment->id) }}" method="post">
+                                    <span>
+                                        <form action="{{ route('admin.comment.destroy', $comment->id) }}" method="post" class=" d-inline">
                                         @csrf
                                         @method('delete')
                                         <button onclick="return confirm('Bạn có chắc muốn xóa comment')" title="Xóa comment" type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
-                                    </form>
+                                        </form>
+                                    </span>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
 
                 </table>
-                {{ $comments->appends(request()->query())->links() }}
+                <div class=" d-flex justify-content-center">
+                    {{ $comments->appends(request()->query())->links() }}
+                </div>
             </div>
         @endif
     </div>

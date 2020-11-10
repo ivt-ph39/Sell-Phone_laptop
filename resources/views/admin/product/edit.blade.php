@@ -137,6 +137,9 @@
                                         @endforeach 
                                     @endif
                                 </select>
+                                @error('tag')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                         </div>
                         <div class="row mt-4">

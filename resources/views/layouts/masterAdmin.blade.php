@@ -118,7 +118,7 @@
                             <a href="#" class="nav-link ">
                                 <i class="fas fa-database mr-2"></i></i>
                                 <p>
-                                    QL Infor User
+                                    QL Info User
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
@@ -254,7 +254,12 @@
                     type:"get",
                     url:"{{ route('admin.comment.showMess') }}",
                     success: function(res){
-                        $('.mess').html(res.count);
+                        if(res.count == 0 ){
+                            $('.mess').html("");
+                        }else{
+                            $('.mess').html(res.count);
+                        }
+                        
                     },
                     error: function(er){
                         $('.mess').html('error');

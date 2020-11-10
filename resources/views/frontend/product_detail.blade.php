@@ -454,6 +454,58 @@
 						<div class="section-title text-center">
 							<h3 class="title">Sản Phẩm Liên Quan</h3>
 						</div>
+						<div class="row">
+                    @foreach ($product_related as $product)
+                    <div class="col-md-3">
+                        <div class="product product-store">
+                            <div class="product-img">
+                                <a href="{{route('product',['productName'=> Str::slug($product->name) ])}}"><img src="{{asset($product->avatar)}}"></a>
+                                <div class="product-label ">
+                                    @if ($product->sale['base'] != 0)
+                                    <span class="sale">{{$product->sale['format']}}</span>
+                                    @endif
+                                    @if ($product->hot['name']=='Nổi bật')
+                                    <span class="new">HOT</span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="product-body">
+                                <h3 class="product-name"><a href="{{route('product',['productName'=> Str::slug($product->name) ])}}">{{$product->name}}</a></h3>
+                                @if ($product->sale['base'] != 0)
+                                <h4 class="product-price">{{number_format($product->price['base']*(100-$product->sale['base'])/100, 0, '.', ',')}}<sup class="text text-danger">đ</sup><del
+                                        class="product-old-price">{!!$product->price['format']!!}</del>
+                                </h4>
+                                @else
+                                <h4 class="product-price">{!!$product->price['format']!!}</h4>
+                                @endif
+                                <div class="product-rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                                <div class="product-promotion">
+                                </div>
+                            </div>
+                            <div class="add-to-cart">
+                                
+                                <a href="{{route('product',[ 'productName'=> Str::slug($product->name) ])}}">
+                                <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Mua Ngay</button></a>
+                            </div>
+                            <div class="promotion">
+                                @if ($product->promotion)
+                                <p><b>Quà: </b>
+                                    @foreach (json_decode($product->promotion, true) as $content)
+                                    {{ucfirst($content['name']) }},
+                                    @endforeach
+                                </p>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
 					</div>
 				</div>
 				<!-- /row -->
