@@ -58,9 +58,6 @@
       <p class="mt-2 mb-0">
       <a href="{{route('admin.login')}}">Đăng nhập?</a>
       </p>
-      <p class="mb-0">
-      <a href="{{route('admin.register')}}" class="text-center">Tạo tài khoảng mới?</a>
-      </p>
     </div>
     <!-- /.login-card-body -->
   </div>

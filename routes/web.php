@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Auth;
 
 // ------------------------- Backend ----------------------
 
-Route::get('admin/login', 'Backend\adminAuth\LoginAdController@showLoginAdmin');
+Route::get('admin/login', 'Backend\adminAuth\LoginAdController@showLoginAdmin')->name('admin.login');
 Route::post('admin/login', 'Backend\adminAuth\LoginAdController@store')->name('admin.store');
 Route::get('admin/logout', 'Backend\adminAuth\LoginAdController@logout')->name('admin.logout');
 
@@ -108,7 +108,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::put('comment/{comment}/active', 'Backend\CommentController@active')->name('admin.comment.active');
     Route::get('comment/{id}/showReply', 'Backend\CommentController@showReply')->name('admin.comment.showReply');
     Route::post('comment/{id}/reply', 'Backend\CommentController@reply')->name('admin.comment.reply');
-    Route::get('comment/showMess' , 'Backend\CommentController@showMessage')->name('admin.comment.showMess');
+    Route::get('comment/showMess', 'Backend\CommentController@showMessage')->name('admin.comment.showMess');
     Route::delete('comment/{comment}/destroy', 'Backend\CommentController@destroy')->name('admin.comment.destroy');
     //-------------Blog------
     Route::get('blog/list', 'Backend\BlogController@index')->name('admin.blog.list');
@@ -118,8 +118,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::put('blog/{blog}/update', 'Backend\BlogController@update')->name('admin.blog.update');
     Route::delete('blog/{blog}/destroy', 'Backend\BlogController@destroy')->name('admin.blog.delete');
     // ------------Order-----------
-    Route::get('order/list' , 'Backend\OrderController@index')->name('admin.order.list');
-    Route::put('order/{order}/update' , 'Backend\OrderController@update')->name('admin.order.update');
+    Route::get('order/list', 'Backend\OrderController@index')->name('admin.order.list');
+    Route::put('order/{order}/update', 'Backend\OrderController@update')->name('admin.order.update');
     Route::delete('order/{order}/destroy', 'Backend\OrderController@destroy')->name('admin.order.destroy');
 });
 // ------------------------- FrontEnd ----------------------
