@@ -36,12 +36,11 @@ class CommentController extends Controller
 
         if (!empty($id) || !empty($created_at)) {
             $comments = Comment::where('parent_id', 0)
-                ->whereDate('created_at', '=', $created_at)
-                ->orwhere('id', '=', $id)
-                ->latest()
-                ->paginate(3);
+                                ->orwhere('product_id', '=', $id)
+                                ->whereDate('created_at', '=', $created_at)
+                                ->latest()->paginate(3);
         } else {
-            $comments = Comment::where('parent_id', 0)->where('status', 0)->latest()->paginate(5);
+            $comments = Comment::where('parent_id', 0)->where('status', 0)->latest()->paginate(3);
         }
 
         $data = [
