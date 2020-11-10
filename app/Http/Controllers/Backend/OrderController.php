@@ -24,13 +24,20 @@ class OrderController extends Controller
     
     public function index(Request $request){
         if (isset($request->created_at)) {
-            $created_at = date($request->created_at);
+            $created_at = date($request->created_at); 
         } else {
             $created_at = '';
         }
+        if (isset($request->status)) {
+            $status = $request->status; 
+        } else {
+            $status = '';
+        }
 
-        if (!empty($created_at)) {
-            $orders = Order::whereDate('created_at', '=', $created_at)->paginate(4);
+        if (!empty($created_at) || !empty($status)) {
+            $orders = Order::whereDate('created_at', '=', $created_at)
+                            ->orwhere('status', '=', $status)
+                            ->latest()->paginate(4);
         } else {
             $orders = Order::latest()->paginate(4);
         }
@@ -40,6 +47,15 @@ class OrderController extends Controller
             'orders' => $orders
         ];
         return view('admin.order.list', $data);
+    }
+
+    public function productOrder($id){
+        $products = DB::table('order_product')->where('order_id','=', $id)->get();
+        if(!empty($products)){
+            return response()->json([
+                'products' => $products
+            ], 200);
+        }
     }
 
     public function store(Request $request)
