@@ -106,7 +106,7 @@
                         <th scope="col">Thời gian tạo</th>
                         <th scope="col">Trạng thái</th>
                         <th scope="col">Thời gian hoàn thành</th>
-                        <th>Xem chi tiết</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -115,10 +115,18 @@
                     <tr>
                         <th>{{$key+1}}</th>
                         <td>{{$order->created_at}}</td>
-                        <td>Đang xử lý</td>
-                        {{-- <td>{{$order->status}}</td> --}}
+                        {{-- <td>Đang xử lý</td> --}}
+                        <td>{{$order->status}}</td>
                         <td>{{$order->finished_at}}</td>
-                        <td data-id="{{$order->id}}" class="detail_order"><i class="fas fa-eye"></i></td>
+                        <td>
+                            <a href="" title="Xem chi tiết" data-id="{{$order->id}}" class="action_order detail_order"><i class="far fa-eye"></i></a> 
+                            @if ($order->status != "Đang giao" && $order->status != "Hoàn thành")
+                                <a href="" title="Hủy đơn" data-id="{{$order->id}}" class="action_order cancel_order" ><i class="far fa-calendar-times"></i></a>    
+                            @endif
+                            @if ($order->status == "Hoàn thành")
+                                <a href="" title="Xóa" data-id="{{$order->id}}" class="action_order delete_order" ><i class="far fa-trash-alt"></i></a>    
+                            @endif
+                        </td>
                     </tr>
                     @endforeach
                     @endisset
@@ -246,6 +254,7 @@
 			}
 		});
         $('.detail_order').on('click', function(e) {
+            e.preventDefault();
             id_order = $(this).attr('data-id');
             $(".detailModal").modal('show');
             $.ajax({
@@ -276,6 +285,73 @@
                         $('.modal-footer h4 span').append(' '+formatCurrency(totalAmount)+'<sup>đ</sup>')
                     }
                 }
+            })
+        })
+        $('.delete_order').on('click', function(e) {
+            e.preventDefault();
+            id_order = $(this).attr('data-id');
+            $.ajax({
+                url:"{{route('admin.order.deleteOrder')}}",
+                data: {
+                    id: id_order
+                },
+                type:'post',
+                success:function(data){
+                    console.log(data);
+                    if(data.success==true){
+                        Swal.fire({
+                        icon: 'success',
+                        title: 'Lỗi...',
+                        text: 'Bạn đã xóa đơn hàng thành công !',
+                        confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                               location.reload();
+                            }
+                        });
+                    }else{
+                        Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi...',
+                        text: 'Không thể xóa đơn hàng !',
+                        })
+                    }
+                }
+            
+            })
+            // console.log('id ',id_order)
+        })
+        $('.cancel_order').on('click', function(e) {
+            e.preventDefault();
+             id_order = $(this).attr('data-id');
+             $.ajax({
+                url:"{{route('admin.order.cancelOrder')}}",
+                data: {
+                    id: id_order
+                },
+                type:'post',
+                success:function(data){
+                    if(data.success==true){
+                        Swal.fire({
+                        icon: 'success',
+                        title: 'Lỗi...',
+                        text: 'Bạn đã hủy đơn hàng thành công !',
+                        confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                               location.reload();
+                            }
+                        });
+                    }else{
+                         Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi...',
+                        text: 'Không thể hủy đơn hàng !',
+
+                        })
+                    }
+                }
+
             })
         })
     })
