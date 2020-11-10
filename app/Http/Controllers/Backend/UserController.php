@@ -26,9 +26,9 @@ class UserController extends Controller
         }
 
         if (!empty($search)) {
-            $users = User::where('name', 'like', "%$search%")->paginate(1);
+            $users = User::where('name', 'like', "%$search%")->paginate(4);
         } else {
-            $users = User::paginate(1);
+            $users = User::paginate(4);
         }
         $titlePage      = 'Danh sách Người Dùng';
         $data = [
@@ -42,7 +42,7 @@ class UserController extends Controller
 
     public function onlyTrashed()
     {
-        $users = User::onlyTrashed()->paginate(1);
+        $users = User::onlyTrashed()->paginate(4);
         $titlePage      = 'Danh sách Người Dùng Đã Soft Delete';
         $data = [
             'titlePage'   => $titlePage,
@@ -145,11 +145,14 @@ class UserController extends Controller
         // order don hang
         // check delete
 
+        if ($user->id == Auth::user()->id) {
+            return redirect()->back()->with('message', 'Không thể xóa chính mình');
+        }
         $rs = $user->delete();
         if ($rs) {
-            return redirect()->route('admin.user.list')->with('message', 'Đã xóa mềm thành công');
+            return redirect()->back()->with('message', 'Đã xóa mềm thành công');
         }
-        return redirect()->route('admin.user.list')->with('message', 'Lỗi không xóa được');
+        return redirect()->back()->with('message', 'Lỗi không xóa được');
     }
 
     public function checkOrder()

@@ -98,7 +98,7 @@
                         @endforeach
                     </tbody>
                 </table>
-                {{ $users->links() }}
+                {{ $users->appends(request()->query())->links() }}
             </div>
         @endif
     </div>

@@ -24,7 +24,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::all();
+        $roles = Role::latest()->paginate(4);
         $titlePage      = 'Danh sách Vai Trò';
         $data = [
             'titlePage'   => $titlePage,
@@ -59,6 +59,14 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required|regex:/^[a-zA-Z]*$/',
+            'description' => 'required'
+        ],[
+            'name.required' => 'Không được để trống',
+            'name.regex' => 'Không đúng định dạng ex: adminSystem | admin',
+            'description.required' => 'Không được để trống',
+        ]);
         try {
             DB::beginTransaction();
             $data = $request->except('permission_id');
@@ -66,7 +74,7 @@ class RoleController extends Controller
 
             $role->permissions()->attach($request->permission_id);
             DB::commit();
-            return redirect()->route('admin.role.list');
+            return redirect()->route('admin.role.list')->with('message', 'Tạo thành công');
         } catch (Exception $e) {
             DB::rollback();
             echo "Error : " . $e->getMessage();
@@ -114,12 +122,20 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
+        $request->validate([
+            'name' => 'required|regex:/^[a-zA-Z]*$/',
+            'description' => 'required'
+        ],[
+            'name.required' => 'Không được để trống',
+            'name.regex' => 'Không đúng định dạng ex: adminSystem | admin',
+            'description.required' => 'Không được để trống',
+        ]);
         try {
             $data = $request->except('permission_id');
             $rs = $role->update($data);
             if ($rs) {
                 $role->permissions()->sync($request->permission_id);
-                return redirect()->route('admin.role.list');
+                return redirect()->route('admin.role.list')->with('message', 'Cập nhập thành công');
             }
         } catch (\Throwable $th) {
             throw $th;
@@ -135,7 +151,10 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        $role->delete();
-        return redirect()->route('admin.role.list');
+        $rs = $role->delete();
+        if($rs){
+            return redirect()->route('admin.role.list')->with('message', 'Xóa thành công');
+        }
+        return redirect()->route('admin.role.list')->with('message', 'Xóa không thành công');
     }
 }
