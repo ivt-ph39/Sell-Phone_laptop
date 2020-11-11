@@ -59,11 +59,12 @@
                     <div class="form-group w-100 mb-3 row">
                         <label for="active" class="col-4 d-flex justify-content-end pr-5">Hiển Thị :</label>
                         <div class="col-8 custom-control custom-switch">
+                            {{-- {{dd($contact->active)}} --}}
                             <input type="checkbox" class="custom-control-input" name="active" id="active" 
                             @if (old('active'))
                                 {{'checked'}} 
                             @else
-                                {{($contact->active) ? "checked" : ""}}
+                                {{($contact->active['value']) ? "checked" : ""}}
                             @endif>
                             <label class="custom-control-label" for="active"></label>
                         </div>
@@ -79,4 +80,12 @@
     </div>
     <div class="col-2"></div>
 </div>
+@endsection
+@section('js')
+    <script>
+        $("#icon").change(function () {
+        value = $(this).val();
+            $('#icon_preview').attr('class', 'fas fa-3x ' + value);
+        });
+    </script>
 @endsection

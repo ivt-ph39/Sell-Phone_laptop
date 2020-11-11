@@ -102,9 +102,11 @@ class OrderController extends Controller
                         'amount'     => $orderProduct['price_new'] * $orderProduct['quantity'],
                         'product_id' => $orderProduct['id']
                     ];
+                    $this->updateQuantityProduct($orderProduct['id'], $orderProduct['quantity']);
                     $dataInstance[] = $dataCreate;
                 }
                 $orderProduct = $order->products()->attach($dataInstance);
+
                 DB::commit();
                 // dd($orderProduct);
                 if ($request->user_id) {
@@ -128,6 +130,13 @@ class OrderController extends Controller
             }
         }
     }
+    public function updateQuantityProduct($id, $minusQuantity)
+    {
+        $product   = Product::find($id);
+        $quantityPro    = $product->quantity;
+        $update    = $product->update(['quantity' => $quantityPro - $minusQuantity]);
+        return $update;
+    }
     public function show(Request $request)
     {
         $id_order = $request->id_order;
@@ -145,12 +154,13 @@ class OrderController extends Controller
     }
     public function sendOrder($email, $order_id)
     {
-        $orders   = OrderProduct::with(['products', 'order'])->where('order_id', 16)->get();
+        $orders   = OrderProduct::with(['products', 'order'])->where('order_id', $order_id)->get();
         $dataOrder = [
             'order'  => [
                 'id' => 16,
-                'created_at' => $orders[0]->order->created_at,
-                'status'     => $orders[0]->order->status,
+                'created_at'  => $orders[0]->order->created_at,
+                'status'      => $orders[0]->order->status,
+                'finished_at' => $orders[0]->order->finished_at
             ],
             'orderAmount' => 0
         ];
@@ -166,19 +176,27 @@ class OrderController extends Controller
         }
         $dataOrder['orderAmount'] = number_format($dataOrder['orderAmount'], 0, ',', '.');
         $dataOrder['orderDetail'] = $orderDetail;
-        // $dataOrder = ['tt' => 'asdasd'];
-        Mail::to($email)->send(new SendOrder($dataOrder));
+        $sendOrder = Mail::to($email)->send(new SendOrder($dataOrder));
         return true;
     }
 
     public function update(Order $order)
     {
+
+        $emailOrder = $order->email;
+        $order_id   = $order->id;
         if ($order->status == "Đang chờ xử lý") {
             $rs = $order->update(['status' => 1]);
         } elseif ($order->status == "Đang xử lý") {
             $rs = $order->update(['status' => 2]);
         } elseif ($order->status == "Đang giao") {
-            $rs = $order->update(['status' => 3]);
+            $rs = $order->update(['status' => 3, 'finished_at' => now()]);
+            if ($rs) {
+                $sendOrder = $this->sendOrder($emailOrder, $order_id);
+                if ($sendOrder) {
+                    return redirect()->back()->with('message', 'Đã thay đổi trạng thái đơn hàng Và đã gửi mail đến khách hàng');
+                }
+            }
         } else {
             $rs = $order->update(['finished_at' => now()]);
         }
@@ -204,13 +222,18 @@ class OrderController extends Controller
     public function cancelOrder(Request $request)
     {
         $id = $request->id;
-        $order = Order::find($id);
+        $order = Order::with(['order_product', 'products'])->find($id);
+        foreach ($order->products()->get() as $key => $product) {
+            $quantityOld = $product->quantity + $order->order_product()->get()[$key]->quantity;
+            $product->update(['quantity' => $quantityOld]);
+        }
+
         if ($order->status === 'Đang chờ xử lý' || $order->status === 'Đang xử lý') {
             $order->delete();
             return response()->json(
                 [
                     'success' => true,
-                    'id'      => $id
+                    'id'      => $id,
                 ],
                 200
             );

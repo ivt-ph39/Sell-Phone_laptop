@@ -14,20 +14,24 @@ class RoleSeeder extends Seeder
     {
         $data = [
             [
+                'name' => 'guest',
+                'description' => 'Khách hàng',
+            ],
+            [
                 'name' => 'admin',
                 'description' => 'Quản trị hệ thống',
             ],
             [
-                'name' => 'dev',
-                'description' => 'Phát triển hệ Thống',
+                'name' => 'Ql đơn hàng',
+                'description' => 'Ql đơn hàng',
             ],
             [
-                'name' => 'content',
-                'description' => 'Quản lý nội dung',
+                'name' => 'Ql bình luận',
+                'description' => 'Ql bình luận',
             ],
             [
-                'name' => 'editor',
-                'description' => 'Chỉnh sửa nội dung',
+                'name' => 'Ql sản phẩm',
+                'description' => 'Ql sản phẩm',
             ],
         ];
         Role::insert($data);

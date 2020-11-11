@@ -107,12 +107,12 @@
                                         <p>Đơn hàng</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
+                                {{-- <li class="nav-item">
                                     <a href="pages/charts/inline.html" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>BV Sản Phẩm</p>
                                     </a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </li>
                         <li class="nav-item has-treeview">
@@ -186,6 +186,14 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
+                                    <a href="#" class="nav-link ">
+                                        <i class="fas fa-sign-out-alt mr-2 nav-icon"></i>
+                                        <p>
+                                            QL Profile
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item ">
                                     <a href="{{ route('admin.logout') }}" class="nav-link ">
                                         <i class="fas fa-sign-out-alt mr-2 nav-icon"></i>
                                         <p>

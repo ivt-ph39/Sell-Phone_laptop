@@ -116,13 +116,13 @@ class ProductController extends Controller
                     ]);
                 }
             }
-            // insert to table tags.
-            foreach ($request->tag as $tag) {
-                $tagInstance = Tag::firstOrCreate(['name' => $tag]);
-                $tagInstanceId[] = $tagInstance->id;
-            }
-            //insert to table product_tag.
-            $product->tags()->attach($tagInstanceId);
+            // // insert to table tags.
+            // foreach ($request->tag as $tag) {
+            //     $tagInstance = Tag::firstOrCreate(['name' => $tag]);
+            //     $tagInstanceId[] = $tagInstance->id;
+            // }
+            // //insert to table product_tag.
+            // $product->tags()->attach($tagInstanceId);
 
             DB::commit();
             return redirect()->route('admin.product.list')->with('success', 'Tạo mới sản phẩm thành công');
@@ -248,14 +248,14 @@ class ProductController extends Controller
                 }
             }
 
-            // update to table tags.
-            foreach ($request->tag as $tag) {
-                $tagInstance = Tag::firstOrCreate(['name' => $tag]);
-                $tagInstanceId[] = $tagInstance->id;
-            }
+            // // update to table tags.
+            // foreach ($request->tag as $tag) {
+            //     $tagInstance = Tag::firstOrCreate(['name' => $tag]);
+            //     $tagInstanceId[] = $tagInstance->id;
+            // }
 
-            //update to table product_tag.
-            $product->tags()->sync($tagInstanceId);
+            // //update to table product_tag.
+            // $product->tags()->sync($tagInstanceId);
 
             DB::commit();
             return redirect()->to(route('admin.product.list'))->with('success', 'Thay đổi nội dung sản phẩm thành công');

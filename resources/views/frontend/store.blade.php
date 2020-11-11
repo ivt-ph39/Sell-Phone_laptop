@@ -103,11 +103,17 @@
                                 <h4 class="product-price">{!!$product->price['format']!!}</h4>
                                 @endif
                                 <div class="product-rating">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star-half-alt"></i>
+                                    @php
+                                        for ($i=1; $i <= $product->rating ; $i++) { 
+											echo('<i class="fas fa-star"></i>');
+                                        }
+                                        for ($i=1; $i <= (5-(floor(5 - $product->rating) + floor($product->rating))) ; $i++) { 
+											echo('<i class="fas fa-star-half-alt"></i>');
+										}
+                                        for ($i=1; $i <= floor(5 - $product->rating) ; $i++) { 
+											echo('<i class="far fa-star"></i>');
+										}    
+                                    @endphp
                                 </div>
                                 <div class="product-promotion">
                                 </div>

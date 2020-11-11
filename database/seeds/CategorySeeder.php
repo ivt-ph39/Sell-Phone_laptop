@@ -78,9 +78,9 @@ class CategorySeeder extends Seeder
                 'create_by' => '1',
             ],
             [
-                'name' => 'Thẻ nhớ',
+                'name' => 'Ổ cững di động',
                 'icon' => null,
-                'image'  => 'https://cdn.tgdd.vn/Category/55/The-nho-l-21-10-2019.png',
+                'image'  => 'https://cdn.tgdd.vn/Category/1902/O-cung-di-dong-l-26-11-2019.png',
                 'parent_id' => '4',
                 'active' => '1',
                 'create_by' => '1',

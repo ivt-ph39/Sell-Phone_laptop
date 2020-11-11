@@ -28,7 +28,7 @@
                             <th class=" text-center">{{$key+1}}</th>
                             <td class=" text-center">{{$contact->name}}</td>
                             <td class=" text-center">{{$contact->content}}</td>
-                            <td class=" text-center"><i class="fas fa-2x {{$contact->icon}}"></i></td>
+                            <td class=" text-center"><i class=" fa-2x {{$contact->icon}}"></i></td>
                             <td class=" text-center"><span class="badge {{$contact->active['class']}}">{{$contact->active['name']}}</span></td>
                             <td class=" text-center" >
                                 <span>

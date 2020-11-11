@@ -45,7 +45,7 @@
                         <label for="icon" class="col-4 d-flex justify-content-end pr-5">Icon:</label>
                         <div class="col-4">
                             <input type="text" name="icon" id="icon" class="form-control w-100 @error('icon') is-invalid @enderror"
-                            placeholder=" fa-phone"  value="{{old('icon')}}">
+                            placeholder="fas fa-phone"  value="{{old('icon')}}">
                             @error('icon')
                             <small id="" class="text-danger mx-auto mt-1">{{$message}}</small>
                             @enderror
@@ -74,4 +74,12 @@
     </div>
     <div class="col-2"></div>
 </div>
+@endsection
+@section('js')
+    <script>
+        $("#icon").change(function () {
+        value = $(this).val();
+        $('#icon_preview').attr('class', 'fas fa-3x ' + value);
+    });
+    </script>
 @endsection

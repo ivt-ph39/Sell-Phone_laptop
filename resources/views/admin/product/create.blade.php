@@ -142,7 +142,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="row mt-4">
+                            {{-- <div class="row mt-4">
                                 <div class="col-3 d-flex justify-content-end">
                                     <label for="tag">Từ khóa<span class=" text-danger">(<sup>*</sup>)</span>:</label>
                                 </div>
@@ -159,7 +159,7 @@
                                     <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="row mt-4">
                                 <div class="col-4 d-flex justify-content-end">
                                     <label for="hot">Sản phẩm hot:</label>
@@ -168,8 +168,7 @@
                                     <div class="custom-control custom-switch">
                                         <div class="col-9">
                                             <input type="checkbox" class="custom-control-input" id="hot" name="hot"
-                                                @if (old('hot')) {{ 'checked' }} </beautify
-                                                end="   @endif">>
+                                                @if (old('hot')) {{ 'checked' }}@endif>
                                             <label class="custom-control-label" for="hot"></label>
                                         </div>
                                     </div>
@@ -183,8 +182,7 @@
                                     <div class="custom-control custom-switch">
                                         <div class="col-9">
                                             <input type="checkbox" class="custom-control-input" name="active" id="active"
-                                                @if (old('active')) {{ 'checked' }} </beautify
-                                                end="   @endif">>
+                                                @if (old('active')) {{ 'checked' }} @endif>
                                             <label class="custom-control-label" for="active"></label>
                                         </div>
                                     </div>
