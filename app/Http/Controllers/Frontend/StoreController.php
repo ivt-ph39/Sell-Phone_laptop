@@ -48,12 +48,6 @@ class StoreController extends Controller
                 case 'price_max':
                     $products = $products->orderByRaw("(price*(100 - sale)/100) desc");
                     break;
-                case 'top_sell':
-                    break;
-                case 'top_rating':
-                    break;
-                default:
-                    break;
             }
         } else {
             $products = $products->orderByRaw('price*(100 - sale)/100');

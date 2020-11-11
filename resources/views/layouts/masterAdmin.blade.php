@@ -15,7 +15,8 @@
     <link rel="stylesheet" href="adminlte/dist/css/adminlte.min.css">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="adminlte/plugins/daterangepicker/daterangepicker.css">
     @yield('css')
 </head>
 

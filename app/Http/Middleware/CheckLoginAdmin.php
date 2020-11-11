@@ -18,12 +18,13 @@ class CheckLoginAdmin
      */
     public function handle($request, Closure $next)
     {
+        if (Auth::check()) {
+            $roles = User::find(Auth::user()->id)->roles()->get();
 
-        $roles = User::find(Auth::user()->id)->roles()->get();
-
-        foreach ($roles as $role) {
-            if ($role->name != "guest") {
-                return $next($request);
+            foreach ($roles as $role) {
+                if ($role->name != "guest") {
+                    return $next($request);
+                }
             }
         }
         return redirect('admin/login')->with('login_false', 'Bạn không có quyền truy cập trang này');

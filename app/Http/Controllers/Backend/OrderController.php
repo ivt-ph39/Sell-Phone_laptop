@@ -250,6 +250,7 @@ class OrderController extends Controller
     {
         $id = $request->id;
         $order = Order::find($id);
+        // dd($order->status);
         if ($order->status == 'Hoàn thành') {
             $order->delete();
             return response()->json(

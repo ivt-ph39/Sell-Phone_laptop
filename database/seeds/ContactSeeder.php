@@ -1,6 +1,8 @@
 <?php
 
+use App\Model\Contact;
 use Illuminate\Database\Seeder;
+use PhpParser\Node\Expr\AssignOp\Concat;
 
 class ContactSeeder extends Seeder
 {
@@ -15,7 +17,7 @@ class ContactSeeder extends Seeder
             [
                 'name' => 'phone',
                 'content' => '0372218497',
-                'icon' => '<fas fa-phone-alt',
+                'icon' => 'fas fa-phone-alt',
                 'active' => 1,
             ],
             [
@@ -31,5 +33,6 @@ class ContactSeeder extends Seeder
                 'active' => 1,
             ]
         ];
+        Contact::insert($data);
     }
 }
