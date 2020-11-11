@@ -32,7 +32,7 @@ class ProductRequest extends FormRequest
             'avatar' => 'required',
             'image_detail' => 'required',
             'title' => 'required',
-            'tag'   => 'required'
+            // 'tag'   => 'required'
         ];
     }
     public function messages()
@@ -57,7 +57,7 @@ class ProductRequest extends FormRequest
             'image_detail.required' => 'Ảnh chi tiết không được để trống',
 
             'title.required' => 'Tiêu đề sản phẩm không được để trống',
-            'tag.required' => 'Từ khóa không được để trống'
+            // 'tag.required' => 'Từ khóa không được để trống'
 
         ];
     }

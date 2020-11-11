@@ -121,7 +121,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="row mt-4">
+                        {{-- <div class="row mt-4">
                             <div class="col-3 d-flex justify-content-end">
                                 <label for="tag">Từ khóa:</label>
                             </div>
@@ -141,7 +141,7 @@
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="row mt-4">
                             <div class="col-2"></div>
                             <div class="col-2 d-flex justify-content-center">

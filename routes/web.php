@@ -24,11 +24,6 @@ Route::get('admin/login', 'Backend\adminAuth\LoginAdController@showLoginAdmin')-
 Route::post('admin/login', 'Backend\adminAuth\LoginAdController@store')->name('admin.store');
 Route::get('admin/logout', 'Backend\adminAuth\LoginAdController@logout')->name('admin.logout');
 
-Route::get('admin/register', 'Backend\adminAuth\RegisterAdController@showRegisterAdmin')->name('admin.register');
-Route::post('admin/register', 'Backend\adminAuth\RegisterAdController@store')->name('admin.register.store');
-Route::get('admin/register-success', 'Backend\adminAuth\RegisterAdController@success')->name('admin.register-success');
-
-
 Route::get('admin/password/reset', 'Backend\adminAuth\ResetPasswordController@index')->name('admin.password.reset');
 Route::post('admin/password/reset', 'Backend\adminAuth\ResetPasswordController@store')->name('admin.password.reset-store');
 Route::get('admin/password/reset/{token}', 'Backend\adminAuth\ResetPasswordController@showFormReset')->name('admin.showFormReset')->middleware('signed');

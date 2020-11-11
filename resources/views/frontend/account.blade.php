@@ -35,14 +35,14 @@
     .tabcontent {
         display: none;
     }
-
+    .modal-footer h4 span{
+        color: red;
+    }
     .tabcontent {
         animation: fadeEffect 1s;
         /* Fading effect takes 1 second */
     }
-    .modal-footer h4 span{
-        color: red;
-    }
+    
     /* Go from zero to full opacity */
     @keyframes fadeEffect {
         from {
@@ -100,6 +100,7 @@
         <div class="tabcontent show" id="order_history">
             <h4>Lịch sử đơn hàng</h4>
             <table class="table table-hover">
+                @if($list_order->count() !=0)
                 <thead>
                     <tr>
                         <th scope="col">TT</th>
@@ -110,7 +111,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @isset($list_order)
                     @foreach ($list_order as $key => $order)
                     <tr>
                         <th>{{$key+1}}</th>
@@ -129,9 +129,12 @@
                         </td>
                     </tr>
                     @endforeach
-                    @endisset
+                    
 
                 </tbody>
+                @else
+                    <p>Bạn chưa có đơn hàng nào cả.</p>
+                @endif
             </table>
         </div>
         <div class="tabcontent none" id="info_account">

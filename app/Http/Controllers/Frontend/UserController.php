@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function register(Request $request, User $user)
+    public function register(Request $request)
     {
         // dd($request->all());
         $rules = [
@@ -46,7 +46,7 @@ class UserController extends Controller
         } else {
             $data = $request->except('password');
             $data['password'] = bcrypt($request->password);
-            $createUser = $user->create($data);
+            $createUser = User::create($data);
             if ($createUser) {
                 return response()->json([
                     'success' => true,
