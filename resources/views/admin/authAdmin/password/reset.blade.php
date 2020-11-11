@@ -22,7 +22,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="#"><b>Admin</b>&nbsp;Reset</a>
+    <a href="#"><b>Reset</b>&nbsp;pasword</a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
@@ -55,9 +55,6 @@
           <!-- /.col -->
         </div>
       </form>
-      <p class="mt-2 mb-0">
-      <a href="{{route('admin.login')}}">Đăng nhập?</a>
-      </p>
     </div>
     <!-- /.login-card-body -->
   </div>

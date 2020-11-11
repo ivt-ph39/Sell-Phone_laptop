@@ -46,9 +46,6 @@
 								<li><a href="#"><i class="{{$contact->icon}}"></i> {{$contact->content}}</a></li>
 							@endforeach
 						@endisset
-						{{-- <li><a href="#"><i class="fa fa-phone"></i> +021-95-51-84</a></li>
-						<li><a href="#"><i class="fa fa-envelope-o"></i> email@email.com</a></li>
-						<li><a href="#"><i class="fa fa-map-marker"></i> 1734 Stonecoal Road</a></li> --}}
 					</ul>
 					<ul class="header-links pull-right">
 						@if (Auth::check())
@@ -153,7 +150,6 @@
 							  <input type="email"
 								class="form-control" name="u-email" id="u-email" aria-describedby="helpId" placeholder="Email : abc@gmail.com">
 								<small class="error" id="err_email"></small>
-
 							</div>
 							<div class="row">
 								<div class="col-md-6 form-group">
@@ -191,25 +187,29 @@
 				<div class="modal-dialog modal-dialog-centered" role="document">
 					<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLongTitle">Đăng Nhập</h5>
+						<h4 class="modal-title" id="exampleModalLongTitle">Đăng Nhập</h4>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
 						<form action="" method="post" id="form-login">
+							<label for="u-email">Tên đăng nhập:</label>
 							<div class="form-group">
 							  <input type="email"
 								class="form-control" name="u-email" id="u-email" aria-describedby="helpId" placeholder="Email">
 							</div>
 							<div class="form-group">
+							  <label for="u-password">Mật khẩu:</label>
 							  <input type="password"
 								class="form-control" name="u-password" id="u-password" aria-describedby="helpId" placeholder="Mật khẩu">
 							</div>
 						</form>
 					</div>
-					<div class="modal-footer ">
-						<button type="button" id="submit-login" class="btn btn-primary">Đăng nhập</button>
+					<div class="modal-footer">
+						
+						<button type="button" id="submit-login" class="btn btn-primary">Đăng nhập</button><br>
+						<a href="{{route('admin.password.reset')}}" class="forgot_pass">Quên mật khẩu.</a>
 					</div>
 					</div>
 				</div>

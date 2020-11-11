@@ -29,7 +29,7 @@ class ResetPasswordAdmin extends Mailable
      */
     public function build()
     {
-        return $this->subject('Mail from Laravel.com')
+        return $this->subject('Mail from Electro')
             ->view('emails.resetPasswordMail');
     }
 }

@@ -294,17 +294,17 @@
             e.preventDefault();
             id_order = $(this).attr('data-id');
             $.ajax({
-                url:"{{route('admin.order.deleteOrder')}}",
+                url:"{{route('order.deleteOrder')}}",
                 data: {
                     id: id_order
                 },
                 type:'post',
                 success:function(data){
-                    console.log(data);
+                    console.log("data "+ data);
                     if(data.success==true){
                         Swal.fire({
                         icon: 'success',
-                        title: 'Lỗi...',
+                        title: 'Đã xóa...',
                         text: 'Bạn đã xóa đơn hàng thành công !',
                         confirmButtonText: 'OK'
                         }).then((result) => {
@@ -328,7 +328,7 @@
             e.preventDefault();
              id_order = $(this).attr('data-id');
              $.ajax({
-                url:"{{route('admin.order.cancelOrder')}}",
+                url:"{{route('order.cancelOrder')}}",
                 data: {
                     id: id_order
                 },
@@ -337,7 +337,7 @@
                     if(data.success==true){
                         Swal.fire({
                         icon: 'success',
-                        title: 'Lỗi...',
+                        title: 'Đã hủy...',
                         text: 'Bạn đã hủy đơn hàng thành công !',
                         confirmButtonText: 'OK'
                         }).then((result) => {

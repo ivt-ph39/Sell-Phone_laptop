@@ -118,11 +118,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::put('order/{order}/update', 'Backend\OrderController@update')->name('admin.order.update');
     Route::delete('order/{id}/destroy', 'Backend\OrderController@destroy')->name('admin.order.destroy');
     Route::get('order/{id}/productOrder', 'Backend\OrderController@productOrder')->name('admin.order.productOrder');
-    Route::post('order/cancelOrder', 'Backend\OrderController@cancelOrder')->name('admin.order.cancelOrder');
-    Route::post('order/deleteAjax', 'Backend\OrderController@deleteAjax')->name('admin.order.deleteOrder');
 });
 // ------------------------- FrontEnd ----------------------
-
+Route::get('/home', 'Frontend\HomeController@index')->name('home');
+Route::get('/', 'Frontend\HomeController@index');
 // ---------Register-login-User--------
 Route::post('dang-ky', 'Frontend\UserController@register')->name('user_register');
 Route::post('dang-nhap', 'Frontend\UserController@login')->name('user_login');
@@ -141,13 +140,13 @@ Route::post('create-comment', 'Backend\CommentController@store')->name('comment_
 // ---------Rating-Product--------
 Route::post('create-rating', 'Backend\RatingController@store')->name('rating_store');
 
-// ---------Create Order----------
+// ---------Order----------
 Route::post('create-order', 'Backend\OrderController@store')->name('order_store');
-
+Route::post('order/cancelOrder', 'Backend\OrderController@cancelOrder')->name('order.cancelOrder');
+Route::post('order/deleteAjax', 'Backend\OrderController@deleteAjax')->name('order.deleteOrder');
+Route::post('order-detail', 'Backend\OrderController@show')->name('order_show');
 Route::post('get-quantity-product', 'Backend\OrderController@getQuantityProduct')->name('order_getQuantityProduct');
 
-
-Route::post('order-detail', 'Backend\OrderController@show')->name('order_show');
 
 
 // ----------SearchProduct TypeaheadJs--------
@@ -155,7 +154,6 @@ Route::get('search/name', 'Frontend\SearchProduct@searchTypeaheadJs');
 // ----------SearchProduct List--------
 Route::get('search', 'Frontend\SearchProduct@search')->name('search_product_list');
 
-Route::get('/', 'Frontend\HomeController@index')->name('home');
 Route::get('/gio-hang', 'Frontend\CartController@index')->name('cart');
 
 

@@ -946,6 +946,13 @@ li.hassub:hover>a {
 /*----------------------------*\
 	product
 \*----------------------------*/
+.forgot_pass {
+    color: blue;
+}
+
+form label {
+    font-weight: 500;
+}
 
 .product {
     position: relative;
