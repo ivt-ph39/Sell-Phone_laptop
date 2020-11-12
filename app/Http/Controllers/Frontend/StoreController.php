@@ -56,7 +56,7 @@ class StoreController extends Controller
         $data = [
             'categories' => Category::where('parent_id', 0)->get(),
             'products'   => $products->paginate(12),
-            'brands'     => Brand::where('category_id', $id)->get(),
+            'brands'     => Brand::all(),
             'page'       => $page
         ];
         return view('frontend.store', $data);
