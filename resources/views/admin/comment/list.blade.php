@@ -59,7 +59,7 @@
                                 <td><span
                                         class="badge badge-{{ $comment->status ? 'success' : 'danger' }}">{{ $comment->status ? 'Đã trả lời' : 'Chưa trả lời' }}</span>
                                 </td>
-                                <td class="">
+                                <td style="width: 15%">
                                     @if ($comment->status == 0)
                                         <a href="{{ route('admin.comment.showReply', $comment->id) }}"
                                             class="btn btn-sm btn-success">Reply</a>

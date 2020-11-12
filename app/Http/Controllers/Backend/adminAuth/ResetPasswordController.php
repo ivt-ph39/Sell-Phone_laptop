@@ -35,7 +35,6 @@ class ResetPasswordController extends Controller
             $token = DB::table('password_resets')->where('email', $email)->orderByDesc('created_at')->first()->token;
             $expiration = Carbon::now()->addMinute(15);
             $link = URL::temporarySignedRoute('admin.showFormReset', $expiration, $token);
-            // dd($email, $link);
             if ($this->sendMail($email, $link)) {
                 $mess_succ = 'Chúng tôi đã gửi link reset password đến email của bạn!';
                 return view('admin.authAdmin.password.reset', ['mess_succ' => $mess_succ]);
@@ -49,13 +48,13 @@ class ResetPasswordController extends Controller
 
     public function sendMail($email, $link)
     {
+        // dd($email);
         $details = [
             'title' => 'Click Link bênh dưới để reset password.',
             'link' => $link
         ];
         Mail::to($email)
             ->send(new ResetPasswordAdmin($details));
-        // return view('emails.sendMailSuccess'); ????????????????????????
         return true;
     }
 
@@ -65,7 +64,6 @@ class ResetPasswordController extends Controller
 
         $email = DB::table('password_resets')->where('token', $__token)->first()->email;
         $data = [
-            // 'token' => $token,
             'token' => $token,
             'email' => $email
         ];

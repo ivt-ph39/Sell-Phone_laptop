@@ -55,6 +55,7 @@ class ContactController extends Controller
     }
     public function update(EditContactRequest $request, Contact $contact, $id)
     {
+        // dd($request->all());
         $data = $request->except('_token', 'active', '_method', 'id');
         if ($request->active) {
             $data['active'] = $request->active;

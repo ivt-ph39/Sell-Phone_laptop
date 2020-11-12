@@ -35,14 +35,14 @@
     .tabcontent {
         display: none;
     }
-
+    .modal-footer h4 span{
+        color: red;
+    }
     .tabcontent {
         animation: fadeEffect 1s;
         /* Fading effect takes 1 second */
     }
-    .modal-footer h4 span{
-        color: red;
-    }
+    
     /* Go from zero to full opacity */
     @keyframes fadeEffect {
         from {
@@ -100,29 +100,41 @@
         <div class="tabcontent show" id="order_history">
             <h4>Lịch sử đơn hàng</h4>
             <table class="table table-hover">
+                @if($list_order->count() !=0)
                 <thead>
                     <tr>
                         <th scope="col">TT</th>
                         <th scope="col">Thời gian tạo</th>
                         <th scope="col">Trạng thái</th>
                         <th scope="col">Thời gian hoàn thành</th>
-                        <th>Xem chi tiết</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @isset($list_order)
                     @foreach ($list_order as $key => $order)
                     <tr>
                         <th>{{$key+1}}</th>
                         <td>{{$order->created_at}}</td>
+                        {{-- <td>Đang xử lý</td> --}}
                         <td>{{$order->status}}</td>
                         <td>{{$order->finished_at}}</td>
-                        <td data-id="{{$order->id}}" class="detail_order"><i class="fas fa-eye"></i></td>
+                        <td>
+                            <a href="" title="Xem chi tiết" data-id="{{$order->id}}" class="action_order detail_order"><i class="far fa-eye"></i></a> 
+                            @if ($order->status != "Đang giao" && $order->status != "Hoàn thành")
+                                <a href="" title="Hủy đơn" data-id="{{$order->id}}" class="action_order cancel_order" ><i class="far fa-calendar-times"></i></a>    
+                            @endif
+                            @if ($order->status == "Hoàn thành")
+                                <a href="" title="Xóa" data-id="{{$order->id}}" class="action_order delete_order" ><i class="far fa-trash-alt"></i></a>    
+                            @endif
+                        </td>
                     </tr>
                     @endforeach
-                    @endisset
+                    
 
                 </tbody>
+                @else
+                    <p>Bạn chưa có đơn hàng nào cả.</p>
+                @endif
             </table>
         </div>
         <div class="tabcontent none" id="info_account">
@@ -245,6 +257,7 @@
 			}
 		});
         $('.detail_order').on('click', function(e) {
+            e.preventDefault();
             id_order = $(this).attr('data-id');
             $(".detailModal").modal('show');
             $.ajax({
@@ -275,6 +288,73 @@
                         $('.modal-footer h4 span').append(' '+formatCurrency(totalAmount)+'<sup>đ</sup>')
                     }
                 }
+            })
+        })
+        $('.delete_order').on('click', function(e) {
+            e.preventDefault();
+            id_order = $(this).attr('data-id');
+            $.ajax({
+                url:"{{route('order.deleteOrder')}}",
+                data: {
+                    id: id_order
+                },
+                type:'post',
+                success:function(data){
+                    console.log("data "+ data);
+                    if(data.success==true){
+                        Swal.fire({
+                        icon: 'success',
+                        title: 'Đã xóa...',
+                        text: 'Bạn đã xóa đơn hàng thành công !',
+                        confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                               location.reload();
+                            }
+                        });
+                    }else{
+                        Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi...',
+                        text: 'Không thể xóa đơn hàng !',
+                        })
+                    }
+                }
+            
+            })
+            // console.log('id ',id_order)
+        })
+        $('.cancel_order').on('click', function(e) {
+            e.preventDefault();
+             id_order = $(this).attr('data-id');
+             $.ajax({
+                url:"{{route('order.cancelOrder')}}",
+                data: {
+                    id: id_order
+                },
+                type:'post',
+                success:function(data){
+                    if(data.success==true){
+                        Swal.fire({
+                        icon: 'success',
+                        title: 'Đã hủy...',
+                        text: 'Bạn đã hủy đơn hàng thành công !',
+                        confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                               location.reload();
+                            }
+                        });
+                    }else{
+                         Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi...',
+                        text: 'Không thể hủy đơn hàng !',
+
+                        })
+                    }
+                }
+
             })
         })
     })

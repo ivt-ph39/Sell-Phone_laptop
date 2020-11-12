@@ -15,6 +15,7 @@ use App\Model\Tag;
 use App\Components\RecursiveCategory;
 use App\Model\Brand;
 use App\Model\Image;
+use App\Model\Order;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use function GuzzleHttp\json_decode;
@@ -115,16 +116,16 @@ class ProductController extends Controller
                     ]);
                 }
             }
-            // insert to table tags.
-            foreach ($request->tag as $tag) {
-                $tagInstance = Tag::firstOrCreate(['name' => $tag]);
-                $tagInstanceId[] = $tagInstance->id;
-            }
-            //insert to table product_tag.
-            $product->tags()->attach($tagInstanceId);
+            // // insert to table tags.
+            // foreach ($request->tag as $tag) {
+            //     $tagInstance = Tag::firstOrCreate(['name' => $tag]);
+            //     $tagInstanceId[] = $tagInstance->id;
+            // }
+            // //insert to table product_tag.
+            // $product->tags()->attach($tagInstanceId);
 
             DB::commit();
-            return redirect()->route('admin.product.list');
+            return redirect()->route('admin.product.list')->with('success', 'Tạo mới sản phẩm thành công');
         } catch (\Exception $e) {
             DB::rollback();
             dd($e->getMessage());
@@ -247,30 +248,34 @@ class ProductController extends Controller
                 }
             }
 
-            // update to table tags.
-            foreach ($request->tag as $tag) {
-                $tagInstance = Tag::firstOrCreate(['name' => $tag]);
-                $tagInstanceId[] = $tagInstance->id;
-            }
+            // // update to table tags.
+            // foreach ($request->tag as $tag) {
+            //     $tagInstance = Tag::firstOrCreate(['name' => $tag]);
+            //     $tagInstanceId[] = $tagInstance->id;
+            // }
 
-            //update to table product_tag.
-            $product->tags()->sync($tagInstanceId);
+            // //update to table product_tag.
+            // $product->tags()->sync($tagInstanceId);
 
             DB::commit();
-            return redirect()->to(route('admin.product.list'));
+            return redirect()->to(route('admin.product.list'))->with('success', 'Thay đổi nội dung sản phẩm thành công');
         } catch (Exception $e) {
             DB::rollback();
-            dd($e->getMessage());
-            return redirect()->back()->with('error_update', 'Thay đổi nội dung sản phẩm thất bại')->withInput();
+            // dd($e->getMessage());
+            return redirect()->back()->with('error', 'Thay đổi nội dung sản phẩm thất bại')->withInput();
         }
     }
 
     public function destroy($id)
     {
-        $product = Product::find($id);
-        $product->delete();
-
-        return back();
+        $product = Product::with('orders')->find($id);
+        $orders = $product->orders()->where('status', '<>', 2)->count();
+        if ($orders == 0) {
+            $product->delete();
+            return back()->with('success', 'Bạn đã xóa sản phẩm thành công');
+        } else {
+            return back()->with('error', 'Sản phẩm này đang tồn tại trong ' . $orders . ' đơn hàng chưa hoàn thành');
+        }
     }
     public function upload(Request $request)
     {

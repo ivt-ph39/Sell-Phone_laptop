@@ -12,10 +12,12 @@ class Contact extends Model
     protected $active   = [
         1 => [
             'name'  => 'public',
+            'value' => 1,
             'class' => 'badge-success'
         ],
         0 => [
             'name'  => 'private',
+            'value' => 0,
             'class' => 'badge-secondary'
         ]
     ];

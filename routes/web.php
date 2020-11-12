@@ -20,14 +20,9 @@ use Illuminate\Support\Facades\Auth;
 
 // ------------------------- Backend ----------------------
 
-Route::get('admin/login', 'Backend\adminAuth\LoginAdController@showLoginAdmin');
+Route::get('admin/login', 'Backend\adminAuth\LoginAdController@showLoginAdmin')->name('admin.login');
 Route::post('admin/login', 'Backend\adminAuth\LoginAdController@store')->name('admin.store');
 Route::get('admin/logout', 'Backend\adminAuth\LoginAdController@logout')->name('admin.logout');
-
-Route::get('admin/register', 'Backend\adminAuth\RegisterAdController@showRegisterAdmin')->name('admin.register');
-Route::post('admin/register', 'Backend\adminAuth\RegisterAdController@store')->name('admin.register.store');
-Route::get('admin/register-success', 'Backend\adminAuth\RegisterAdController@success')->name('admin.register-success');
-
 
 Route::get('admin/password/reset', 'Backend\adminAuth\ResetPasswordController@index')->name('admin.password.reset');
 Route::post('admin/password/reset', 'Backend\adminAuth\ResetPasswordController@store')->name('admin.password.reset-store');
@@ -43,15 +38,15 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::post('category/store', 'Backend\CategoryController@store')->name('admin.category.store');
     Route::get('category/show/{id}', 'Backend\CategoryController@show')->name('admin.category.show');
     Route::get('category/edit/{id}', 'Backend\CategoryController@edit')->name('admin.category.edit');
-    Route::post('category/update/{id}', 'Backend\CategoryController@update')->name('admin.category.update');
-    Route::get('category/delete/{id}', 'Backend\CategoryController@destroy')->name('admin.category.delete');
+    Route::put('category/update/{id}', 'Backend\CategoryController@update')->name('admin.category.update');
+    Route::delete('category/delete/{id}', 'Backend\CategoryController@delete')->name('admin.category.delete');
     //---------products----------
     Route::get('product/list', 'Backend\ProductController@index')->name('admin.product.list')->middleware('can:list_product');
     Route::get('product/create', 'Backend\ProductController@create')->name('admin.product.create');
     Route::post('product/store', 'Backend\ProductController@store')->name('admin.product.store');
     Route::get('product/edit/{id}', 'Backend\ProductController@edit')->name('admin.product.edit');
     Route::post('product/update/{id}', 'Backend\ProductController@update')->name('admin.product.update');
-    Route::get('product/delete/{id}', 'Backend\ProductController@destroy')->name('admin.product.delete');
+    Route::delete('product/delete/{id}', 'Backend\ProductController@destroy')->name('admin.product.delete');
 
     Route::post('ckeditor/image_upload', 'Backend\ProductController@upload')->name('upload');
 
@@ -61,6 +56,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::get('brand/{id}/edit', 'Backend\BrandController@edit')->name('admin.brand.edit');
     Route::post('brand/store', 'Backend\BrandController@store')->name('admin.brand.store');
     Route::put('brand/{id}/update', 'Backend\BrandController@update')->name('admin.brand.update');
+    Route::delete('brand/{id}/delete', 'Backend\BrandController@delete')->name('admin.brand.delete');
     //---------contacts----------
     Route::get('contact/list', 'Backend\ContactController@index')->name('admin.contact.list')->middleware('can:list_contact');
     Route::get('contact/create', 'Backend\ContactController@create')->name('admin.contact.create');
@@ -108,7 +104,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::put('comment/{comment}/active', 'Backend\CommentController@active')->name('admin.comment.active');
     Route::get('comment/{id}/showReply', 'Backend\CommentController@showReply')->name('admin.comment.showReply');
     Route::post('comment/{id}/reply', 'Backend\CommentController@reply')->name('admin.comment.reply');
-    Route::get('comment/showMess' , 'Backend\CommentController@showMessage')->name('admin.comment.showMess');
+    Route::get('comment/showMess', 'Backend\CommentController@showMessage')->name('admin.comment.showMess');
     Route::delete('comment/{comment}/destroy', 'Backend\CommentController@destroy')->name('admin.comment.destroy');
     //-------------Blog------
     Route::get('blog/list', 'Backend\BlogController@index')->name('admin.blog.list')->middleware('can:list_blog');
@@ -118,13 +114,20 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::put('blog/{blog}/update', 'Backend\BlogController@update')->name('admin.blog.update');
     Route::delete('blog/{blog}/destroy', 'Backend\BlogController@destroy')->name('admin.blog.delete')->middleware('can:delete_blog');
     // ------------Order-----------
+<<<<<<< HEAD
     Route::get('order/list' , 'Backend\OrderController@index')->name('admin.order.list')->middleware('can:list_blog');
     Route::put('order/{order}/update' , 'Backend\OrderController@update')->name('admin.order.update');
     Route::delete('order/{order}/destroy', 'Backend\OrderController@destroy')->name('admin.order.destroy');
+=======
+    Route::get('order/list', 'Backend\OrderController@index')->name('admin.order.list');
+    Route::put('order/{order}/update', 'Backend\OrderController@update')->name('admin.order.update');
+    Route::delete('order/{id}/destroy', 'Backend\OrderController@destroy')->name('admin.order.destroy');
+>>>>>>> 3bb14e4c4d204417850648675c5020ffa33a2ec4
     Route::get('order/{id}/productOrder', 'Backend\OrderController@productOrder')->name('admin.order.productOrder');
 });
 // ------------------------- FrontEnd ----------------------
-
+Route::get('/home', 'Frontend\HomeController@index')->name('home');
+Route::get('/', 'Frontend\HomeController@index');
 // ---------Register-login-User--------
 Route::post('dang-ky', 'Frontend\UserController@register')->name('user_register');
 Route::post('dang-nhap', 'Frontend\UserController@login')->name('user_login');
@@ -143,13 +146,13 @@ Route::post('create-comment', 'Backend\CommentController@store')->name('comment_
 // ---------Rating-Product--------
 Route::post('create-rating', 'Backend\RatingController@store')->name('rating_store');
 
-// ---------Create Order----------
+// ---------Order----------
 Route::post('create-order', 'Backend\OrderController@store')->name('order_store');
-
+Route::post('order/cancelOrder', 'Backend\OrderController@cancelOrder')->name('order.cancelOrder');
+Route::post('order/deleteAjax', 'Backend\OrderController@deleteAjax')->name('order.deleteOrder');
+Route::post('order-detail', 'Backend\OrderController@show')->name('order_show');
 Route::post('get-quantity-product', 'Backend\OrderController@getQuantityProduct')->name('order_getQuantityProduct');
 
-
-Route::post('order-detail', 'Backend\OrderController@show')->name('order_show');
 
 
 // ----------SearchProduct TypeaheadJs--------
@@ -157,7 +160,6 @@ Route::get('search/name', 'Frontend\SearchProduct@searchTypeaheadJs');
 // ----------SearchProduct List--------
 Route::get('search', 'Frontend\SearchProduct@search')->name('search_product_list');
 
-Route::get('/', 'Frontend\HomeController@index')->name('home');
 Route::get('/gio-hang', 'Frontend\CartController@index')->name('cart');
 
 

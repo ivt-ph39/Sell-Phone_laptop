@@ -7,6 +7,7 @@ use App\Mail\SendOrder;
 use App\Model\Order;
 use App\Model\OrderProduct;
 use App\Model\Product;
+use App\Model\Rating;
 use App\User;
 use Exception;
 use Illuminate\Support\Facades\Validator;
@@ -21,23 +22,24 @@ class OrderController extends Controller
     {
         return Auth::user()->$value;
     }
-    
-    public function index(Request $request){
+
+    public function index(Request $request)
+    {
         if (isset($request->created_at)) {
-            $created_at = date($request->created_at); 
+            $created_at = date($request->created_at);
         } else {
             $created_at = '';
         }
         if (isset($request->status)) {
-            $status = $request->status; 
+            $status = $request->status;
         } else {
             $status = '';
         }
 
         if (!empty($created_at) || !empty($status)) {
             $orders = Order::whereDate('created_at', '=', $created_at)
-                            ->orwhere('status', '=', $status)
-                            ->latest()->paginate(3);
+                ->orwhere('status', '=', $status)
+                ->latest()->paginate(3);
         } else {
             $orders = Order::latest()->paginate(3);
         }
@@ -49,9 +51,10 @@ class OrderController extends Controller
         return view('admin.order.list', $data);
     }
 
-    public function productOrder($id){
-        $products = DB::table('order_product')->where('order_id','=', $id)->get();
-        if(!empty($products)){
+    public function productOrder($id)
+    {
+        $products = DB::table('order_product')->where('order_id', '=', $id)->get();
+        if (!empty($products)) {
             return response()->json([
                 'products' => $products
             ], 200);
@@ -99,9 +102,11 @@ class OrderController extends Controller
                         'amount'     => $orderProduct['price_new'] * $orderProduct['quantity'],
                         'product_id' => $orderProduct['id']
                     ];
+                    $this->updateQuantityProduct($orderProduct['id'], $orderProduct['quantity']);
                     $dataInstance[] = $dataCreate;
                 }
                 $orderProduct = $order->products()->attach($dataInstance);
+
                 DB::commit();
                 // dd($orderProduct);
                 if ($request->user_id) {
@@ -125,6 +130,13 @@ class OrderController extends Controller
             }
         }
     }
+    public function updateQuantityProduct($id, $minusQuantity)
+    {
+        $product   = Product::find($id);
+        $quantityPro    = $product->quantity;
+        $update    = $product->update(['quantity' => $quantityPro - $minusQuantity]);
+        return $update;
+    }
     public function show(Request $request)
     {
         $id_order = $request->id_order;
@@ -142,12 +154,13 @@ class OrderController extends Controller
     }
     public function sendOrder($email, $order_id)
     {
-        $orders   = OrderProduct::with(['products', 'order'])->where('order_id', 16)->get();
+        $orders   = OrderProduct::with(['products', 'order'])->where('order_id', $order_id)->get();
         $dataOrder = [
             'order'  => [
                 'id' => 16,
-                'created_at' => $orders[0]->order->created_at,
-                'status'     => $orders[0]->order->status,
+                'created_at'  => $orders[0]->order->created_at,
+                'status'      => $orders[0]->order->status,
+                'finished_at' => $orders[0]->order->finished_at
             ],
             'orderAmount' => 0
         ];
@@ -163,37 +176,97 @@ class OrderController extends Controller
         }
         $dataOrder['orderAmount'] = number_format($dataOrder['orderAmount'], 0, ',', '.');
         $dataOrder['orderDetail'] = $orderDetail;
-        // $dataOrder = ['tt' => 'asdasd'];
-        Mail::to($email)->send(new SendOrder($dataOrder));
+        $sendOrder = Mail::to($email)->send(new SendOrder($dataOrder));
         return true;
     }
 
-    public function update(Order $order){
-        if($order->status == "Đang xử lý"){
+    public function update(Order $order)
+    {
+
+        $emailOrder = $order->email;
+        $order_id   = $order->id;
+        if ($order->status == "Đang chờ xử lý") {
             $rs = $order->update(['status' => 1]);
-        }elseif($order->status == "Đã xử lý"){
+        } elseif ($order->status == "Đang xử lý") {
             $rs = $order->update(['status' => 2]);
-        }elseif($order->status == "Đang giao"){
-            $rs = $order->update(['status' => 3]);
-        }else{
+        } elseif ($order->status == "Đang giao") {
+            $rs = $order->update(['status' => 3, 'finished_at' => now()]);
+            if ($rs) {
+                $sendOrder = $this->sendOrder($emailOrder, $order_id);
+                if ($sendOrder) {
+                    return redirect()->back()->with('message', 'Đã thay đổi trạng thái đơn hàng Và đã gửi mail đến khách hàng');
+                }
+            }
+        } else {
             $rs = $order->update(['finished_at' => now()]);
         }
-        
-        if(!empty($rs)){
-          return redirect()->back()->with('message', 'Đã thay đổi trạng thái đơn hàng');
-         }
+        if (!empty($rs)) {
+            return redirect()->back()->with('message', 'Đã thay đổi trạng thái đơn hàng');
+        }
         return redirect()->back()->with('message', 'Không thể thay đổi trạng thái đơn hàng');
-
     }
 
-    public function destroy(Order $order){
-        if($order->status != 3){
+    public function destroy($id)
+    {
+
+        $order = Order::find($id);
+        if ($order->status != 'Hoàn thành') {
             return redirect()->back()->with('message', 'Đơn hàng chưa hoàn thành không thể xóa đơn hàng');
         }
         $rs = $order->delete();
-        if($rs){
+        if ($rs) {
             return redirect()->back()->with('message', 'Đã xóa đơn hàng thành công');
         }
         return redirect()->back()->with('message', 'Xóa đơn hàng không thành công');
+    }
+    public function cancelOrder(Request $request)
+    {
+        $id = $request->id;
+        $order = Order::with(['order_product', 'products'])->find($id);
+        foreach ($order->products()->get() as $key => $product) {
+            $quantityOld = $product->quantity + $order->order_product()->get()[$key]->quantity;
+            $product->update(['quantity' => $quantityOld]);
+        }
+
+        if ($order->status === 'Đang chờ xử lý' || $order->status === 'Đang xử lý') {
+            $order->delete();
+            return response()->json(
+                [
+                    'success' => true,
+                    'id'      => $id,
+                ],
+                200
+            );
+        } else {
+            return response()->json(
+                [
+                    'success' => false,
+                ],
+                200
+            );
+        }
+    }
+    public function deleteAjax(Request $request)
+    {
+        $id = $request->id;
+        $order = Order::find($id);
+        // dd($order->status);
+        if ($order->status == 'Hoàn thành') {
+            $order->delete();
+            return response()->json(
+                [
+                    'success' => true,
+                    'id'      => $id
+                ],
+                200
+            );
+        } else {
+            return response()->json(
+                [
+                    'success' => false,
+                ],
+                200
+            );
+        }
     }
 }

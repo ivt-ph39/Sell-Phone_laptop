@@ -37,12 +37,18 @@
                                                             <th>Mã đơn hàng</th>
                                                             <th>Thời gian đặt</th>
                                                             <th>Trạng thái đơn hàng</th>
+                                                            @if ($dataOrder['order']['finished_at'])
+                                                                <th>Thời gian hoàn thành</th>
+                                                            @endif
                                                             <th>Giá</th>
                                                         </tr>
                                                         <tr style="text-align: center;">
                                                             <td>{{$dataOrder['order']['id']}}</td>
                                                             <td>{{$dataOrder['order']['created_at']}}</td>
                                                             <td>{{$dataOrder['order']['status']}}</td>
+                                                            @if($dataOrder['order']['finished_at'])
+                                                                <th>{{$dataOrder['order']['finished_at']}}</th>
+                                                            @endif
                                                             <td>{{$dataOrder['orderAmount']}}<sup>đ</sup></td>
                                                         </tr>
                                                     </tbody>

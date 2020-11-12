@@ -21,8 +21,8 @@
                     <form action="{{ route('admin.order.list') }}" method="get" class="form-inline mr-2">
                         <input type="date" class="form-control mr-2" name="created_at" placeholder="Tìm theo ngày tạo">
                         <select name="status" class="form-control">
-                            <option value="0">Đang xử lý</option>
-                            <option value="1">Đã xử lý</option>
+                            <option value="0">Đang chờ xử lý</option>
+                            <option value="1">Đang xử lý</option>
                             <option value="2">Đang giao</option>
                             <option value="3">Hoàn thành</option>
                         </select>

@@ -15,7 +15,8 @@
     <link rel="stylesheet" href="adminlte/dist/css/adminlte.min.css">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="adminlte/plugins/daterangepicker/daterangepicker.css">
     @yield('css')
 </head>
 
@@ -107,12 +108,12 @@
                                         <p>Đơn hàng</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
+                                {{-- <li class="nav-item">
                                     <a href="pages/charts/inline.html" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>BV Sản Phẩm</p>
                                     </a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </li>
                         <li class="nav-item has-treeview">
@@ -186,6 +187,14 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
+                                    <a href="#" class="nav-link ">
+                                        <i class="fas fa-sign-out-alt mr-2 nav-icon"></i>
+                                        <p>
+                                            QL Profile
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item ">
                                     <a href="{{ route('admin.logout') }}" class="nav-link ">
                                         <i class="fas fa-sign-out-alt mr-2 nav-icon"></i>
                                         <p>
@@ -246,6 +255,7 @@
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
     @yield('js')
     <script>

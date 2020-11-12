@@ -94,18 +94,18 @@
                                     </div>
                                     <div class="modal-body">
                                         <div class="form-group">
-                                            <label for="user_name">Họ và tên:</label>
-                                            <input type="text" class="form-control"  id="user_name" aria-describedby="helpId" placeholder="Họ và tên" disabled value="{{ucwords(Auth::user()->name)}}">
+                                            <label for="user_name">Tên người nhận:</label>
+                                            <input type="text" class="form-control"  id="user_name" aria-describedby="helpId" placeholder="Họ và tên"  value="{{ucwords(Auth::user()->name)}}">
                                                 <small class="error" id="err_name"></small>
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-md-6">
-                                                <label for="user_email">Email:</label>
-                                                <input type="email" class="form-control"  id="user_email" aria-describedby="helpId" placeholder="Email : abc@gmail.com" disabled value="{{Auth::user()->email}}">
+                                                <label for="user_email">Email người nhận:</label>
+                                                <input type="email" class="form-control"  id="user_email" aria-describedby="helpId" placeholder="Email : abc@gmail.com"  value="{{Auth::user()->email}}">
                                                 <small class="error" id="err_email"></small>
                                             </div>
                                             <div class="col-md-6">
-                                                <label for="user_phone">Số điện thoại:</label>
+                                                <label for="user_phone">SĐT người nhận:</label>
                                                 <input type="text" class="form-control"  id="user_phone" aria-describedby="helpId" placeholder="Số điện thoại"  value="{{Auth::user()->phone}}">
                                                 <small class="error" id="err_phone"></small></div>
                                         </div>

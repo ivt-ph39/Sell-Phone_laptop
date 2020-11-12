@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Model\Comment;
+use App\Model\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,7 +20,12 @@ class HomeAdminController extends Controller
     {
         $nameAdmin = Auth::user()->name;
         $data = [
-            'nameAdmin' => ucwords($nameAdmin)
+            'nameAdmin'  => ucwords($nameAdmin),
+            'orderNew'   => Order::where('status', '<>', '3')->count(),
+            'orderHandle'   => Order::where('status', '2')->count(),
+            'orderDone'   => Order::where('status', '3')->count(),
+
+            'commentNew' => Comment::where('status', 0)->count()
         ];
         return view('admin.home', $data);
     }

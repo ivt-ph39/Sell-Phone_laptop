@@ -33,7 +33,7 @@ class ProductUpdateRequest extends FormRequest
             'brand_id' => 'required',
             'avatar'      => 'image',
             'title'       => 'required',
-            'tag'       => 'required',
+            // 'tag'       => 'required',
         ];
     }
     public function messages()
@@ -58,7 +58,7 @@ class ProductUpdateRequest extends FormRequest
 
             'avatar.image'         => 'File đươc chọn phải là file ảnh',
             'title.required'       => 'Tiêu đề sản phẩm không được để trống',
-            'tag.required'       => 'Từ khóa không được để trống',
+            // 'tag.required'       => 'Từ khóa không được để trống',
 
 
         ];

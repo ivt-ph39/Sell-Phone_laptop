@@ -946,6 +946,13 @@ li.hassub:hover>a {
 /*----------------------------*\
 	product
 \*----------------------------*/
+.forgot_pass {
+    color: blue;
+}
+
+form label {
+    font-weight: 500;
+}
 
 .product {
     position: relative;
@@ -966,11 +973,12 @@ li.hassub:hover>a {
     position: relative;
     height: 262.5px;
     text-align: center;
+    padding: 10px 5px;
 }
 
 .product .product-img a>img {
-    height: 100%;
-    padding: 10px 0;
+    height: 90%;
+    padding: 15px 0 0 0;
     max-width: 90%;
 }
 
@@ -2318,9 +2326,24 @@ li.hassub:hover>a {
     font-size: 150%;
 }
 
-.product-new {
+.product-new,
+.pro-top-sell,
+.pro-top-rating {
     transition: 0.5s all;
     display: block;
+    animation: fadeEffect 1.5s;
+}
+
+
+/* Go from zero to full opacity */
+@keyframes fadeEffect {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .none {
@@ -3101,6 +3124,11 @@ li.hassub:hover>a {
     color: white;
     border: 1px solid white;
     background-color: #4b8fe2;
+}
+
+.action_order {
+    margin-right: 15px;
+    font-size: 20px;
 }
 
 /*=========================================================

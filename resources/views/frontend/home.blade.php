@@ -40,7 +40,10 @@
 							<div class=" section-nav prd-news">
 								<ul class="section-tab-nav tab-nav tab-link">
 									@foreach ($categories as $category)
-									<li class="{{($category->id == 1 ? "active" : "")}}" data-cate="{{$category->id}}"><a href="">{{$category->name}}</a></li>
+										@if ($category->hasChild($category->id))
+										@else
+											<li class="{{($category->id == 1 ? "active" : "")}}" data-cate="{{$category->id}}"><a href="">{{$category->name}}</a></li>
+										@endif
 									@endforeach
 								</ul>
 							</div>
@@ -49,29 +52,27 @@
 					<!-- /section title -->
 				</div>
 				<!-- /row -->
-				@foreach ($categories as $key => $category)
+				@foreach ($productNews as $key => $category)
 				<!-- row -->
-				<div class="row product-new "  id={{$category->id}}>
+				<div class="row product-new {{($category->id !=1)? "none" : ""}}"  id={{$category->id}}>
 					<div class="owl-carousel owl-theme owl-loaded">
 						<div class="owl-stage-outer">
 							<div class="owl-stage">
 								<!-- product -->
-								@php
-									$a = $key
-								@endphp
-								@foreach ($productNews->where('category_id', 1)->get() as $product)
+								@foreach ($category->products as $product)
 									<div class="owl-item">
 										<div class="product product-store">
 											<div class="product-img">
 												<a href="{{route('product',['page'=>Str::slug($product->category->name),'productName'=>Str::slug($product->name)])}}"><img src="{{$product->avatar}}" ></a>
 												
 												<div class="product-label ">
-													@if ($product->sale['base'] != 0)
+													<span class="new">NEW</span>
+													{{-- @if ($product->sale['base'] != 0)
 														<span class="sale">{{$product->sale['format']}}</span>
 													@endif
 													@if ($product->hot['name']=='Nổi bật')
 														<span class="new">HOT</span>
-													@endif
+													@endif --}}
 												</div>
 											</div>
 											<div class="product-body">
@@ -82,11 +83,17 @@
 													<h4 class="product-price">{!!$product->price['format']!!}</h4>
 												@endif
 												<div class="product-rating">
-													<i class="fas fa-star"></i>
-													<i class="fas fa-star"></i>
-													<i class="fas fa-star"></i>
-													<i class="fas fa-star"></i>
-													<i class="fas fa-star-half-alt"></i>
+													@php
+														for ($i=1; $i <= $product->rating ; $i++) { 
+															echo('<i class="fas fa-star"></i>');
+														}
+														for ($i=1; $i <= (5-(floor(5 - $product->rating) + floor($product->rating))) ; $i++) { 
+															echo('<i class="fas fa-star-half-alt"></i>');
+														}
+														for ($i=1; $i <= floor(5 - $product->rating) ; $i++) { 
+															echo('<i class="far fa-star"></i>');
+														}    
+													@endphp
 												</div>
 												<div class="product-promotion">
 												</div>
@@ -169,7 +176,7 @@
 		</div>
 		<!-- /HOT DEAL SECTION -->
 
-		<!-- SECTION TOP SELL-->
+		<!-- SECTION TOP HOT-->
 		<div class="section">
 			<!-- container -->
 			<div class="container">
@@ -178,11 +185,14 @@
 					<!-- section title -->
 					<div class="col-md-12">
 						<div class="section-title">
-							<h3 class="title">Sản Phẩm Bán Chạy Nhất</h3>
+							<h3 class="title">Sản Phẩm Hot Nhất</h3>
 							<div class="section-nav top-sell">
 								<ul class="section-tab-nav tab-nav tab-link">
 									@foreach ($categories as $category)
-									<li class="{{($category->id == 1 ? "active" : "")}}" data-cate="{{$category->id}}"><a href="">{{$category->name}}</a></li>
+										@if ($category->hasChild($category->id))
+										@else
+											<li class="{{($category->id == 1 ? "active" : "")}}" data-cate="{{$category->id}}"><a href="">{{$category->name}}</a></li>
+										@endif
 									@endforeach
 								</ul>
 							</div>
@@ -191,14 +201,14 @@
 					<!-- /section title -->
 				</div>
 				<!-- /row -->
-				@foreach ($categories as $key => $category)
+				@foreach ($productHot as $key => $category)
 				<!-- row -->
 				<div class="row pro-top-sell {{($category->id !=1)? "none" : ""}}"  id={{$category->id}}>
 					<div class="owl-carousel owl-theme owl-loaded">
 						<div class="owl-stage-outer">
 							<div class="owl-stage">
 								<!-- product -->
-								@foreach ($productNews->where('category_id', $category->id)->get() as $product)
+								@foreach ($category->products as $product)
 									<div class="owl-item">
 										<div class="product product-store">
 											<div class="product-img">
@@ -221,11 +231,17 @@
 													<h4 class="product-price">{!!$product->price['format']!!}</h4>
 												@endif
 												<div class="product-rating">
-													<i class="fas fa-star"></i>
-													<i class="fas fa-star"></i>
-													<i class="fas fa-star"></i>
-													<i class="fas fa-star"></i>
-													<i class="fas fa-star-half-alt"></i>
+													@php
+														for ($i=1; $i <= $product->rating ; $i++) { 
+															echo('<i class="fas fa-star"></i>');
+														}
+														for ($i=1; $i <= (5-(floor(5 - $product->rating) + floor($product->rating))) ; $i++) { 
+															echo('<i class="fas fa-star-half-alt"></i>');
+														}
+														for ($i=1; $i <= floor(5 - $product->rating) ; $i++) { 
+															echo('<i class="far fa-star"></i>');
+														}    
+													@endphp
 												</div>
 												<div class="product-promotion">
 												</div>
@@ -271,11 +287,14 @@
 					<!-- section title -->
 					<div class="col-md-12">
 						<div class="section-title">
-							<h3 class="title">Sản Phẩm Được Đánh Giá Cao Nhât</h3>
+							<h3 class="title">Sản Phẩm Được Giảm Giá Nhiều Nhât</h3>
 							<div class="section-nav top-rating">
 								<ul class="section-tab-nav tab-nav tab-link">
 									@foreach ($categories as $category)
-									<li class="{{($category->id == 1 ? "active" : "")}}" data-cate="{{$category->id}}"><a href="">{{$category->name}}</a></li>
+										@if ($category->hasChild($category->id))
+										@else
+											<li class="{{($category->id == 1 ? "active" : "")}}" data-cate="{{$category->id}}"><a href="">{{$category->name}}</a></li>
+										@endif
 									@endforeach
 								</ul>
 							</div>
@@ -284,7 +303,7 @@
 					<!-- /section title -->
 				</div>
 				<!-- /row -->
-				@foreach ($categories as $key => $category)
+				@foreach ($productSell as $key => $category)
 				<!-- row -->
 				<div class="row pro-top-rating {{($category->id !=1)? "none" : ""}}"  id={{$category->id}}>
 					<div class="owl-carousel owl-theme owl-loaded">
@@ -294,7 +313,7 @@
 								@php
 									$a = $key
 								@endphp
-								@foreach ($productTopRating->where('category_id', 1)->get() as $product)
+								@foreach ($category->products as $product)
 									<div class="owl-item">
 										<div class="product product-store">
 											<div class="product-img">
@@ -317,11 +336,17 @@
 													<h4 class="product-price">{!!$product->price['format']!!}</h4>
 												@endif
 												<div class="product-rating">
-													<i class="fas fa-star"></i>
-													<i class="fas fa-star"></i>
-													<i class="fas fa-star"></i>
-													<i class="fas fa-star"></i>
-													<i class="fas fa-star-half-alt"></i>
+													@php
+														for ($i=1; $i <= $product->rating ; $i++) { 
+															echo('<i class="fas fa-star"></i>');
+														}
+														for ($i=1; $i <= (5-(floor(5 - $product->rating) + floor($product->rating))) ; $i++) { 
+															echo('<i class="fas fa-star-half-alt"></i>');
+														}
+														for ($i=1; $i <= floor(5 - $product->rating) ; $i++) { 
+															echo('<i class="far fa-star"></i>');
+														}    
+													@endphp
 												</div>
 												<div class="product-promotion">
 												</div>

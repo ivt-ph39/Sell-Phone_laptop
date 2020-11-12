@@ -48,12 +48,6 @@ class StoreController extends Controller
                 case 'price_max':
                     $products = $products->orderByRaw("(price*(100 - sale)/100) desc");
                     break;
-                case 'top_sell':
-                    break;
-                case 'top_rating':
-                    break;
-                default:
-                    break;
             }
         } else {
             $products = $products->orderByRaw('price*(100 - sale)/100');
@@ -62,13 +56,13 @@ class StoreController extends Controller
         $data = [
             'categories' => Category::where('parent_id', 0)->get(),
             'products'   => $products->paginate(12),
-            'brands'     => Brand::where('category_id', $id)->get(),
+            'brands'     => Brand::all(),
             'page'       => $page
         ];
         return view('frontend.store', $data);
     }
 
-    public function getIdCategory($slug) 
+    public function getIdCategory($slug)
     {
         $categories = Category::all();
         foreach ($categories as $category) {

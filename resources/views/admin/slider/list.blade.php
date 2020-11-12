@@ -11,6 +11,14 @@
             <h4 class="float-left">{{$titlePage}}.</h4>
             <a href="{{route('admin.slider.create')}}" class="btn btn-primary mb-3 float-right"> Thêm Slider<i class="fas fa-plus-circle ml-1"></i></a>
             <div class="content">
+                <div class="get_mess" 
+                    @if (Session::has('success'))
+                        data-success ="{{ Session::get('success') }}"
+                    @endif
+                    @if (Session::has('error'))
+                        data-error  ="{{ Session::get('error') }}"
+                    @endif>
+                </div>
                 <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -45,4 +53,25 @@
             </div>
         @endif
     </div>
+@endsection
+@section('js')
+     <script>
+        $(document).ready(function(){
+            success = $('.get_mess').attr('data-success');
+            error   = $('.get_mess').attr('data-error')
+            if(success != undefined){
+                Swal.fire({
+                icon: 'success',
+                text: success ,
+                })
+            }
+            if(error != undefined){
+               Swal.fire({
+                icon: 'error',
+                title: 'Lỗi...',
+                text: error ,
+                })
+            }
+        })
+    </script>
 @endsection

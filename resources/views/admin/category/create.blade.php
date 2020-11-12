@@ -50,7 +50,7 @@ Tạo Danh Mục
                         <label for="icon" class="col-4 d-flex justify-content-end pr-5">Icon:</label>
                         <div class="col-4">
                             <input type="text" name="icon" id="icon" class="form-control w-100 @error('icon') is-invalid @enderror"
-                            placeholder=" fa-laptop"  value="{{old('icon')}}">
+                            placeholder="fas fa-laptop"  value="{{old('icon')}}">
                             @error('icon')
                             <small id="" class="text-danger mx-auto mt-1">{{$message}}</small>
                             @enderror

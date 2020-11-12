@@ -17,6 +17,7 @@
             <div class="card-body">
                 <form class="form-inline" action="{{route('admin.category.update',['id' => $category->id ])}}" method="post" enctype="multipart/form-data">
                 @csrf
+                @method('put')
                 <div class="form-group w-100 mb-3 row">
                     <div class="col-4">
                         <label for="name" class="d-flex justify-content-end pr-5">Tên Danh Mục <span class=" text-danger">(<sup>*</sup>)</span> :</label>
@@ -47,7 +48,7 @@
                 <div class="form-group w-100 mb-3 row">
                     <label for="icon" class="col-4 d-flex justify-content-end pr-5">Icon:</label>
                     <div class="col-4">
-                        <input type="text" name="icon" id="icon" class="form-control w-100" placeholder=" fa-laptop" @if (old('icon') !=null) value="{{ old('icon')}}" @elseif($category->icon)
+                        <input type="text" name="icon" id="icon" class="form-control w-100" placeholder="fas fa-laptop" @if (old('icon') !=null) value="{{ old('icon')}}" @elseif($category->icon)
                         value = "{{ $category->icon}}"
                         @endif>
                         @error('icon')
@@ -108,4 +109,10 @@
     <!-- Select2 -->
     <script src="adminlte/plugins/select2/js/select2.min.js"></script>
     <script src="admins/category/edit/js/app.js"></script>
+    <script>
+        $("#icon").change(function () {
+        value = $(this).val();
+        $('#icon_preview').attr('class', 'fas fa-3x ' + value);
+    });
+    </script>
 @endsection
