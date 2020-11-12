@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateBlogRequest;
 use App\Model\Blog;
 use App\Model\Blog_tag;
+use CreateBlogsTable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -20,9 +22,19 @@ class BlogController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $blogs = Blog::latest()->paginate(3);
+        if (isset($request->search)) {
+            $search = $request->search;
+        } else {
+            $search = '';
+        }
+
+        if (!empty($search)) {
+            $blogs = Blog::where('title', 'like', "%$search%")->latest()->paginate(5);
+        } else {
+            $blogs = Blog::latest()->paginate(5);
+        }
         $data = [
             'titlePage'   => 'Danh Sách Blog',
             'nameAdmin'   => ucwords($this->infoUser('name')),
@@ -51,7 +63,7 @@ class BlogController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateBlogRequest $request)
     {
         $thumbnailName = $request->file('thumbnail')->getClientOriginalName();
         $request->file('thumbnail')->move(public_path('/uploads/images/blogs/'), $thumbnailName);
@@ -67,7 +79,7 @@ class BlogController extends Controller
         foreach ($request->tag as $tag) {
             Blog_tag::create(['tag' => $tag, 'blog_id' => $blog->id]);
         }
-        return redirect()->route('admin.blog.list');
+        return redirect()->route('admin.blog.list')->with('message', 'Thêm bài viết thành công');
     }
 
     /**
@@ -104,24 +116,27 @@ class BlogController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Blog $blog)
+    public function update(CreateBlogRequest $request, Blog $blog)
     {
-        
+
+        if ($request->has('thumbnail')) {
             $thumbnailName = $request->file('thumbnail')->getClientOriginalName();
             $request->file('thumbnail')->move(public_path('/uploads/images/blogs/'), $thumbnailName);
-
-            $data = [
-                'title' => $request->title,
-                'thumbnail' => $thumbnailName,
-                'content' => $request->content,
-                'status' => ($request->status == 'on') ? 1 : 0,
-                'author' => $this->infoUser('name')
-            ];
-            $blog->update($data);
-            foreach ($request->tag as $tag) {
-                Blog_tag::updateOrCreate(['tag' => $tag, 'blog_id' => $blog->id]);
-            }
-            return redirect()->route('admin.blog.list');
+        }else{
+            $thumbnailName = $blog->thumbnail;
+        }
+        $data = [
+            'title' => $request->title,
+            'thumbnail' => $thumbnailName,
+            'content' => $request->content,
+            'status' => ($request->status == 'on') ? 1 : 0,
+            'author' => $this->infoUser('name')
+        ];
+        $blog->update($data);
+        foreach ($request->tag as $tag) {
+            Blog_tag::updateOrCreate(['tag' => $tag, 'blog_id' => $blog->id]);
+        }
+        return redirect()->route('admin.blog.list')->with('message', 'Cập nhập thành công bài viết');
     }
 
     /**
@@ -132,7 +147,10 @@ class BlogController extends Controller
      */
     public function destroy(Blog $blog)
     {
-        $blog->delete();
-        return redirect()->route('admin.blog.list');
+        $rs = $blog->delete();
+        if($rs){
+            return redirect()->route('admin.blog.list')->with('message', 'Xóa bài viết thành công');
+        }
+        return redirect()->route('admin.blog.list')->with('message', 'Xóa bài viết không thành công');
     }
 }

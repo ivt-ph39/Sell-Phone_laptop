@@ -21,7 +21,7 @@
 									@endif
 								</li>
 							@endforeach
-						<li class="" ><a href="">Blog</a>
+						<li ><a href="{{ route('blog') }}">Blog</a>
 						</ul>
 					</ul>
 					<!-- /NAV -->

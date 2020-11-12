@@ -14,12 +14,12 @@ class UserSeeder extends Seeder
     {
         $data = [
             [
-                'name' => 'hunglt',
+                'name' => 'hunglt', // id 1
                 'email' => 'hunglt1011@gmail.com',
                 'password' => bcrypt('123456789')
             ],
             [
-                'name' => 'Ngo The Quang',
+                'name' => 'Ngo The Quang', // id 2
                 'email' => 'quangdnn98@gmail.com',
                 'password' => bcrypt('123123123')
             ],
