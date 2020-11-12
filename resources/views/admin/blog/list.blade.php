@@ -7,9 +7,24 @@
         @if (!isset($blogs))
             <h4>No Data.</h4>
         @else
-            <div>
-                <h4 class="col-5 float-left">{{ $titlePage }}.</h4>
-                <a href="{{ route('admin.blog.create') }}" class="btn btn-primary float-right"><i class="fas fa-plus-square"></i> Add blog</a>
+            @if (\Session::has('message'))
+                <div class="alert alert-primary message" role="alert">
+                    {!! \Session::get('message') !!}
+                </div>
+            @endif
+            <div class="pt-3 pb-3 row">
+                <h4 class="col">{{ $titlePage }}.</h4>
+                <form action="{{ route('admin.blog.list') }}" method="get" class="form-inline col">
+                    <div class="input-group ">
+                        <input type="text" class="form-control" name="search" placeholder="Tìm tên bài viết">
+                        <div class="input-group-append">
+                            <button title="Tìm kiếm nhân viên theo tên" class="btn btn-outline-success col" type="submit"><i
+                                    class="fas fa-search-plus"></i></button>
+                        </div>
+                    </div>
+                </form>
+                <a href="{{ route('admin.blog.create') }}" class="btn btn-primary"><i
+                        class="fas fa-plus-square"></i> Add blog</a>
             </div>
             <div class="content">
                 <table class="table table-bordered">
@@ -31,7 +46,9 @@
                                 <td>{{ $blog->title }}</td>
                                 <td>{{ $blog->slug }}</td>
                                 <td>{{ $blog->author }}</td>
-                                <td>{{ ($blog->status) ? 'show' : 'hiden' }}</td>
+                                <td><span
+                                        class="badge badge-{{ $blog->status ? 'info' : 'danger' }}">{{ $blog->status ? 'show' : 'hidden' }}</span>
+                                </td>
                                 <td>
                                     @foreach ($blog->blog_tag as $tag)
                                         <span class="badge badge-success">{{ $tag->tag }}</span>
@@ -39,21 +56,36 @@
                                 </td>
                                 <td>
                                     <div class="form-inline">
-                                        <form action="{{  route('admin.blog.delete', $blog->id) }}" method="post">
+                                        <form action="{{ route('admin.blog.delete', $blog->id) }}" method="post">
                                             @csrf
                                             @method('delete')
-                                            <button class="btn btn-sm btn-outline-danger" type="submit" >Del</button>
+                                            <button class="btn btn-sm btn-outline-danger" type="submit">Del</button>
                                         </form>
-                                        <a href="{{ route('admin.blog.show', $blog->id) }}" class="btn btn-sm btn-outline-primary">Edit</a> 
+                                        <a href="{{ route('admin.blog.show', $blog->id) }}"
+                                            class="btn btn-sm btn-outline-primary">Edit</a>
                                     </div>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
-                {{ $blogs->links() }}
+                {{ $blogs->appends(request()->query())->links() }}
+
             </div>
         @endif
     </div>
 
+@endsection
+@section('js')
+    <script>
+        $(function() {
+            $('.message').click(function() {
+                let $this = $(this);
+                setTimeout(function() {
+                    $this.hide();
+                }, 600);
+            });
+        });
+
+    </script>
 @endsection

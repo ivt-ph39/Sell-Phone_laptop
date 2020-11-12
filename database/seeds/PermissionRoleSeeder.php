@@ -14,7 +14,7 @@ class PermissionRoleSeeder extends Seeder
     {
         $data = [
             'role_id' => 1,
-            'permission_id' => 7
+            'permission_id' => 2
         ];
         PermissionRole::create($data);
     }

@@ -30,7 +30,7 @@
                                     <div class="col">
                                         <label>Tiêu đề bài viết</label>
                                         <textarea type="text" name="title" value="{{ old('title') }}" class="form-control"
-                                            placeholder="Enter title"></textarea>
+                                            placeholder="Enter title">{{ old('title') }}</textarea>
                                         @if ($errors->has('title'))
                                             <span style="color: red">{{ $errors->first('title') }}</span>
                                         @endif
@@ -48,7 +48,7 @@
                                 <div class="form-group">
                                     <label>Nội dung bài viết</label>
                                     <textarea type="text" id="editor1" name="content" class="form-control"
-                                        placeholder="Enter content of blog">{{ old('content') }}</textarea>
+                                        placeholder="Enter content of blog" value="{{ old('content') }}">{{ old('content') }}</textarea>
                                     @if ($errors->has('content'))
                                         <span style="color: red">{{ $errors->first('content') }}</span>
                                     @endif
@@ -61,9 +61,8 @@
 
                                 <div class="form-group">
                                     <label>Chọn ảnh thumbnail</label><br>
-                                    <img id="blah" width="100" height="100" style="background-color: rgb(214, 185, 252)" />
-                                    <input type="file" name="thumbnail"
-                                        onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])">
+                                    <input class="btn btn-info" name="thumbnail" type="file" accept="image/*" onchange="loadFile(event)">
+                                    <img id="output" src="" class="img-thumbnail" style="width: 200px;"/>
                                 </div>
 
                                 <hr>
@@ -77,10 +76,8 @@
     </div>
 @endsection
 @section('js')
-    
-    
-    
-   
+    <script src="https://cdn.ckeditor.com/4.15.1/standard/ckeditor.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script>
         $(function() {
@@ -91,7 +88,23 @@
                 allowClear: true
             })
         });
+    </script>
+    <script>
+        CKEDITOR.replace('editor1', {
+            filebrowserUploadUrl: "{{ route('upload', ['_token' => csrf_token()]) }}",
+            filebrowserUploadMethod: 'form'
+        });
 
     </script>
+    <script>
+        var loadFile = function(event) {
+          var reader = new FileReader();
+          reader.onload = function(){
+            var output = document.getElementById('output');
+            output.src = reader.result;
+          };
+          reader.readAsDataURL(event.target.files[0]);
+        };
+      </script>
     
 @endsection
