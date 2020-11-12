@@ -114,15 +114,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::put('blog/{blog}/update', 'Backend\BlogController@update')->name('admin.blog.update');
     Route::delete('blog/{blog}/destroy', 'Backend\BlogController@destroy')->name('admin.blog.delete')->middleware('can:delete_blog');
     // ------------Order-----------
-<<<<<<< HEAD
     Route::get('order/list' , 'Backend\OrderController@index')->name('admin.order.list')->middleware('can:list_blog');
     Route::put('order/{order}/update' , 'Backend\OrderController@update')->name('admin.order.update');
     Route::delete('order/{order}/destroy', 'Backend\OrderController@destroy')->name('admin.order.destroy');
-=======
-    Route::get('order/list', 'Backend\OrderController@index')->name('admin.order.list');
-    Route::put('order/{order}/update', 'Backend\OrderController@update')->name('admin.order.update');
-    Route::delete('order/{id}/destroy', 'Backend\OrderController@destroy')->name('admin.order.destroy');
->>>>>>> 3bb14e4c4d204417850648675c5020ffa33a2ec4
     Route::get('order/{id}/productOrder', 'Backend\OrderController@productOrder')->name('admin.order.productOrder');
 });
 // ------------------------- FrontEnd ----------------------
