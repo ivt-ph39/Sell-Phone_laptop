@@ -76,8 +76,7 @@
     </div>
 @endsection
 @section('js')
-    <script src="https://cdn.ckeditor.com/4.15.1/standard/ckeditor.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script>
         $(function() {

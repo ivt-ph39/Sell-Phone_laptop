@@ -19,6 +19,7 @@ class CreateBlogsTable extends Migration
             $table->string('slug');
             $table->text('thumbnail')->nullable();
             $table->text('content')->nullable();
+            $table->integer('view_count')->default(0);
             $table->integer('status')->default(1); // 0 not yep or 1 posted 
             $table->string('author')->nullable();
             $table->timestamps();

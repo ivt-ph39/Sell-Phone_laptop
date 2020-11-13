@@ -108,7 +108,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkLoginAdmin'], function 
     Route::delete('comment/{comment}/destroy', 'Backend\CommentController@destroy')->name('admin.comment.destroy');
     //-------------Blog------
     Route::get('blog/list', 'Backend\BlogController@index')->name('admin.blog.list')->middleware('can:list_blog');
-    Route::get('blog/create', 'Backend\BlogController@create')->name('admin.blog.create')->middleware('can:add_blog');
+    Route::get('blog/create', 'Backend\BlogController@create')->name('admin.blog.create');
     Route::post('blog/store', 'Backend\BlogController@store')->name('admin.blog.store');
     Route::get('blog/{blog}/show', 'Backend\BlogController@edit')->name('admin.blog.show');
     Route::put('blog/{blog}/update', 'Backend\BlogController@update')->name('admin.blog.update');
@@ -168,6 +168,6 @@ Route::get('/{page}', 'Frontend\StoreController@index')->name('store');
 Route::post('/getRatings', 'Frontend\ProductDetail@getRatings')->name('get_ratings');
 Route::post('/getComments', 'Frontend\ProductDetail@getComments')->name('get_comments');
 
-
 //-------------blog---------------
 Route::get('blog/home' , 'Frontend\BlogController@index')->name('blog');
+Route::get('blog/{slug}' , 'Frontend\BlogController@blogContent')->name('blog.content');
