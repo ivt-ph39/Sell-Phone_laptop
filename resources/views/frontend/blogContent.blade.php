@@ -209,7 +209,7 @@
                                         <h3 class="card-title"><strong><a
                                                     href="{{ route('blog.content', $blog->slug) }}">{{ $blog->title }}</a></strong>
                                         </h3>
-                                        <p class="card-text">{!! $blog->content !!}</p>
+                                        <p class="card-text pre_post">{!! $blog->content !!}</p>
                                         <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                                     </div>
                                 </div>
@@ -235,5 +235,18 @@
         </div>
 
     </div>
+@endsection
+@section('js')
+    <script>
+        $(document).ready(function() {
+            $(".pre_post").each(function() {
+            var text = $(this).html();
+            if(text.length > 30){
+            text = text.substring(0,30);
+            $(this).html(text);
+            }
+            });
+            })
+    </script>
 @endsection
 

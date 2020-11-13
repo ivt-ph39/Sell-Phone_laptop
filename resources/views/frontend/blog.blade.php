@@ -148,11 +148,11 @@
         <div class="row">
             <div class="col-sm-offset-2 col-sm-8">
                 <div class="hovereffect">
-                    <img class="img-responsive" src="uploads/images/blogs/IMG_20180211_201958.jpg" alt="">
+                    <img class="img-responsive" style="max-height: 300px;" src="uploads/images/blogs/IMG_20180211_201958.jpg" alt="">
                     <div class="overlay">
-                        <h2>Effect 13</h2>
+                        <h2>{{ $blog_top1->title }}</h2>
                         <p>
-                            <a href="#">LINK HERE</a>
+                            <a href="{{ route('blog.content', $blog_top1->slug) }}">LINK HERE</a>
                         </p>
                     </div>
                 </div>
@@ -177,7 +177,7 @@
                                         <h3 class="card-title"><strong><a
                                                     href="{{ route('blog.content', $blog_new->slug) }}">{{ $blog_new->title }}</a></strong>
                                         </h3>
-                                        <p class="card-text">{!! $blog_new->content !!}</p>
+                                        <p class="card-text ">Nội dung đang chuẩn bị</p>
                                         <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                                     </div>
                                 </div>
@@ -196,7 +196,7 @@
 
 
 
-            <div class="col-sm-3">
+            <div class="col-sm-3" style="margin-bottom: 10px;">
                 {{-- search --}}
                 <div>
                     <form action="#">
@@ -218,9 +218,9 @@
                                 <div class="col-ms-7">
                                     <div class="card-body">
                                         <h3 class="card-title"><strong><a
-                                                    href="{{ route('blog.content', $blog_new->slug) }}">{{ $blog_new->title }}</a></strong>
+                                                    href="{{ route('blog.content', $blog->slug) }}">{{ $blog->title }}</a></strong>
                                         </h3>
-                                        <p class="card-text">{!! $blog_new->content !!}</p>
+                                        <p class="card-text">{!! substr($blog->content, 3  ) !!}</p>
                                         <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                                     </div>
                                 </div>
@@ -234,8 +234,24 @@
                     </div>
                 @endif
                 {{-- end blog top --}}
+                <div class="col-sm-12">
+                    <h3>Tags</h3>
+                    @foreach ($blog_tag as $tag)
+                        <a href="{{ route('blog.content', $tag->blog->slug) }}"><span class="badge badge-info">{{ $tag->tag }}</span></a>
+                    @endforeach
+                </div>
             </div>
         </div>
 
     </div>
+@endsection
+@section('js')
+    <script src="{{ asset('js/jquery.shorten.1.0.js') }}"></script>
+    <script type="text/javascript">
+        $(".blog_text").shorten({
+         "showChars" : 5,
+         "moreText"  : "Xem thêm",
+         "lessText"  : "Rút gọn",
+     });
+    </script>
 @endsection

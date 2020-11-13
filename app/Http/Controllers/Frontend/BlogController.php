@@ -16,11 +16,14 @@ class BlogController extends Controller
         $blog_news = Blog::latest()->paginate(3);
         $blog_top  = Blog::orderBy('view_count', 'DESC')->take(3)->get();
         $blog_top1 = Blog::orderBy('view_count', 'DESC')->take(1)->first();
+        $blog_tag  = Blog_tag::orderBy(DB::raw('RAND()'))->take(6)->get();
         $data = [
             'categories'      => Category::where('parent_id', 0)->get(),
             'blog_news'       => $blog_news,
             'blog_top'        => $blog_top,
-            'blog_top1'       => $blog_top1 
+            'blog_top1'       => $blog_top1,
+            'blog_tag'        => $blog_tag
+
         ];
         return view('frontend.blog', $data); 
     } 
